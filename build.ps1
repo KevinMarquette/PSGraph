@@ -12,7 +12,7 @@ param ($Task = 'Default')
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
 Install-Module Psake, PSDeploy, BuildHelpers -force
-Install-Module Pester -RequiredVersion 3.4.2 -Force
+Install-Module Pester -Force -SkipPublisherCheck 
 Import-Module Psake, BuildHelpers
 
 Set-BuildEnvironment
