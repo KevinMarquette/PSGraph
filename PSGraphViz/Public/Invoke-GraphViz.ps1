@@ -6,7 +6,7 @@ function Invoke-GraphViz
     #>
     [cmdletbinding()]
     param(
-        # Parameter help description
+        # The GraphViz file to process
         [Parameter(ValueFromPipeline)]
         [string[]]
         $Path,
@@ -23,10 +23,12 @@ function Invoke-GraphViz
         [string]
         $EdgeName,
 
+        # The file type used when generating an image
         [ValidateSet('jpg','png','gif','imap','cmapx','jp2','json','pdf','plain')]
         [string]
         $OutputFormat = 'png',
 
+        # The layout engine used to generate the image
         [string]
         [ValidateSet(
             'Hierarchical',
@@ -41,9 +43,11 @@ function Invoke-GraphViz
         [string]
         $ExternalLibrary,
 
+        #The destination for the generated file.
         [string]
         $DestinationPath,
 
+        # When set, this will attach the file extention to the existing nam
         [switch]
         $AutoName
 
@@ -86,13 +90,19 @@ function Invoke-GraphViz
         
         if($PSBoundParameters.ContainsKey('LayoutEngine'))
         {
-            Write-Verbose 'Looking up and replacing rendering engine'
+            Write-Verbose 'Looking up and replacing rendering engine string'
             $PSBoundParameters['LayoutEngine'] = $paramLookup[$PSBoundParameters['LayoutEngine']]
         }
 
+        if( -Not $PSBoundParameters.ContainsKey('LayoutEngine'))
+        {
+            $PSBoundParameters["AutoName"] = $true;
+        }
+
+        Write-Verbose 'Walking parameter mapping'
         foreach($key in $PSBoundParameters.keys)
         {
-            Write-Verbose $key
+            Write-Debug $key
             if($key -ne $null -and $paramLookup.ContainsKey($key))
             {
                 $newArgument = $paramLookup[$key]
@@ -100,14 +110,15 @@ function Invoke-GraphViz
                 {
                     $newArgument = $newArgument -f $PSBoundParameters[$key]
                 }
-                Write-Verbose $newArgument
+
+                Write-Debug $newArgument
                 $arguments += "-$newArgument"
             }            
         }
 
+        Write-Verbose 'Generating graph file'
         foreach($file in (Resolve-Path -Path $Path))
-        {
-            $arguments | %{Write-Verbose $_ }
+        {     
             $null = Start-Process -FilePath $graphViz -ArgumentList ($arguments + $file.path) -Wait -NoNewWindow
         }
     }
