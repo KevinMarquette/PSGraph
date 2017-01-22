@@ -2,7 +2,14 @@ function Invoke-GraphViz
 {
     <#
     .Description
-    Invokes the graphviz binaries to generate a graph
+    Invokes the graphviz binaries to generate a graph.
+
+    .Example
+    Invoke-GraphViz -Path graph.dot -OutputFormat png
+    .Example
+    $folders = Get-ChildItem -Recuse -Directory 
+    $folders | New-QuickGraph -LeftProperty Parent -RightProperty Name | Set-Content -Path Folder.vz
+    Invoke-GraphViz -Path folder.vz -OutputFormat png
     #>
     [cmdletbinding()]
     param(
