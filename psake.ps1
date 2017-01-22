@@ -26,7 +26,7 @@ Task Init {
     $lines
     Set-Location $ProjectRoot
     "Build System Details:"
-    Get-Item ENV:BH*
+    Get-Item ENV:BH* | Format-List
     "`n"
 }
 
@@ -41,9 +41,11 @@ Task Test -Depends Init  {
     If($ENV:BHBuildSystem -eq 'AppVeyor')
     {
         "Uploading $ProjectRoot\$TestFile to AppVeyor"
+        "JobID: $env:APPVEYOR_JOB_ID"
         (New-Object 'System.Net.WebClient').UploadFile(
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
-            "$ProjectRoot\$TestFile" )
+            (Resolve-Path "$ProjectRoot\$TestFile" )
+        )
     }
 
     Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
