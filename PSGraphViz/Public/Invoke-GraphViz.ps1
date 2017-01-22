@@ -119,7 +119,7 @@ function Invoke-GraphViz
         Write-Verbose 'Generating graph file'
         foreach($file in (Resolve-Path -Path $Path))
         {     
-            $null = Start-Process -FilePath $graphViz -ArgumentList ($arguments + $file.path) -Wait -NoNewWindow
+            Start-Process -FilePath $graphViz -ArgumentList ($arguments + $file.path) -Wait -NoNewWindow
         }
     }
 }
