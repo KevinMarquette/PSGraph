@@ -19,12 +19,11 @@ function Get-Graph
     {
         if($type -eq 'digraph')
         {
-            Write-Host "Reset indent"
             $script:indent = 0
         }
 
         "" # Blank line
-        "{0} {1} {2} {{" -f (Get-Indent), $type, $name
+        "{0}{1} {2} {{" -f (Get-Indent), $type, $name
         $script:indent++
 
         if($Attributes -ne $null)
