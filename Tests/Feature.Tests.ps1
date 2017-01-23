@@ -4,7 +4,6 @@ $moduleName = Split-Path $moduleRoot -Leaf
 
 Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
-
 Describe "Basic function feature tests" {
 
     Context "Graph" {
@@ -112,6 +111,62 @@ Describe "Basic function feature tests" {
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 1
             $result | should match '{ rank=same;  "one" "two" "three"; }'
+        }
+    }
+
+    Context "Indentation" {
+
+        It "Has no indention for first graph element" {
+            $result = graph g {node test}
+            $result | Where-Object{$_ -match 'digraph'} | Should Match '^digraph'
+        }
+
+        It "Has 4 space indention for first level items" {
+            $result = graph g {
+                node testNode
+                edge testEdge1 testEdge2
+                rank testRank
+            }
+            $result | Where-Object{$_ -match 'testNode'}  | Should Match '^    "testNode"'
+            $result | Where-Object{$_ -match 'testEdge1'} | Should Match '^    "testEdge1"'
+            $result | Where-Object{$_ -match 'rank'}  | Should Match '^    { rank'
+        }
+
+        It "Has 4 space indention for first subbraph" {
+            $result = graph g {
+                subgraph 0 {
+                    node test
+                }                
+            }
+            $result | Where-Object{$_ -match 'subgraph'} | Should Match '^    subgraph'
+        }
+
+        It "Has 8 space indention for nested items" {
+            $result = graph g {
+                subgraph 0 {
+                    node testNode
+                    edge testEdge1 testEdge2
+                    rank testRank
+                }                
+            }
+            $result | Where-Object{$_ -match 'testNode'}  | Should Match '^        "testNode"'
+            $result | Where-Object{$_ -match 'testEdge1'} | Should Match '^        "testEdge1"'
+            $result | Where-Object{$_ -match 'rank'}  | Should Match '^        { rank'
+        }
+
+        It "Has 12 space indention for nested items" {
+            $result = graph g {
+                subgraph 0 {
+                    subgraph 1 {
+                        node testNode
+                        edge testEdge1 testEdge2
+                        rank testRank
+                    }
+                }                
+            }
+            $result | Where-Object{$_ -match 'testNode'}  | Should Match '^            "testNode"'
+            $result | Where-Object{$_ -match 'testEdge1'} | Should Match '^            "testEdge1"'
+            $result | Where-Object{$_ -match 'rank'}  | Should Match '^            { rank'
         }
     }
 }
