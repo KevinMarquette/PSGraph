@@ -14,3 +14,5 @@ function Get-Node
         '{0}"{1}" {2}' -f (Get-Indent), $node, $GraphVizAttribute
     }
 }
+
+Set-Alias -Name Node -Value Get-Node

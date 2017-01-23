@@ -62,21 +62,21 @@ Describe "Basic function unit tests" {
 
         it "Node alias should not throw an error" {
 
-            {Node TestNode} | Should Not Throw
+            {Node TestNode } | Should Not Throw
         }
 
         it "Node attributes should not throw an error" {
 
-            {Node TestNode @{shape='rectangle'}} | Should Not Throw
+            {Get-Node TestNode @{shape='rectangle'}} | Should Not Throw
         }
 
         It "Creates a simple node" {
-            Node TestNode | Should Match '"TestNode"'
+            Get-Node TestNode | Should Match '"TestNode"'
         }
 
         It "Creates a node with attributes" {
-            Node TestNode @{shape='rectangle'} | Should Match '"TestNode" \[shape="rectangle"\]'
-            Node TestNode @{shape='rectangle';label="myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest"\]'
+            Get-Node TestNode @{shape='rectangle'} | Should Match '"TestNode" \[shape="rectangle"\]'
+            Get-Node TestNode @{shape='rectangle';label="myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest"\]'
         }
     }
 
