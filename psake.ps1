@@ -61,9 +61,13 @@ Task Test -Depends Init  {
 
 Task Build -Depends Test {
     $lines
-    
+
+    $functions = Get-ChildItem "$PSScriptRoot\$env:BHProjectName\Public\*.ps1" | 
+            Where-Object{ $_.name -notmatch 'Tests'} |
+            Select-Object -ExpandProperty basename      
+
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions
+    Set-ModuleFunctions -Name $env:BHPSModuleManifest -FunctionsToExport $functions 
 
     # Bump the module version
     $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName
