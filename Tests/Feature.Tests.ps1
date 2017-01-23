@@ -3,7 +3,7 @@ $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psm1")
 $moduleName = Split-Path $moduleRoot -Leaf
 
 Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
-
+break;
 Describe "Basic function feature tests" {
 
     Context "Graph" {
