@@ -15,6 +15,9 @@ foreach($folder in @('private', 'public', 'classes'))
             ForEach-Object{Write-Verbose $_.name; . $_.FullName}
     }
 }
-New-Alias -Name 'Get-Node' -Value 'Node'
+
 Export-ModuleMember -function (Get-ChildItem -Path "$PSScriptRoot\public\*.ps1").basename
+
+# Hack for my build system that had a conflit with the keyword node
+New-Alias -Name 'Get-Node' -Value 'Node'
 Export-ModuleMember -Alias 'Get-Node'
