@@ -15,16 +15,6 @@ foreach($folder in @('private', 'public', 'classes'))
             ForEach-Object{Write-Verbose $_.name; . $_.FullName}
     }
 }
-
-# Create aliases for export
-$aliases = @{
-    Graph    = "Get-Graph"
-    'Node-Get'     = "Node"
-    Edge     = "Get-Edge"
-    Rank     = "Get-Rank"
-    SubGraph = "Get-SubGraph"
-}
-$aliases.GetEnumerator() | ForEach-Object {New-Alias -Name $_.Key -Value $_.value}
-
+New-Alias -Name 'Get-Node' -Value 'Node'
 Export-ModuleMember -function (Get-ChildItem -Path "$PSScriptRoot\public\*.ps1").basename
-Export-ModuleMember -Alias $aliases.Keys
+Export-ModuleMember -Alias 'Get-Node'
