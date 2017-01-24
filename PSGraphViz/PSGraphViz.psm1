@@ -20,4 +20,5 @@ Export-ModuleMember -function (Get-ChildItem -Path "$PSScriptRoot\public\*.ps1")
 
 # Hack for my build system that had a conflit with the keyword node
 New-Alias -Name 'Get-Node' -Value 'Node'
-Export-ModuleMember -Alias 'Get-Node'
+New-Alias -Name 'DiGraph' -Value 'Get-Graph'
+Export-ModuleMember -Alias 'Get-Node','DiGraph'

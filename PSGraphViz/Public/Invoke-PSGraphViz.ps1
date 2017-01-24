@@ -1,4 +1,4 @@
-function Invoke-GraphViz
+function Invoke-PSGraphViz
 {
     <#
     .Description
