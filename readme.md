@@ -50,9 +50,10 @@ This is the container that holds graph elements. Every valid GraphViz graph has 
     }
 
 ## Edge
-This defines an edge or connection between nodes. This command accepts a list of strings or an array of strings. It will connect them all in sequence. This should be placed inside a `graph` or `subgraph`.
+This defines an edge or connection between nodes. This command accepts a list of strings or an array of strings. It will connect them all in sequence. This should be placed inside a `graph` or `subgraph`. `-From` and `-To` parameters are available if you want more verbosity.
 
     graph g {
+        edge -From first -To Second
         edge one two three four
         edge (1..5)
     }
@@ -94,6 +95,57 @@ This is the exact Dot output generated those node commands.
         "start"->"middle" 
         "middle"->"end" 
     }
+
+## Rank
+The rank command will place the specified nodes at the same level in the chart. The layout can get a bit wild sometime and gives you some control.
+
+    graph g {
+        rank 2 4 6 8
+        rank 1 3 5 7
+        edge (1..8)
+    }
+
+## SubGraph
+This lets you box of and cluster nodes together in the graph. These can be nested. The catch is that you need to number them starting at 0. Attributes are supported with the `-Attributes` parameter.
+
+    graph g {
+        subgraph 0 -Attributes @{label='DMZ'} {
+            node Web1,Web2
+        }
+        edge web1 database
+        edge web1 database
+    }
+
+# More complex example
+We can pull that all together and generate quite the data driven driven diagram.
+
+    $webServers = 'Web1','Web2','web3'
+    $apiServers = 'api1','api2'
+    $databaseServers = 'db1'
+
+    graph site1 {
+        # External/DMZ nodes
+        subgraph 0 -Attributes @{label='DMZ'} {
+            node 'loadbalancer' @{shape='house'}
+            rank $webServers
+            node $webServers @{shape='rect'}
+            edge 'loadbalancer' $webServers
+        }
+
+        subgraph 1 -Attributes @{label='Internal'} {
+            # Internal API servers
+            rank $apiServers
+            node $apiServers   
+            edge $webServers $apiServers
+        
+            # Database Servers
+            rank $databaseServers
+            node $databaseServers @{shape='octagon'}
+            edge $apiServers $databaseServers
+        }    
+    }
+
+
 
 # Installing PSGraphViz
 Make sure you are running Powershell 5.0 (WMF 5.0). I don't know that it is a hard requirement at the moment but I plan on using 5.0 features.
