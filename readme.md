@@ -136,12 +136,12 @@ We can pull that all together and generate quite the data driven driven diagram.
             # Internal API servers
             rank $apiServers
             node $apiServers   
-            edge $webServers $apiServers
+            edge $webServers -to $apiServers
         
             # Database Servers
             rank $databaseServers
             node $databaseServers @{shape='octagon'}
-            edge $apiServers $databaseServers
+            edge $apiServers -to $databaseServers
         }    
     }
 
