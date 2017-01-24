@@ -19,7 +19,7 @@ foreach($folder in @('private', 'public', 'classes'))
 # Create aliases for export
 $aliases = @{
     Graph    = "Get-Graph"
-    Node     = "Get-Node"
+    'Node-Get'     = "Node"
     Edge     = "Get-Edge"
     Rank     = "Get-Rank"
     SubGraph = "Get-SubGraph"

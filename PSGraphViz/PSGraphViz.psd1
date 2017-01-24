@@ -69,7 +69,7 @@ Description = 'GraphViz helper module'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Get-Edge','Get-Graph','Get-Node','Get-Rank','Get-SubGraph','Install-GraphViz','Invoke-GraphViz','New-QuickGraph')
+FunctionsToExport = @('Get-Edge','Get-Graph','Node','Get-Rank','Get-SubGraph','Install-GraphViz','Invoke-GraphViz','New-QuickGraph')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -78,7 +78,7 @@ CmdletsToExport = '*'
 VariablesToExport = '*'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = @('Node','Graph','Edge','SubGraph','Rank')
+AliasesToExport = @('Get-Node','Graph','Edge','SubGraph','Rank')
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()

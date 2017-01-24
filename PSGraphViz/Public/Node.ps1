@@ -1,4 +1,4 @@
-function Get-Node 
+function Node 
 {
     param(
         [string[]]
