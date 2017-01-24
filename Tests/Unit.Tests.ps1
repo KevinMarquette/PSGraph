@@ -60,7 +60,7 @@ Describe "Basic function unit tests" {
             {Get-Node TestNode } | Should Not Throw
         }
 
-        it "Node alias should not throw an error" -Pending {
+        it "Node alias should not throw an error" {
 
             {Node TestNode } | Should Not Throw
         }
