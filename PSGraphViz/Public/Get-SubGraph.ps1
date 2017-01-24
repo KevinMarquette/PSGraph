@@ -5,7 +5,11 @@ function Get-SubGraph
         $ID = 0,
 
         [scriptblock]
-        $ScriptBlock        
+        $ScriptBlock,
+
+        [hashtable]
+        $Attributes        
     )
-    Get-Graph -Name "Cluster_$ID" -ScriptBlock $ScriptBlock -Type 'subgraph'
+
+    Get-Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
 }
