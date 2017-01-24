@@ -9,7 +9,7 @@ PSGraphViz is a helper module for generating GraphViz graphs. The goal is to mak
 [Graphviz](http://graphviz.org/) is open source graph visualization software. Graph visualization is a way of representing structural information as diagrams of abstract graphs and networks. It has important applications in networking, bioinformatics,  software engineering, database and web design, machine learning, and in visual interfaces for other technical domains. 
 
 ## Project status?
-Experimental. I am still flashing out ideas on how I want to approach parts of module. Consider it unstable and highly likely to change quite a bit. 
+Experimental. I am still fleshing out ideas on how I want to approach parts of module. Consider it unstable and highly likely to change quite a bit. 
 
 # GraphViz and the Dot format basics
 The nice thing about GraphViz is that you can define nodes and edges with a simple text file in the Dot format. The GraphViz engine handles the layout, edge routing, rendering and creates an image for you. 
