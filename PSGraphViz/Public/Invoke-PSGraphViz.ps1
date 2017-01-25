@@ -18,18 +18,6 @@ function Invoke-PSGraphViz
         [string[]]
         $Path,
 
-        [switch]
-        $Version,
-
-        [string]
-        $GraphName,
-
-        [string]
-        $NodeName,
-
-        [string]
-        $EdgeName,
-
         # The file type used when generating an image
         [ValidateSet('jpg','png','gif','imap','cmapx','jp2','json','pdf','plain')]
         [string]
@@ -47,6 +35,7 @@ function Invoke-PSGraphViz
         )]
         $LayoutEngine,
         
+        # Supports external libraries for advanced processing
         [string]
         $ExternalLibrary,
 

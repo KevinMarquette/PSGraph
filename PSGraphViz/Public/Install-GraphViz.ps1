@@ -1,5 +1,11 @@
 function Install-GraphViz
 {
+    <#
+        .Description
+        Installs GraphViz package
+        .Example
+        Install-GraphViz
+    #>
     [cmdletbinding()]
     param()
 
