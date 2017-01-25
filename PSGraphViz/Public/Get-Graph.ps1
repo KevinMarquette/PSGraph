@@ -39,19 +39,22 @@ function Get-Graph
         [hashtable]
         $Attributes,
 
+        [Parameter(
+            DontShow = $true
+        )]
         [string]
-        $type = 'digraph'
+        $Type = 'digraph'
     )
     
     begin
     {
-        if($type -eq 'digraph')
+        if($Type -eq 'digraph')
         {
             $script:indent = 0
         }
 
         "" # Blank line
-        "{0}{1} {2} {{" -f (Get-Indent), $type, $name
+        "{0}{1} {2} {{" -f (Get-Indent), $Type, $name
         $script:indent++
 
         if($Attributes -ne $null)
