@@ -18,16 +18,26 @@ function Get-SubGraph
         This is just like the graph or digraph, except the name must match cluster_#
         The numbering must start at 0 and work up or the processor will fail.
     #>
+    
+    [cmdletbinding()]
     param(
-        [string]
+        [Parameter(
+            Mandatory = $true, 
+            Position = 0
+        )]
+        [int]
         $ID = 0,
 
+        [Parameter(
+            Mandatory = $true, 
+            Position = 1
+        )]
         [scriptblock]
         $ScriptBlock,
 
         [hashtable]
         $Attributes        
     )
-    
+
     Get-Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
 }

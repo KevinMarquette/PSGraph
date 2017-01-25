@@ -22,9 +22,17 @@ function Get-Graph
     #>
     [cmdletbinding()]
     param(
+        [Parameter(
+            Mandatory = $true, 
+            Position = 0
+        )]
         [string]
         $Name,
 
+        [Parameter(
+            Mandatory = $true, 
+            Position = 1
+        )]
         [scriptblock]
         $ScriptBlock,
 

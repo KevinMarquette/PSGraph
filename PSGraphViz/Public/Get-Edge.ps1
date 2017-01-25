@@ -33,12 +33,26 @@ function Get-Edge
 
     #>
     param(
+        [Parameter(
+            Mandatory = $true, 
+            Position = 0
+        )]
+        [alias('NodeName','Name','SourceName','LeftHandSide','lhs')]
         [string[]]
         $From,
 
+        [Parameter(
+            Mandatory = $false, 
+            Position = 1
+        )]
+        [alias('Destination','TargetName','RightHandSide','rhs')]
         [string[]]
         $To,
 
+        [Parameter(
+            Mandatory = $false, 
+            Position = 2
+        )]
         [hashtable]
         $Attributes
     )
