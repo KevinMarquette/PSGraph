@@ -5,7 +5,7 @@ function Export-PSGraph
         Invokes the graphviz binaries to generate a graph.
 
         .Example
-        Export-PSGraph -Path graph.dot -OutputFormat png
+        Export-PSGraph -Source graph.dot -OutputFormat png
 
         .Example
         graph g {
@@ -14,15 +14,25 @@ function Export-PSGraph
         } | Export-PSGraph -Destination $env:temp\test.png
 
         .Notes
-        I am trying to all this to pipe in either files or standard input.
+        The source can either be files or piped graph data.
+
     #>
     [cmdletbinding()]
     param(
         # The GraphViz file to process or contents of the graph in Dot notation
-        [Parameter(ValueFromPipeline = $true)]
-        [Alias('InputObject','Graph','Path','SourcePath')]
+        [Parameter(
+            ValueFromPipeline = $true
+        )]
+        [Alias('InputObject','Graph','SourcePath')]
         [string[]]
         $Source,
+
+        #The destination for the generated file.
+         [Parameter(            
+            Position = 0
+        )]
+        [string]
+        $DestinationPath,
 
         # The file type used when generating an image
         [ValidateSet('jpg','png','gif','imap','cmapx','jp2','json','pdf','plain','dot')]
@@ -40,10 +50,6 @@ function Export-PSGraph
         )]
         [string]
         $LayoutEngine,
-        
-        #The destination for the generated file.
-        [string]
-        $DestinationPath,
 
         # launches the graph when done
         [switch]
@@ -160,8 +166,9 @@ function Export-PSGraph
         if($useStandardInput)
         {
             Write-Verbose 'Processing standard input'
-            Write-Verbose " Arguments: $($arguments -join ' ')"
+            Write-Debug " Arguments: $($arguments -join ' ')"
             $standardInput.ToString() | & $graphViz @($arguments)
+
             if($ShowGraph)
             {
                 # Launches image with default viewer as decided by explorer
