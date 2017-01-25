@@ -21,6 +21,8 @@ function Get-SubGraph
     
     [cmdletbinding()]
     param(
+
+        # Numeric ID of subgraph starting at 0
         [Parameter(
             Mandatory = $true, 
             Position = 0
@@ -28,6 +30,7 @@ function Get-SubGraph
         [int]
         $ID = 0,
 
+        # Contents of the subgraph
         [Parameter(
             Mandatory = $true, 
             Position = 1
@@ -35,6 +38,7 @@ function Get-SubGraph
         [scriptblock]
         $ScriptBlock,
 
+        # The attributes to apply to this subgraph
         [hashtable]
         $Attributes        
     )

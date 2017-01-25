@@ -22,6 +22,8 @@ function Get-Graph
     #>
     [cmdletbinding()]
     param(
+
+        # Name or ID of the graph
         [Parameter(
             Mandatory = $true, 
             Position = 0
@@ -29,6 +31,7 @@ function Get-Graph
         [string]
         $Name,
 
+        # The commands to execute inside the graph
         [Parameter(
             Mandatory = $true, 
             Position = 1
@@ -36,9 +39,11 @@ function Get-Graph
         [scriptblock]
         $ScriptBlock,
 
+        # Hashtable that gets translated to graph attributes
         [hashtable]
         $Attributes,
 
+        # Keyword that initiates the graph
         [Parameter(
             DontShow = $true
         )]

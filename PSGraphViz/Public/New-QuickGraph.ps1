@@ -11,20 +11,25 @@ Function New-QuickGraph
     #>
     [cmdletbinding()]
     param(
+
+        # the object to process
         [parameter(
             ValueFromPipeline
         )]
         [object[]]
         $InputObject,
 
+        # the source node
         [alias("LHS")]
         [string[]]
         $LeftProperty,
 
+        # the target node
         [alias("RHS")]
         [string[]]
         $RightProperty,
 
+        # turns off the graph headder incase you want to just generate the body
         [switch]
         $SkipGraphHeadder
     )

@@ -33,6 +33,7 @@ function Get-Edge
 
     #>
     param(
+        # start node or source of edge
         [Parameter(
             Mandatory = $true, 
             Position = 0
@@ -41,6 +42,7 @@ function Get-Edge
         [string[]]
         $From,
 
+        # Destination node or target of edge
         [Parameter(
             Mandatory = $false, 
             Position = 1
@@ -49,6 +51,7 @@ function Get-Edge
         [string[]]
         $To,
 
+        # Hashtable that gets translated to an edge modifier
         [Parameter(
             Mandatory = $false, 
             Position = 2

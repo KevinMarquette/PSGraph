@@ -26,6 +26,8 @@ function Get-Rank
     #>
     [cmdletbinding()]
     param(
+
+        # List of nodes to be on the same level as each other
         [Parameter(
             Mandatory=$true, 
             ValueFromPipeline=$true,
