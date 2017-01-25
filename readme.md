@@ -170,8 +170,6 @@ I am still working out the workflow for this, but for now just do this.
     # Save to file
     Set-Content -Path $env:temp\hello.vz -Value $dot
     
-    # Generate Graph
-    Invoke-PSGraphViz -Path $env:temp\hello.vz -OutputFormat png
-    Start $env:temp\hello.vz.png
+    Export-PSGraph -Source $env:temp\hello.vz -Destination $env:temp\hello.png -ShowGraph
 
 I'll come back and clean this up.

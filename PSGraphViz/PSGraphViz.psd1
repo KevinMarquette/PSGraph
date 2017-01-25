@@ -12,7 +12,7 @@
 RootModule = 'PSGraphViz.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.3'
+ModuleVersion = '0.0.7'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ Description = 'GraphViz helper module'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('Get-Edge','Get-Graph','Node','Get-Rank','Get-SubGraph','Install-GraphViz','Invoke-PSGraphViz','New-QuickGraph')
+FunctionsToExport = @('Export-PSGraph','Get-Edge','Get-Graph','Get-Rank','Get-SubGraph','Install-GraphViz','New-QuickGraph','Node')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -120,4 +120,8 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
+
+
+
+
 
