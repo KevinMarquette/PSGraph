@@ -42,7 +42,7 @@ function Node
         $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
         foreach($node in $Name)
         {
-            Write-Verbose '{0}"{1}" {2}' -f (Get-Indent), $node, $GraphVizAttribute
+            Write-Output ('{0}"{1}" {2}' -f (Get-Indent), $node, $GraphVizAttribute)
         }        
     }
 }
