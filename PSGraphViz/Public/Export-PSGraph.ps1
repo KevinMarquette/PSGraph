@@ -172,7 +172,8 @@ function Export-PSGraph
             if($ShowGraph)
             {
                 # Launches image with default viewer as decided by explorer
-                Invoke-Expression $DestinationPath
+                Write-Verbose "Launching $(Resolve-Path $DestinationPath)"
+                Invoke-Expression (Resolve-Path $DestinationPath)
             }
         }
     }
