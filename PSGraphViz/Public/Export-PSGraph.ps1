@@ -92,9 +92,24 @@ function Export-PSGraph
             $PSBoundParameters['LayoutEngine'] = $paramLookup[$PSBoundParameters['LayoutEngine']]
         }
 
-        if( -Not $PSBoundParameters.ContainsKey('LayoutEngine'))
+        if( -Not $PSBoundParameters.ContainsKey('DestinationPath'))
         {
             $PSBoundParameters["AutoName"] = $true;
+        }
+
+        if( -Not $PSBoundParameters.ContainsKey('OutputFormat'))
+        {
+            Write-Verbose "Tryig to set OutputFormat to match file extension"
+            $PSBoundParameters["OutputFormat"] = $OutputFormat;
+            $formats = @('jpg','png','gif','imap','cmapx','jp2','json','pdf','plain','dot')
+
+            foreach($ext in $formats)
+            {
+                if($DestinationPath -like "*.$ext")
+                {
+                    $PSBoundParameters["OutputFormat"] = $ext
+                }
+            }
         }
 
         Write-Verbose 'Walking parameter mapping'
@@ -145,7 +160,8 @@ function Export-PSGraph
         if($useStandardInput)
         {
             Write-Verbose 'Processing standard input'
-            $standardInput.ToString() | & $graphViz $arguments
+            Write-Verbose " Arguments: $($arguments -join ' ')"
+            $standardInput.ToString() | & $graphViz @($arguments)
             if($ShowGraph)
             {
                 # Launches image with default viewer as decided by explorer
