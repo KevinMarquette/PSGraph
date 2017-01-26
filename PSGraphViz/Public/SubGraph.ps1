@@ -1,4 +1,4 @@
-function Get-SubGraph
+function SubGraph
 {
     <#
         .Description
