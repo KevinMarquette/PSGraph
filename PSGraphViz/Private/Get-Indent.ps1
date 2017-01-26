@@ -1,5 +1,11 @@
 function Get-Indent
 {
+    [cmdletbinding()]
     param($depth=$script:indent)
-    " " * 4 * $depth 
+    process
+    {
+        Write-Warning "Depth $depth"
+    (" " * 4 * $depth )
+    }
+    
 }

@@ -1,4 +1,4 @@
-function Get-Rank
+function Rank
 {
     <#
         .Description
@@ -47,6 +47,7 @@ function Get-Rank
 
     begin
     {
+        Write-Warning "$($MyInvocation.MyCommand.Name) begin"
         $values = @()
     }
     
@@ -64,6 +65,8 @@ function Get-Rank
 
     end
     {
-        Write-Output ('{0}{{ rank=same;  {1}; }}' -f (Get-Indent), ($values -join ' '))
+        Write-Warning "$($MyInvocation.MyCommand.Name) end"
+        $date = (Get-Indent)
+        Write-Output ('{0}{{ rank=same;  {1}; }}' -f $date, ($values -join ' '))
     }  
 }
