@@ -19,6 +19,5 @@ foreach($folder in @('private', 'public', 'classes'))
 Export-ModuleMember -function (Get-ChildItem -Path "$PSScriptRoot\public\*.ps1").basename
 
 # Hack for my build system that had a conflit with the keyword node
-New-Alias -Name 'Get-Node' -Value 'Node' -ErrorAction SilentlyContinue
-New-Alias -Name 'DiGraph' -Value 'Get-Graph' -ErrorAction SilentlyContinue
-Export-ModuleMember -Alias 'Get-Node','DiGraph'
+New-Alias -Name 'DiGraph' -Value 'Graph' -ErrorAction SilentlyContinue
+Export-ModuleMember -Alias 'DiGraph'

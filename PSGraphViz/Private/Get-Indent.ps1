@@ -1,5 +1,10 @@
 function Get-Indent
 {
+    [cmdletbinding()]
     param($depth=$script:indent)
-    " " * 4 * $depth 
+    process
+    {
+        Write-Debug "Depth $depth"
+        (" " * 4 * $depth )
+    }
 }
