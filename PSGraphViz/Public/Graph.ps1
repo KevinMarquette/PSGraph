@@ -1,4 +1,4 @@
-function Get-Graph  
+function Graph  
 {
     <#
         .Description
@@ -44,15 +44,13 @@ function Get-Graph
         $Attributes,
 
         # Keyword that initiates the graph
-        [Parameter(
-            DontShow = $true
-        )]
         [string]
         $Type = 'digraph'
     )
     
     begin
     {
+        Write-Verbose "Begin Graph $type $Name"
         if($Type -eq 'digraph')
         {
             $script:indent = 0
@@ -72,6 +70,7 @@ function Get-Graph
 
     process
     {
+        Write-Verbose "Process Graph $type $name"
         & $ScriptBlock
     }
 
@@ -80,5 +79,6 @@ function Get-Graph
         $script:indent--
         "$(Get-Indent)}" # Close braces
         "" #Blank line
+        Write-Verbose "End Graph $type $name"
     }
 }

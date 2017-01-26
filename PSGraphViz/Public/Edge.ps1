@@ -1,4 +1,4 @@
-function Get-Edge 
+function Edge 
 {
     <#
         .Description

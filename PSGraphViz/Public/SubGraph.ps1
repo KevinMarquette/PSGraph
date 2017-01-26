@@ -43,5 +43,8 @@ function Get-SubGraph
         $Attributes        
     )
 
-    Get-Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
+    process
+    {
+        Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
+    }
 }
