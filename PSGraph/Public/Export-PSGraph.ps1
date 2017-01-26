@@ -169,8 +169,18 @@ function Export-PSGraph
         if($useStandardInput)
         {
             Write-Verbose 'Processing standard input'
-            Write-Debug " Arguments: $($arguments -join ' ')"
+           
+            if($DestinationPath -eq $null -or -Not(Test-path $DestinationPath))
+            {
+                $DestinationPath = [System.IO.Path]::GetRandomFileName()
+                Write-Verbose "Dest: $DestinationPath"
+                $arguments =  @($arguments) + @("-o$DestinationPath")
+            }
+
+             Write-Verbose " Arguments: $($arguments -join ' ')"
+
             $standardInput.ToString() | & $graphViz @($arguments)
+            
 
             if($ShowGraph)
             {
@@ -178,6 +188,8 @@ function Export-PSGraph
                 Write-Verbose "Launching $(Resolve-Path $DestinationPath)"
                 Invoke-Expression (Resolve-Path $DestinationPath)
             }
+
+            Write-Output (Get-ChildItem $DestinationPath)
         }
     }
 }

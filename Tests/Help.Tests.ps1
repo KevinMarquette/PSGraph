@@ -4,7 +4,7 @@ $moduleName = Split-Path $moduleRoot -Leaf
 
 Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
-Describe "Help tests for $moduleName" {
+Describe "Help tests for $moduleName" -Tags Build {
 
     $functions = Get-Command -Module $moduleName
     $help = $functions | %{Get-Help $_.name}
