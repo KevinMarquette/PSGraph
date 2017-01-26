@@ -1,8 +1,8 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/cgo827o4f74lmf9w/branch/master?svg=true)](https://ci.appveyor.com/project/kevinmarquette/PSGraphViz/branch/master) 
+[![Build status](https://ci.appveyor.com/api/projects/status/cgo827o4f74lmf9w/branch/master?svg=true)](https://ci.appveyor.com/project/kevinmarquette/PSGraph/branch/master) 
 
-# PSGraphViz
+# PSGraph
 
-PSGraphViz is a helper module for generating GraphViz graphs. The goal is to make it easier to generate graphs using Powershell. 
+PSGraph is a helper module for generating GraphViz graphs. The goal is to make it easier to generate graphs using Powershell. 
 
 ## What is GraphViz?
 
@@ -23,8 +23,8 @@ Here is a sample Dot file.
 
 This will produce a graph with 3 nodes with the names `Start`, `Middle` and `End`. There will be an edge line connecting them in order. Go checkout the [GraphViz Gallery](http://graphviz.org/Gallery.php) to see some examples of what you can do with it.
 
-## How PSGraphViz can help
-we can create those Dot files with PSGraphViz in Powershell. Here is that same graph as above.
+## How PSGraph can help
+we can create those Dot files with PSGraph in Powershell. Here is that same graph as above.
 
     digraph g {
         edge Start Middle
@@ -40,7 +40,7 @@ Here is a second way to approach it now.
 
  The real value here is that I can specify a collection to process. This allows the graph to be data driven.
 
-# PSGraphViz Commands
+# PSGraph Commands
 I tried to keep a syntax that was similar to GraphViz but offer the flexibility of Powershell. If you have worked with GraphViz before, then you should feel right at home.
 
 ## Graph or digraph
@@ -147,17 +147,17 @@ We can pull that all together and generate quite the data driven driven diagram.
 
 
 
-# Installing PSGraphViz
+# Installing PSGraph
 Make sure you are running Powershell 5.0 (WMF 5.0). I don't know that it is a hard requirement at the moment but I plan on using 5.0 features.
 
     # Install GraphViz from the Chocolatey repo
     Find-Package graphviz | Install-Package -ForceBootstrap
 
-    # Install PSGraphViz from the Powershell Gallery
-    Find-Module PSGraphViz | Install-Module 
+    # Install PSGraph from the Powershell Gallery
+    Find-Module PSGraph | Install-Module 
 
     # Import Module
-    Import-Module PSGraphViz
+    Import-Module PSGraph
 
 # Generating a graph image
 I am still working out the workflow for this, but for now just do this.
