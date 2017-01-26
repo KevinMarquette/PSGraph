@@ -16,7 +16,10 @@ function Export-PSGraph
         .Notes
         The source can either be files or piped graph data.
 
+        It checks the piped data for file paths. If it can't find a file, it assumes it is graph data.
+        This may give unexpected errors when the file does not exist.
     #>
+    
     [cmdletbinding()]
     param(
         # The GraphViz file to process or contents of the graph in Dot notation
@@ -38,7 +41,7 @@ function Export-PSGraph
         [ValidateSet('jpg','png','gif','imap','cmapx','jp2','json','pdf','plain','dot')]
         [string]
         $OutputFormat = 'png',
-
+        
         # The layout engine used to generate the image
         [ValidateSet(
             'Hierarchical',
