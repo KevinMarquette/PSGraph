@@ -8,12 +8,7 @@ Describe "Basic function unit tests" {
 
     Context "Graph" {
 
-        it "Get-Graph should not throw an error" {
-
-            {Get-Graph g {}} | Should Not Throw
-        }
-
-        it "Graph alias should not throw an error" {
+        it "Graph should not throw an error" {
 
             {Graph g {}} | Should Not Throw
         }
@@ -33,11 +28,6 @@ Describe "Basic function unit tests" {
 
      Context "SubGraph" {
 
-        it "Get-SubGraph should not throw an error" {
-
-            {Get-SubGraph 0 {}} | Should Not Throw
-        }
-
         it "SubGraph alias should not throw an error" {
 
             {SubGraph 0 {}} | Should Not Throw
@@ -55,10 +45,6 @@ Describe "Basic function unit tests" {
     }
 
     Context "Node" {
-        it "Get-Node should not throw an error" {
-
-            {Get-Node TestNode } | Should Not Throw
-        }
 
         it "Node alias should not throw an error" {
 
@@ -67,23 +53,23 @@ Describe "Basic function unit tests" {
 
         it "Node attributes should not throw an error" {
 
-            {Get-Node TestNode @{shape='rectangle'}} | Should Not Throw
+            {Node TestNode @{shape='rectangle'}} | Should Not Throw
         }
 
         It "Creates a simple node" {
-            Get-Node TestNode | Should Match '"TestNode"'
+            Node TestNode | Should Match '"TestNode"'
         }
 
         It "Creates a node with attributes" {
-            Get-Node TestNode @{shape='rectangle'} | Should Match '"TestNode" \[shape="rectangle"\]'
-            Get-Node TestNode @{shape='rectangle';label="myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest"\]'
+            Node TestNode @{shape='rectangle'} | Should Match '"TestNode" \[shape="rectangle"\]'
+            Node TestNode @{shape='rectangle';label="myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest"\]'
         }
     }
 
     Context "Edge" {
         it "Get-Edge should not throw an error" {
 
-            {Get-Edge lhs rhs } | Should Not Throw
+            {Edge lhs rhs } | Should Not Throw
         }
 
         it "Edge alias should not throw an error" {
@@ -108,7 +94,7 @@ Describe "Basic function unit tests" {
     Context "Rank" {
         it "Get-Rank should not throw an error" {
 
-            {Get-Rank lhs rhs } | Should Not Throw
+            {Rank lhs rhs } | Should Not Throw
         }
 
         it "Rank alias should not throw an error" {

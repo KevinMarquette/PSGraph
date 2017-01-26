@@ -21,7 +21,7 @@ Describe "Basic function feature tests" {
         It "Items can be placed in a graph" {
             {
                 graph test {
-                    get-node helo
+                    node helo
                     edge hello world
                     rank same level
                     subgraph 0 {
@@ -37,7 +37,7 @@ Describe "Basic function feature tests" {
             {
                 graph test {
                     subgraph 0 {
-                        get-node helo
+                        node helo
                         edge hello world
                         rank same level
                         subgraph 1 {
@@ -53,7 +53,7 @@ Describe "Basic function feature tests" {
 
         It "Can define multiple nodes at once" {
 
-            {Get-Node (1..5)} | Should Not Throw
+            {node (1..5)} | Should Not Throw
 
             $result = Node (1..5)
             $result | Should not Be NullOrEmpty
@@ -61,15 +61,15 @@ Describe "Basic function feature tests" {
             $result[0] | Should match '1'
             $result[4] | Should match '5'
 
-            {Get-Node one,two,three,four} | Should Not Throw
-            {Get-Node @(echo one two three four)} | Should Not Throw
+            {node one,two,three,four} | Should Not Throw
+            {node @(echo one two three four)} | Should Not Throw
         }
     }
     
     Context "Edge" {
 
         It "Can define multiple edges at once in a chain" {
-            {Edge one,two,three} | Should Not Throw
+            {edge one,two,three} | Should Not Throw
 
             $result = Edge one,two,three
             $result | Should Not BeNullOrEmpty
@@ -117,13 +117,13 @@ Describe "Basic function feature tests" {
     Context "Indentation" {
 
         It "Has no indention for first graph element" {
-            $result = graph g {Get-Node test}
+            $result = graph g {node test}
             $result | Where-Object{$_ -match 'digraph'} | Should Match '^digraph'
         }
 
         It "Has 4 space indention for first level items" {
             $result = graph g {
-                Get-Node testNode
+                node testNode
                 edge testEdge1 testEdge2
                 rank testRank
             }
@@ -135,7 +135,7 @@ Describe "Basic function feature tests" {
         It "Has 4 space indention for first subbraph" {
             $result = graph g {
                 subgraph 0 {
-                    Get-Node test
+                    node test
                 }                
             }
             $result | Where-Object{$_ -match 'subgraph'} | Should Match '^    subgraph'
@@ -144,7 +144,7 @@ Describe "Basic function feature tests" {
         It "Has 8 space indention for nested items" {
             $result = graph g {
                 subgraph 0 {
-                    Get-Node testNode
+                    node testNode
                     edge testEdge1 testEdge2
                     rank testRank
                 }                
@@ -158,7 +158,7 @@ Describe "Basic function feature tests" {
             $result = graph g {
                 subgraph 0 {
                     subgraph 1 {
-                        Get-Node testNode
+                        node testNode
                         edge testEdge1 testEdge2
                         rank testRank
                     }

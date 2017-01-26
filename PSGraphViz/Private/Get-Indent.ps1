@@ -4,8 +4,7 @@ function Get-Indent
     param($depth=$script:indent)
     process
     {
-        Write-Warning "Depth $depth"
-    (" " * 4 * $depth )
+        Write-Debug "Depth $depth"
+        (" " * 4 * $depth )
     }
-    
 }
