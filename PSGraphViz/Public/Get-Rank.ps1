@@ -1,4 +1,4 @@
-function Get-Rank 
+function Get-Rank
 {
     <#
         .Description

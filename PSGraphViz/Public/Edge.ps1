@@ -1,4 +1,4 @@
-function Get-Edge 
+function Edge 
 {
     <#
         .Description
@@ -14,11 +14,12 @@ function Get-Edge
         digraph g {
             "FirstNode"->"SecondNode" 
         }
+        
         .Example
         $folder = Get-ChildItem -Recurse -Directory
         graph g {
             $folder | %{ edge $_.name $_.parent }
-        }
+        } 
 
         .Example
         graph g {
