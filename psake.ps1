@@ -69,7 +69,7 @@ Task Build -Depends Test {
             Select-Object -ExpandProperty basename      
 
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
-    Set-ModuleFunctions -Name $env:BHPSModuleManifest -FunctionsToExport $functions 
+    Set-ModuleFunctions -Name $env:BHPSModuleManifest -FunctionsToExport $functions
 
     # Bump the module version
     $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName
