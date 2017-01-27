@@ -172,4 +172,8 @@ I am still working out the workflow for this, but for now just do this.
     
     Export-PSGraph -Source $env:temp\hello.vz -Destination $env:temp\hello.png -ShowGraph
 
-I'll come back and clean this up.
+The export can be done more in line if needed.
+
+    graph g {
+        edge hello world
+    } | Export-PSGraph -ShowGraph
