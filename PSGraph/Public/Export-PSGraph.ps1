@@ -76,7 +76,6 @@ function Export-PSGraph
         
         if($Source -ne $null)
         {
-
             # if $Source is a list of files, process each one
             $fileList = Resolve-Path -Path $Source -ea 0
             if($fileList -ne $null)
@@ -102,14 +101,12 @@ function Export-PSGraph
         if($useStandardInput)
         {
             Write-Verbose 'Processing standard input'
-           
-            
+                       
             $arguments = Get-GraphVizArguments $PSBoundParameters -EnsureDestination
              Write-Verbose " Arguments: $($arguments -join ' ')"
 
             $standardInput.ToString() | & $graphViz @($arguments)
             
-
             if($ShowGraph)
             {
                 # Launches image with default viewer as decided by explorer
