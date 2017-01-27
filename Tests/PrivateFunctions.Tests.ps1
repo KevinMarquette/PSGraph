@@ -53,7 +53,7 @@ InModuleScope -ModuleName PSGraph {
 
             It "Should not throw an error with hashtable" {
                 {Get-GraphVizArguments @{OutputFormat='png'}} | Should Not Throw
-            }  
+            }
         }  
 
         Context "Get-OutputFormatFromPath" {
