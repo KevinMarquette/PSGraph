@@ -69,74 +69,6 @@ function Export-PSGraph
 
         $useStandardInput = $false
         $standardInput = New-Object System.Text.StringBuilder
-
-        $paramLookup = @{
-            # OutputFormat
-            Version = 'V'
-            Debug = 'v'
-            GraphName = 'Gname={0}'
-            NodeName = 'Nname={0}'
-            EdgeName = 'Ename={0}'
-            OutputFormat = 'T{0}'
-            LayoutEngine = 'K{0}'
-            ExternalLibrary = 'l{0}'
-            DestinationPath = 'o{0}'
-            AutoName = 'O'
-
-            #LayoutEngine
-            Hierarchical = 'dot'
-            SpringModelSmall = 'neato'
-            SpringModelMedium = 'fdp'
-            SpringModelLarge = 'sfdp'
-            Radial = 'twopi'
-            Circular = 'circo'
-
-        }
-         Write-Verbose "Checking lookup table for options"
-        $arguments = @()
-        
-        if($PSBoundParameters.ContainsKey('LayoutEngine'))
-        {
-            Write-Verbose 'Looking up and replacing rendering engine string'
-            $PSBoundParameters['LayoutEngine'] = $paramLookup[$PSBoundParameters['LayoutEngine']]
-        }
-
-        if( -Not $PSBoundParameters.ContainsKey('DestinationPath'))
-        {
-            $PSBoundParameters["AutoName"] = $true;
-        }
-
-        if( -Not $PSBoundParameters.ContainsKey('OutputFormat'))
-        {
-            Write-Verbose "Tryig to set OutputFormat to match file extension"
-            $PSBoundParameters["OutputFormat"] = $OutputFormat;
-            $formats = @('jpg','png','gif','imap','cmapx','jp2','json','pdf','plain','dot')
-
-            foreach($ext in $formats)
-            {
-                if($DestinationPath -like "*.$ext")
-                {
-                    $PSBoundParameters["OutputFormat"] = $ext
-                }
-            }
-        }
-
-        Write-Verbose 'Walking parameter mapping'
-        foreach($key in $PSBoundParameters.keys)
-        {
-            Write-Debug $key
-            if($key -ne $null -and $paramLookup.ContainsKey($key))
-            {
-                $newArgument = $paramLookup[$key]
-                if($newArgument -like '*{0}*')
-                {
-                    $newArgument = $newArgument -f $PSBoundParameters[$key]
-                }
-
-                Write-Debug $newArgument
-                $arguments += "-$newArgument"
-            }            
-        }
     }
 
     process
@@ -152,6 +84,7 @@ function Export-PSGraph
                 foreach($file in $fileList )
                 {     
                     Write-Verbose "Generating graph from '$($file.path)'"
+                    $arguments = Get-GraphVizArguments -InputObject $PSBoundParameters
                     & $graphViz @($arguments + $file.path)
                 }
             } 
@@ -170,13 +103,13 @@ function Export-PSGraph
         {
             Write-Verbose 'Processing standard input'
            
-            if($DestinationPath -eq $null -or -Not(Test-path $DestinationPath))
+            if(-Not $PSBoundParameters.ContainsKey('DestinationPath'))
             {
-                $DestinationPath = [System.IO.Path]::GetRandomFileName()
-                Write-Verbose "Dest: $DestinationPath"
-                $arguments =  @($arguments) + @("-o$DestinationPath")
+               $file = [System.IO.Path]::GetRandomFileName()               
+               $PSBoundParameters["DestinationPath"] = Join-Path $env:temp "$file.$OutputFormat"
+               $PSBoundParameters["OutputFormat"] = $OutputFormat
             }
-
+            $arguments = Get-GraphVizArguments $PSBoundParameters
              Write-Verbose " Arguments: $($arguments -join ' ')"
 
             $standardInput.ToString() | & $graphViz @($arguments)
@@ -185,11 +118,11 @@ function Export-PSGraph
             if($ShowGraph)
             {
                 # Launches image with default viewer as decided by explorer
-                Write-Verbose "Launching $(Resolve-Path $DestinationPath)"
-                Invoke-Expression (Resolve-Path $DestinationPath)
+                Write-Verbose "Launching $($PSBoundParameters["DestinationPath"])"
+                Invoke-Expression $PSBoundParameters["DestinationPath"]
             }
 
-            Write-Output (Get-ChildItem $DestinationPath)
+            Write-Output (Get-ChildItem $PSBoundParameters["DestinationPath"])
         }
     }
 }
