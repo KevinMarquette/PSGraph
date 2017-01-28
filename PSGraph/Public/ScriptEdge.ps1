@@ -2,7 +2,17 @@ function ScriptEdge
 {
     <#
         .Description
-        Like edge but with scripts
+        Creates edges based on the properties of an object
+
+        .Example
+        $folders = Get-ChildItem -Directory -Recurse
+        graph folders {
+            scriptedge $folders -From {$_.parent} -To {$_.name}
+        }
+
+        .Notes
+        Script blocks are used to define each side of the edge
+        If a script block produces an array, then all of those items will be listeded individualy and linked
 
     #>
     param(
@@ -40,7 +50,9 @@ function ScriptEdge
     {
         foreach($item in $Node)
         {            
-            edge -From (@($item).ForEach($FromScript)) -To (@($item).ForEach($ToScript)) -Attributes $Attributes
+            $fromValue = (@($item).ForEach($FromScript))
+            $toValue = (@($item).ForEach($ToScript))
+            edge -From $fromValue -To $toValue -Attributes $Attributes
         }
     }
 }
