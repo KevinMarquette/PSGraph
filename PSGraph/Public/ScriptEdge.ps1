@@ -2,7 +2,7 @@ function ScriptEdge
 {
     <#
         .Description
-        LIke edge but with scripts
+        Like edge but with scripts
 
     #>
     param(
