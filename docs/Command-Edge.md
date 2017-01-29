@@ -2,7 +2,7 @@
 This is the most useful of all the helper functions in this module. It is used to define a link between two nodes. This function is also very flexible.
 
 # Basic Syntax
-## Edge -From [string] To [string]
+## Edge -From [string] -To [string]
 This is the most common way to define an edge in a graph.
 
     graph g {
@@ -48,4 +48,4 @@ Multiple `from` nodes or `to` nodes can be specified at once. Every node in the 
 [![Source](images/crossMultiplyEdges.png)](images/crossMultiplyEdges.png)
    
 
-Just like before, you can drop the `-from` or the `-to` keywords if you prefer 
+Just like before, you can drop the `-from` or the `-to` keywords if you prefer. I find myself selectively using them.
