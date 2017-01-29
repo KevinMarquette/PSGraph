@@ -13,5 +13,5 @@ This allows you to define a graph within the graph. This will group those object
     }
 
 
-[![Source](images/subgraph.png)](images/subGraph.png)
+[![Source](images/subGraph.png)](images/subGraph.png)
    
