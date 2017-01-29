@@ -2,6 +2,7 @@ $projectRoot = Resolve-Path "$PSScriptRoot\.."
 $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 $moduleName = Split-Path $moduleRoot -Leaf
 
+Remove-Module $moduleName
 Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
 Describe "Basic function unit tests" -Tags Build {
@@ -41,6 +42,16 @@ Describe "Basic function unit tests" -Tags Build {
         it "SubGraph alias should not throw an error" {
 
             {SubGraph 0 {}} | Should Not Throw
+        }
+
+        it "SubGraph attributes should not throw an error" {
+
+            {SubGraph 0 -Attributes @{label='test'} {}} | Should Not Throw
+        }
+
+        it "SubGraph positional attributes should not throw an error" {
+
+            {SubGraph 0 @{label='test'} {}} | Should Not Throw
         }
 
         it "Builds basic graph" {

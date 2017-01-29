@@ -19,7 +19,7 @@ function SubGraph
         The numbering must start at 0 and work up or the processor will fail.
     #>
     
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName='Default')]
     param(
         # Numeric ID of subgraph starting at 0
         [Parameter(
@@ -29,17 +29,31 @@ function SubGraph
         [int]
         $ID = 0,
 
-        # Contents of the subgraph
+        # The commands to execute inside the subgraph
         [Parameter(
             Mandatory = $true, 
-            Position = 1
+            Position = 1,
+            ParameterSetName='Default'
+        )]
+        [Parameter(
+            Mandatory = $true, 
+            Position = 2,
+            ParameterSetName='Attributes'
         )]
         [scriptblock]
         $ScriptBlock,
 
-        # The attributes to apply to this subgraph
+        # Hashtable that gets translated to graph attributes
+        [Parameter(
+            ParameterSetName='Default'
+        )]
+         [Parameter(             
+            Mandatory = $true, 
+            Position = 1,
+            ParameterSetName='Attributes'
+        )]
         [hashtable]
-        $Attributes = @{}        
+        $Attributes = @{}      
     )
 
     process
