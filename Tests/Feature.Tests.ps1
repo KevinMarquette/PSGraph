@@ -62,7 +62,17 @@ Describe "Basic function feature tests" -Tags Build {
             $result[4] | Should match '5'
 
             {node one,two,three,four} | Should Not Throw
-            {node @(echo one two three four)} | Should Not Throw
+            {node @(Write-Output one two three four)} | Should Not Throw
+        }
+
+        It "Supports Node scriptblocks" {
+            $object = @{name='mName'}
+            node $object -NodeScript {$_.name}
+        }
+
+        It "Supports node scriptblocks and attribute scriptblocks" {
+            $object = @{name='mName';shape='rectangle'}
+            node $object -NodeScript {$_.name} @{shape={$_.shape}}
         }
     }
     

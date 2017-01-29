@@ -38,22 +38,32 @@ function Node
         [string[]]
         $Name = 'node',
 
+        # Script to run on each node
+        [alias('Script')]
+        [scriptblock]
+        $NodeScript = {$_},
+
         # Node attributes to apply to this node
         [Parameter( Position = 1 )]
         [hashtable]
         $Attributes    
     )
 
-    begin
-    {
-        $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
-    }
-
     process
     {        
         foreach($node in $Name)
         {
-            Write-Output ('{0}"{1}" {2}' -f (Get-Indent), $node, $GraphVizAttribute)
+            $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
+            if($NodeScript)
+            {
+                $nodeName = [string](@($node).ForEach($NodeScript))
+            }
+            else 
+            {
+                $nodeName = $node
+            }
+            
+            Write-Output ('{0}"{1}" {2}' -f (Get-Indent), $nodeName, $GraphVizAttribute)
         }        
     }
 }

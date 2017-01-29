@@ -96,7 +96,7 @@ function Edge
         [Parameter(ParameterSetName='script')]
         [alias('FromScriptBlock','SourceScript')]
         [scriptblock]
-        $FromScript = {$_.ToString()},
+        $FromScript = {$_},
 
         # Destination node script or target of edge
         [Parameter(ParameterSetName='script')]
