@@ -1,5 +1,43 @@
 function ConvertTo-GraphVizAttribute
 {
+    <#
+        .Description
+        Converts a hashtable to a key value pair format that the DOT specification uses for nodes, edges and graphs
+
+        .Example
+            ConvertTo-GraphVizAttribute @{label='myName'}
+
+            [label="myName";]
+
+             For edge and nodes, it like this [key1="value";key2="value"]
+
+        .Example
+            ConvertTo-GraphVizAttribute @{label='myName';color='Red'} -UseGraphStyle
+
+                label="myName";
+                color="Red";
+
+            For graphs, it needs to be indented and multiline
+            key1="value";
+            key2="value";
+
+        .Example
+            ConvertTo-GraphVizAttribute @{label={$_.name}} -InputObject @{name='myName'}
+
+            [label="myName";]
+
+            Script blocks are supported in the hashtable for some commands.
+            InputObject is the $_ value in the scriptblock
+
+        .Notes
+        For edge and nodes, it like this [key1="value";key2="value"]
+        For graphs, it needs to be indented and multiline
+            key1="value";
+            key2="value";
+
+        Script blocks are supported in the hashtable for some commands.
+        InputObject is the $_ value in the scriptblock
+    #>
     param(
         [hashtable]
         $Attributes,
