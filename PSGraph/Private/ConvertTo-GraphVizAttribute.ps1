@@ -12,8 +12,6 @@ function ConvertTo-GraphVizAttribute
         $InputObject
     )
 
-    
-
     if($Attributes -ne $null -and $Attributes.Keys.Count -gt 0)
     {
 
@@ -34,7 +32,7 @@ function ConvertTo-GraphVizAttribute
         }
 
         if($UseGraphStyle)
-        {
+        { # Graph style is each line on its own and no brackets
             $indent = Get-Indent
             $values | ForEach-Object{"$indent$_"}
         }

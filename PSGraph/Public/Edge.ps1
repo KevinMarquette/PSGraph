@@ -141,7 +141,7 @@ function Edge
             if ($To -ne $null)
             { # If we have a target array, cross multiply results
                 foreach($sNode in $From)
-                {
+                {                    
                     foreach($tNode in $To)
                     {
                         Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $sNode, $tNode, $GraphVizAttribute)
