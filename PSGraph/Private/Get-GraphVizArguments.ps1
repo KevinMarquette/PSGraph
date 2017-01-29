@@ -18,17 +18,14 @@ function Get-GraphVizArguments
             Position = 0
         )]
         [hashtable]
-        $InputObject = @{},
-
-        [switch]
-        $EnsureDestination
+        $InputObject = @{}
     )
 
     process
     {        
         if($InputObject -ne $null)
         {
-            $InputObject = Update-DefaultArguments -InputObject $InputObject -EnsureDestination:$EnsureDestination     
+            $InputObject = Update-DefaultArguments -InputObject $InputObject  
             $arguments = Get-TranslatedArguments -InputObject $InputObject  
         }
                       
