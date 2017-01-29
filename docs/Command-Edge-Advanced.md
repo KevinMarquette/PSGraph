@@ -26,7 +26,7 @@ The edge command also supports a literal attributes argument in case you would p
 ## Object and scripted node specification
 This is one really advanced but super powerful features of the edge command. You can specify an input object and then provide script blocks for it to use values off of the object for the `from` and `to` nodes.
 
-Let's assume we can a `$csv` that contains a boss and employee field. We could script it like this:
+Let's assume we have a `$csv` that contains a boss and employee field. We could script it like this:
 
     graph g {
         $csv | %{edge $_.boss -to $_.employee}

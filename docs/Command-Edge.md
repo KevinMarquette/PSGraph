@@ -40,9 +40,9 @@ This works even better when you have it defined in an array.
 ## Edge -From [string[]] -To [string[]]
 Multiple `from` nodes or `to` nodes can be specified at once. Every node in the `from` list will be connected to every node in the `to` list.
 
-   graph g {
+    graph g {
        edge -From web1,web2 -To database1,database2
-   }
+    }
 
    
 [![Source](images/crossMultiplyEdges.png)](images/crossMultiplyEdges.png)
