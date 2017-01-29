@@ -20,7 +20,7 @@ function Graph
         .Notes
         The output is a string so it can be saved to a variable or piped to other commands
     #>
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName='Default')]
     param(
 
         # Name or ID of the graph
@@ -34,14 +34,28 @@ function Graph
         # The commands to execute inside the graph
         [Parameter(
             Mandatory = $true, 
-            Position = 1
+            Position = 1,
+            ParameterSetName='Default'
+        )]
+        [Parameter(
+            Mandatory = $true, 
+            Position = 2,
+            ParameterSetName='Attributes'
         )]
         [scriptblock]
         $ScriptBlock,
 
         # Hashtable that gets translated to graph attributes
+        [Parameter(
+            ParameterSetName='Default'
+        )]
+         [Parameter(             
+            Mandatory = $true, 
+            Position = 1,
+            ParameterSetName='Attributes'
+        )]
         [hashtable]
-        $Attributes,
+        $Attributes = @{},
 
         # Keyword that initiates the graph
         [string]

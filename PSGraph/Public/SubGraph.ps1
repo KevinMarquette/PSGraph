@@ -40,7 +40,7 @@ function SubGraph
 
         # The attributes to apply to this subgraph
         [hashtable]
-        $Attributes        
+        $Attributes = @{}        
     )
 
     process

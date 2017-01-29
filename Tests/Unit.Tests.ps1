@@ -13,6 +13,16 @@ Describe "Basic function unit tests" -Tags Build {
             {Graph g {}} | Should Not Throw
         }
 
+        it "Graph attributes should not throw an error" {
+
+            {Graph g -Attributes @{label='test'} {}} | Should Not Throw
+        }
+
+        it "Graph positional attributes should not throw an error" {
+
+            {Graph g @{label='test'} {}} | Should Not Throw
+        }
+
         it "Builds basic graph" {
 
             $name = 'GRAPH_NAME'
