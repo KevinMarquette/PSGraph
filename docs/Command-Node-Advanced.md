@@ -81,7 +81,7 @@ This is also a good time to point out that you can use the `Where` function quit
 But you can still use the classic pipeline to do this too.
 
     graph g {
-        $csv | where department -eq 'Admin; | node -NodeScript {$_.username} @{shape='rect';style='filled';color='Red'}
-        $csv | where department -eq 'IT; | node -NodeScript {$_.username} @{shape='rect';style='filled';color='Blue'}
+        $csv | where department -eq 'Admin' | node -NodeScript {$_.username} @{shape='rect';style='filled';color='Red'}
+        $csv | where department -eq 'IT' | node -NodeScript {$_.username} @{shape='rect';style='filled';color='Blue'}
     }
 
