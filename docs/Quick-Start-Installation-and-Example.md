@@ -21,6 +21,7 @@ PSGraph has a unique syntax for defining a graph. This is because it was built s
     } | Export-Graph -ShowGraph
 
 This will create a new graph with three nodes linking each other. 
+
 [![Source](images/firstGraph.png)](images/firstGraph.png)
 
 It will save it in the `$env:temp` folder because we did not specify a destination. It will then show the graph when it is done.
