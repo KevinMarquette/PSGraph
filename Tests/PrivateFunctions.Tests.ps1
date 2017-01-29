@@ -91,22 +91,43 @@ InModuleScope -ModuleName PSGraph {
         }
     }
 
-    Describe "$ModuleName Get-GraphVizArguments" {
+    Describe "$ModuleName ConvertTo-GraphVizAttribute" {
 
         Context "Basic features" {
 
             It "Should not throw an error" {
 
-                {Get-GraphVizArguments} | Should Not Throw
+                {ConvertTo-GraphVizAttribute} | Should Not Throw
             }
 
-           
-        }
+            It "Creates well formatted attribute" {
+                ConvertTo-GraphVizAttribute @{label='test'} | Should Match '\[label="test";\]'
+            }
 
-        Context "Test arguments" {
-            $arguments = Get-ArgumentLookUpTable
+            It "Creates multiple attributes" {
+                $result = ConvertTo-GraphVizAttribute @{label='test';arrowsize='2'} 
+                
+                $result | Should Match '\['
+                $result | Should Match 'label="test";'
+                $result | Should Match 'arrowsize="2";'                
+                $result | Should Match ';\]'
+            }
 
-        }
+            It "Places graphstyle attributes on multiple lines" {
+                $result = ConvertTo-GraphVizAttribute @{label='test';arrowsize='2'} -UseGraphStyle
+                $result.count | Should Be 2
+            }
+
+            It "Creates scripted attribute on an object" {
+                $object = [pscustomobject]@{description='test'}
+                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label="test";\]'
+            }
+
+            It "Creates scripted attribute on a hashtable" {
+                $object = @{description='test'}
+                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label="test";\]'
+            }
+        } 
     }
 }
 
