@@ -47,13 +47,13 @@ function Edge
         If an array is specified for the From property, but not for the To property, then the From list will be procesed in order and will map the array in a chain.
 
     #>
-    [cmdletbinding(DefaultParameterSetName='Default')]
+    [cmdletbinding(DefaultParameterSetName='Node')]
     param(
         # start node or source of edge
         [Parameter(
             Mandatory = $true, 
             Position = 0,
-            ParameterSetName='Default'
+            ParameterSetName='Node'
         )]
         [alias('NodeName','Name','SourceName','LeftHandSide','lhs')]
         [string[]]
@@ -63,7 +63,7 @@ function Edge
         [Parameter(
             Mandatory = $false, 
             Position = 1,
-            ParameterSetName='Default'
+            ParameterSetName='Node'
         )]
         [alias('Destination','TargetName','RightHandSide','rhs')]
         [string[]]
@@ -72,7 +72,7 @@ function Edge
         # Hashtable that gets translated to an edge modifier
         [Parameter(
             Position = 2,
-            ParameterSetName='Default'
+            ParameterSetName='Node'
         )]
         [Parameter(
             Position = 1,
