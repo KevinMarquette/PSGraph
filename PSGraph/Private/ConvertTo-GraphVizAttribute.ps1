@@ -7,6 +7,7 @@ function ConvertTo-GraphVizAttribute
         [switch]
         $UseGraphStyle,
 
+        # used for whe the attributes have scriptblocks embeded
         [object]
         $InputObject
     )
@@ -22,8 +23,9 @@ function ConvertTo-GraphVizAttribute
         {
             if($key.value -is [scriptblock])
             {
-                Write-Debug "Executing Script on Key ($key.name)"
-                '{0}="{1}";'-f $key.name, ((@($InputObject).ForEach($key.value)))  
+                Write-Debug "Executing Script on Key $($key.name)"
+                '{0}="{1}";'-f $key.name, ([string](@($InputObject).ForEach($key.value))) 
+                
             }
             else 
             {

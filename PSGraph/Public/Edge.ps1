@@ -18,8 +18,22 @@ function Edge
         .Example
         $folder = Get-ChildItem -Recurse -Directory
         graph g {
-            $folder | %{ edge $_.name $_.parent }
+            $folder | %{ edge $_.parent $_.name }
+        }
+
+        # with parameter names specified
+        graph g {
+            $folder | %{ edge -From $_.parent -To $_.name }
         } 
+
+        # with scripted properties
+        graph g {
+            edge $folder -FromScript {$_.parent} -ToScript {$_.name}
+        } 
+
+        .Example
+        $folder = Get-ChildItem -Recurse -Directory
+        
 
         .Example
         graph g {
@@ -33,11 +47,13 @@ function Edge
         If an array is specified for the From property, but not for the To property, then the From list will be procesed in order and will map the array in a chain.
 
     #>
+    [cmdletbinding(DefaultParameterSetName='Default')]
     param(
         # start node or source of edge
         [Parameter(
             Mandatory = $true, 
-            Position = 0
+            Position = 0,
+            ParameterSetName='Default'
         )]
         [alias('NodeName','Name','SourceName','LeftHandSide','lhs')]
         [string[]]
@@ -46,7 +62,8 @@ function Edge
         # Destination node or target of edge
         [Parameter(
             Mandatory = $false, 
-            Position = 1
+            Position = 1,
+            ParameterSetName='Default'
         )]
         [alias('Destination','TargetName','RightHandSide','rhs')]
         [string[]]
@@ -54,39 +71,89 @@ function Edge
 
         # Hashtable that gets translated to an edge modifier
         [Parameter(
-            Mandatory = $false, 
-            Position = 2
+            Position = 2,
+            ParameterSetName='Default'
+        )]
+        [Parameter(
+            Position = 1,
+            ParameterSetName='script'
         )]
         [hashtable]
-        $Attributes
+        $Attributes,
+
+         # a list of nodes to process
+        [Parameter(
+            Mandatory = $true, 
+            Position = 0,
+            ValueFromPipeline = $true,
+            ParameterSetName='script'
+        )]
+        [Alias('InputObject')]
+        [Object[]]
+        $Node,
+
+        # start node script or source of edge
+        [Parameter(ParameterSetName='script')]
+        [alias('FromScriptBlock','SourceScript')]
+        [scriptblock]
+        $FromScript = {$_.ToString()},
+
+        # Destination node script or target of edge
+        [Parameter(ParameterSetName='script')]
+        [alias('ToScriptBlock','TargetScript')]
+        [scriptblock]
+        $ToScript = {$null},
+
+        # A string for using native attribute syntax
+        [string]
+        $LiteralAttribute = $null
+
     )
 
     begin
     {
-        if($Attributes -ne $null)
+        if( -Not [string]::IsNullOrEmpty($LiteralAttribute))
         {
-            $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
+            $GraphVizAttribute = $LiteralAttribute
         }
     }
 
     process 
     {
-        # If we only have one array, it needs to be processed differently
-        if($To -ne $null)
-        {
-            foreach($sNode in $From)
-            {
-                foreach($tNode in $To)
-                {
-                    Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $sNode, $tNode, $GraphVizAttribute)
-                }
+        if($Node -ne $null)
+        { # Used when scripted properties are specified
+            foreach($item in $Node)
+            {            
+                $fromValue = (@($item).ForEach($FromScript))
+                $toValue = (@($item).ForEach($ToScript))
+                $LiteralAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $item
+
+                edge -From $fromValue -To $toValue -LiteralAttribute $LiteralAttribute
             }
-        }
+        } 
         else
         {
-            for($index=0; $index -lt ($From.Count - 1); $index++)
+            if ($Attributes -ne $null -and [string]::IsNullOrEmpty($LiteralAttribute))
             {
-                Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $From[$index], $From[$index + 1], $GraphVizAttribute)
+                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
+            }        
+        
+            if ($To -ne $null)
+            { # If we have a target array, cross multiply results
+                foreach($sNode in $From)
+                {
+                    foreach($tNode in $To)
+                    {
+                        Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $sNode, $tNode, $GraphVizAttribute)
+                    }
+                }
+            }
+            else
+            { # If we have a single array, connect them sequentially. 
+                for($index=0; $index -lt ($From.Count - 1); $index++)
+                {
+                    Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $From[$index], $From[$index + 1], $GraphVizAttribute)
+                }
             }
         }
     }

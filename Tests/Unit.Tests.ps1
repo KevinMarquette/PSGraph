@@ -89,6 +89,13 @@ Describe "Basic function unit tests" -Tags Build {
         It "Creates a Edge with attributes" {
             Edge lhs rhs @{label='test'} | Should Match '"lhs"->"rhs" \[label="test";\]'
         }
+
+         It "Creates a Edge with multiple attributes" {
+            $result = Edge lhs rhs @{label='test';arrowsize='2'} 
+            
+            $result | Should Match 'label="test";'
+            $result | Should Match 'arrowsize="2";'
+        }
     }
 
     Context "Rank" {
