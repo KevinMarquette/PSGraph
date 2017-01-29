@@ -1,5 +1,24 @@
-# Node Advnaced
-Node also supports some scripting.
+# Node Advanced
+## Default node attributes
+You can specify default node attributes and any node that gets defined down script will inherit those values.
+
+    graph g {
+        node -Default @{shape='rectangle'}
+        edge a,b,c,a
+    }
+
+You can also redefine the default values as you go along. 
+
+   graph g {
+        node -Default @{shape='rectangle'}
+        edge a,b
+        node -Default @{shape='house'}
+        edge b,c,d,a
+    }
+
+
+[![Source](images/defaultNode.png)](images/defaultNode.png)
+
 
 ## Object and scripted node specification
 Just like with the scripted specification on the `edge`, `node` supports them too.

@@ -2,7 +2,7 @@
 The command has several advanced features built into it.
 
 ## Edge Attributes
-According to the DOT specification, you can supply several attibutes that modify the edge. The most common one is giving it a label.
+According to the DOT specification, you can supply several attributes that modify the edge. The most common one is giving it a label.
 
     graph g {
         edge here there -Attributes @{label='to'}
