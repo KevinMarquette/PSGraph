@@ -13,7 +13,7 @@ According to the DOT specification, you can supply several attibutes that modify
     }
 
 
-[![Source](images/firstGraph.png)](images/firstGraph.png)
+[![Source](images/hereToThere.png)](images/hereToThere.png)
 
 You will have to check out the [GraphViz Dot Language reference](http://graphviz.org/content/attrs) for all the possible attributes. I don't yet validate any of them
 
