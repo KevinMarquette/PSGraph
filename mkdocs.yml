@@ -8,8 +8,7 @@ pages:
   - Basic Commands:
     - Graph: Command-Graph.md
     - Edge: Command-Edge.md    
-    - Node: Command-Node.md    
-    - Rank: Command-Rank.md
+    - Node: Command-Node.md   
     - Inline: Command-Inline.md
     - SubGraph: Command-SubGraph.md
     - Export-PSGraph: Command-Export-PSGraph.md
@@ -20,5 +19,6 @@ pages:
   - Advanced:
     - Edge Advanced: Command-Edge-Advanced.md
     - Node Advanced: Command-Node-Advanced.md
+    - Rank: Command-Rank-Advanced.md
     - GraphViz Documentation: graphviz.md
   - Acknowledgements: acknowledgements.md
