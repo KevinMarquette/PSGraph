@@ -1,0 +1,24 @@
+site_name: PSGraph Docs
+repo_url: https://github.com/KevinMarquette/PSGraph
+theme: readthedocs
+pages:
+  - Home: index.md
+  - PSGraph Basics:
+    - Quick Start: Quick-Start-Installation-and-Example.md
+  - Basic Commands:
+    - Graph: Command-Graph.md
+    - Edge: Command-Edge.md    
+    - Node: Command-Node.md    
+    - Rank: Command-Rank.md
+    - Inline: Command-Inline.md
+    - SubGraph: Command-SubGraph.md
+    - Export-PSGraph: Command-Export-PSGraph.md
+  - Examples:
+    - Simple: Example-Simple.md
+    - State Machine: Example-State-Machine.md
+    - Gallery: Example-Gallery.md
+  - Advanced:
+    - Edge Advanced: Command-Edge-Advanced.md
+    - Node Advanced: Command-Node-Advanced.md
+    - GraphViz Documentation: graphviz.md
+  - Acknowledgements: acknowledgements.md
