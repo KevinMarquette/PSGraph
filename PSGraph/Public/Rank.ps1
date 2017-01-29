@@ -24,6 +24,7 @@ function Rank
         .Notes
         Accepts an array of items or a list of strings.
     #>
+    
     [cmdletbinding()]
     param(
 
@@ -42,7 +43,12 @@ function Rank
             Position=1
         )]
         [string[]]
-        $AdditionalNodes
+        $AdditionalNodes,
+
+        # Script to run on each node
+        [alias('Script')]
+        [scriptblock]
+        $NodeScript = {$_}
     )
 
     begin
@@ -57,6 +63,14 @@ function Rank
             # Adding these arrays ceates an empty element that we want to exclude
             if(-Not [string]::IsNullOrWhiteSpace($item))
             {
+                if($NodeScript)
+                {
+                    $nodeName = [string](@($item).ForEach($NodeScript))
+                }
+                else 
+                {
+                    $nodeName = $item
+                }
                 '"{0}"' -f $item
             }
         }    

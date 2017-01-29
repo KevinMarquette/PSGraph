@@ -122,6 +122,16 @@ Describe "Basic function feature tests" -Tags Build {
             $result.count | Should be 1
             $result | should match '{ rank=same;  "one" "two" "three"; }'
         }
+
+        it "Can rank objects with a script block" {
+            $objects = @(
+                @{name='one'}
+                @{name='two'}
+                @{name='three'}
+            )
+                
+            {rank $objects -NodeScript {$_.name}} | Should Not Throw
+        }
     }
 
     Context "Indentation" {
