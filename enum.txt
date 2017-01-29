@@ -1,4 +1,4 @@
-enum NodeShape {
+enum NodeShape { 
     box
     polygon
     ellipse
