@@ -11,6 +11,7 @@ function Get-GraphVizArguments
         If no destination is provided, it will set the auto name flag.
         If there is no output format, it guesses from the destination
     #>
+    
     [cmdletbinding()]
     param(
         [Parameter(
