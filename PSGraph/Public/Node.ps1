@@ -27,24 +27,38 @@ function Node
         I had conflits trying to alias Get-Node to node, so I droped the verb from the name.
         If you have subgraphs, it works best to define the node inside the subgraph before giving it an edge
     #>
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName='Node')]
     param(
         # The name of the node
         [Parameter(
             Mandatory = $true, 
             ValueFromPipeline = $true,
-            Position = 0
+            Position = 0,
+            ParameterSetName='Node'
         )]
         [string[]]
         $Name = 'node',
 
         # Script to run on each node
+        [Parameter(ParameterSetName='Node')]
         [alias('Script')]
         [scriptblock]
         $NodeScript = {$_},
 
+        # Set default values for all nodes
+        [Parameter(ParameterSetName='Default')]
+        [switch]
+        $Default,
+
         # Node attributes to apply to this node
-        [Parameter( Position = 1 )]
+        [Parameter( 
+            Position = 1,
+            ParameterSetName='Node' 
+        )]
+        [Parameter( 
+            Position = 0,
+            ParameterSetName='Default' 
+        )]
         [hashtable]
         $Attributes    
     )
@@ -53,7 +67,7 @@ function Node
     {        
         foreach($node in $Name)
         {
-            $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
+            
             if($NodeScript)
             {
                 $nodeName = [string](@($node).ForEach($NodeScript))
@@ -62,8 +76,17 @@ function Node
             {
                 $nodeName = $node
             }
-            
-            Write-Output ('{0}"{1}" {2}' -f (Get-Indent), $nodeName, $GraphVizAttribute)
+
+            if($Default)
+            {
+                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
+                Write-Output ('{0}node {1}' -f (Get-Indent), $GraphVizAttribute)
+            }
+            else 
+            {
+                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
+                Write-Output ('{0}"{1}" {2}' -f (Get-Indent), $nodeName, $GraphVizAttribute)
+            }            
         }        
     }
 }

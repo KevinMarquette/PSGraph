@@ -107,7 +107,6 @@ function Edge
         # A string for using native attribute syntax
         [string]
         $LiteralAttribute = $null
-
     )
 
     begin

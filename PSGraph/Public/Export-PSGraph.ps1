@@ -101,8 +101,13 @@ function Export-PSGraph
         if($useStandardInput)
         {
             Write-Verbose 'Processing standard input'
-                       
-            $arguments = Get-GraphVizArguments $PSBoundParameters -EnsureDestination
+            if(-Not $PSBoundParameters.ContainsKey('DestinationPath'))
+            {                
+                Write-Verbose 'Creating temporary path to save graph'
+                $file = [System.IO.Path]::GetRandomFileName()               
+                $PSBoundParameters["DestinationPath"] = Join-Path $env:temp "$file.$OutputFormat"            
+            }
+            $arguments = Get-GraphVizArguments $PSBoundParameters
              Write-Verbose " Arguments: $($arguments -join ' ')"
 
             $standardInput.ToString() | & $graphViz @($arguments)

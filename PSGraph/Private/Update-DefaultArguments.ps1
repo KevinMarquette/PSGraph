@@ -1,7 +1,7 @@
 function Update-DefaultArguments
 {
     [cmdletbinding()]
-    param($inputObject,$EnsureDestination)
+    param($inputObject)
     
     if($InputObject.ContainsKey('LayoutEngine'))
     {
@@ -27,16 +27,6 @@ function Update-DefaultArguments
             $InputObject["OutputFormat"] = 'png'
         }
     }
-
-    if($EnsureDestination)
-    {
-        if(-Not $PSBoundParameters.ContainsKey('DestinationPath'))
-        {
-            $outputFormat = $InputObject["OutputFormat"]
-            $file = [System.IO.Path]::GetRandomFileName()               
-            $PSBoundParameters["DestinationPath"] = Join-Path $env:temp "$file.$outputFormat"            
-        }
-    }
-
+    
     return $InputObject
 }
