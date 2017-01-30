@@ -16,3 +16,5 @@ If you don't care about the format of the generated DOT file, you could just use
 The only thing the `inline` command does is place proper indentation into the output. Both of those will render this final image:
 
 [![Source](images/inline.png)](images/inline.png)
+
+The `inline` command was added so more advanced GraphViz users don't feel limited by the subset of implemented features.

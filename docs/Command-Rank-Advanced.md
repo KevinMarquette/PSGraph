@@ -15,7 +15,7 @@ nodes get placed wherever the engine things is best. The rank command allows you
 
 Here is the image without the rank:
 
-[![Source](images/noRank.png)](images/noRank.png)
+[![Source](images/norank.png)](images/norank.png)
 
 Here it is with the rank:
 

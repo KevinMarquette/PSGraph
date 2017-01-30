@@ -4,7 +4,7 @@ This is the command that executes the GraphViz engine to generate the DOT format
 # Common usage
 Here are the common ways to use this command.
 
-# Process a .dot or .gv file
+## Process a .dot or .gv file
 If you have an existing text file in the DOT format, you can pass it to `Export-PSGraph` to generate the resulting image.
 
     $files | Export-PSGraph
