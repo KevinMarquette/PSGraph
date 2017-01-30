@@ -2,7 +2,7 @@
 This is a special example section that tries to recreate some of the diagrams on the [GraphViz Gallery](http://graphviz.org/Gallery.php).
 
 ## Cluster
-This small example illustrates dot's feature to draw nodes and edges in clusters or separate rectangular layout regions. Clusters are encoded as subgraphs whose names have the prefix 'cluster'. The color attribute of a cluster is interpreted as its outline color or its background color if its style is 'filled'. Mdiamond and Msquare are modified symbols for data flow diagrams.
+This small example illustrates dot's feature to draw nodes and edges in clusters or separate rectangular layout regions. Clusters are encoded as subgraphs whose names have the prefix 'cluster'. The color attribute of a cluster is interpreted as its outline color or its background color if its style is 'filled'. `Mdiamond` and `Msquare` are modified symbols for data flow diagrams.
 
 
 
