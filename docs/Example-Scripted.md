@@ -1,9 +1,9 @@
 # Scripted Examples
-Here are the examples that really show off what this module can do. 
+Here are the examples that really show off what this module can do. Here I take some simple sets of data that is related in some way and quickly build complex graphs with very few lines of code.
 
 ## Folder Structure
 
-These examples walk the folder structure and displays it as a tree graph. This is a typical hierarchal pattern.
+This first example walk the folder structure and displays it as a tree graph. This is a typical hierarchal pattern that is easy to relat to.
 
 
 [![Source](images/folders.png)](images/folders.png)
@@ -40,11 +40,36 @@ Because processors have owners, we can also chart the relationships between them
         edge $process -FromScript {$_.ParentProcessId} -ToScript {$_.ProcessId}
     } | Export-PSGraph -ShowGraph 
 
+## Network Connections
+Here is a mapping of active network connections from one machine to everything it is connected to.
+
+[![Source](images/networkConnection.png)](images/NetworkConnection.png)
+
+    $netstat = Get-NetTCPConnection | where LocalAddress -EQ '10.112.11.115'
+
+    graph network @{rankdir='LR'}  {
+        node -Default @{shape='rect'}
+        edge $netstat -FromScript {$_.LocalAddress} -ToScript {$_.RemoteAddress} @{label={'{0}:{1}' -f $_.LocalPort,$_.RemotePort}}
+    } | Export-PSGraph -ShowGraph 
+
+We can take it the next step and map our processes to a network connection.
+
+[![Source](images/processNetwork.png)](images/processNetwork.png)
+
+    $netstat = Get-NetTCPConnection | where LocalAddress -EQ '10.112.11.115'
+    $process = Get-Process | where id -in $netstat.OwningProcess
+
+    graph network @{rankdir='LR'}  {
+        node -Default @{shape='rect'}
+        node $process -NodeScript {$_.ID} @{label={$_.ProcessName}}
+        edge $netstat -FromScript {$_.OwningProcess} -ToScript {$_.RemoteAddress} @{label={'{0}:{1}' -f $_.LocalPort,$_.RemotePort}}
+    } | Export-PSGraph -ShowGraph 
+
+
 ## Assembly Information
 We can also map assembly dependencies on each other.
 
-This one maps everything in a folder. It also fills in the local assemblies to make it easier to spot external references. This one gets complicated fast if you parse an entire folder. 
-
+This one maps several things in a folder. It also fills in the local assemblies to make it easier to spot external references. This one gets complicated fast if you parse an entire folder. 
 
 [![Source](images/assemblySmall.png)](images/assembly.png)
 
@@ -57,28 +82,3 @@ This one maps everything in a folder. It also fills in the local assemblies to m
         edge $loaded -FromScript {$_.getName().name} -ToScript {$_.GetReferencedAssemblies().name}
     } | Export-PSGraph -ShowGraph -LayoutEngine Circular
 
-
-## Network Connections
-Here is a mapping of active network connections from one machine.
-
-[![Source](images/networkConnection.png)](images/NetworkConnection.png)
-
-    $netstat = Get-NetTCPConnection | where LocalAddress -EQ '10.112.11.115'
-
-    graph network @{rankdir='LR'}  {
-        node -Default @{shape='rect'}
-        edge $netstat -FromScript {$_.LocalAddress} -ToScript {$_.RemoteAddress} @{label={'{0}:{1}' -f $_.LocalPort,$_.RemotePort}}
-    } | Export-PSGraph -ShowGraph 
-
-We can take it one step further and map our processes to a network connection.
-
-[![Source](images/processNetwork.png)](images/processNetwork.png)
-
-    $netstat = Get-NetTCPConnection | where LocalAddress -EQ '10.112.11.115'
-    $process = Get-Process | where id -in $netstat.OwningProcess
-
-    graph network @{rankdir='LR'}  {
-        node -Default @{shape='rect'}
-        node $process -NodeScript {$_.ID} @{label={$_.ProcessName}}
-        edge $netstat -FromScript {$_.OwningProcess} -ToScript {$_.RemoteAddress} @{label={'{0}:{1}' -f $_.LocalPort,$_.RemotePort}}
-    } | Export-PSGraph -ShowGraph 
