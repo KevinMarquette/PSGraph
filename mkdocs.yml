@@ -18,7 +18,7 @@ pages:
     - Rank: Command-Rank-Advanced.md
     - GraphViz Documentation: graphviz.md
   - Examples:
-    - Simple: Example-Simple.md
+    - Scripted: Example-Scripted.md
     - State Machine: Example-State-Machine.md
     - Gallery: Example-Gallery.md
   - Acknowledgements: acknowledgements.md
