@@ -12,13 +12,13 @@ pages:
     - Inline: Command-Inline.md
     - SubGraph: Command-SubGraph.md
     - Export-PSGraph: Command-Export-PSGraph.md
-  - Examples:
-    - Simple: Example-Simple.md
-    - State Machine: Example-State-Machine.md
-    - Gallery: Example-Gallery.md
   - Advanced:
     - Edge Advanced: Command-Edge-Advanced.md
     - Node Advanced: Command-Node-Advanced.md
     - Rank: Command-Rank-Advanced.md
     - GraphViz Documentation: graphviz.md
+  - Examples:
+    - Simple: Example-Simple.md
+    - State Machine: Example-State-Machine.md
+    - Gallery: Example-Gallery.md
   - Acknowledgements: acknowledgements.md
