@@ -34,7 +34,7 @@ function Rank
             ValueFromPipeline=$true,
             Position=0
         )]
-        [string[]]
+        [object[]]
         $Nodes,
 
         # Used to catch alternate style of specifying nodes
@@ -71,7 +71,7 @@ function Rank
                 {
                     $nodeName = $item
                 }
-                '"{0}"' -f $item
+                '"{0}"' -f $nodeName
             }
         }    
     } 

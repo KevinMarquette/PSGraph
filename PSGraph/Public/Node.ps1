@@ -36,7 +36,7 @@ function Node
             Position = 0,
             ParameterSetName='Node'
         )]
-        [string[]]
+        [object[]]
         $Name = 'node',
 
         # Script to run on each node
