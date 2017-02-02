@@ -35,7 +35,7 @@ Task Init {
 Task UnitTests -Depends Init {
     $lines
     'Running quick unit tests to fail early if there is an error'
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests\*unit* -PassThru -Tag Build
+    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests\*unit* -PassThru -Tag Build -Show Failed
     
     if($TestResults.FailedCount -gt 0)
     {
@@ -49,7 +49,7 @@ Task Test -Depends UnitTests  {
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -Tag Build
+    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -Tag Build -Show Failed
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If($ENV:BHBuildSystem -eq 'AppVeyor')

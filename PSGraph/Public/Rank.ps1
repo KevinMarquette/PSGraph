@@ -42,7 +42,7 @@ function Rank
             ValueFromRemainingArguments=$true, 
             Position=1
         )]
-        [string[]]
+        [object[]]
         $AdditionalNodes,
 
         # Script to run on each node
@@ -58,7 +58,17 @@ function Rank
     
     process
     {
-        $Values += foreach($item in ($Nodes + $AdditionalNodes))
+        $itemList = New-Object System.Collections.Queue
+        if($Nodes -ne $null)
+        {
+            $Nodes | %{$_} | %{$itemList.Enqueue($_)}
+        }
+        if($AdditionalNodes -ne $null)
+        {
+            $AdditionalNodes | %{$_} | %{$_} | %{$itemList.Enqueue($_)}
+        }
+
+        $Values += foreach($item in $itemList)
         {
             # Adding these arrays ceates an empty element that we want to exclude
             if(-Not [string]::IsNullOrWhiteSpace($item))
