@@ -12,7 +12,7 @@ function Export-PSGraph
         .PARAMETER LayoutEngine
         The layout engine used to generate the image
         .PARAMETER GraphVizPath
-        Path or paths to the dot.exe graphviz executable. Some sensible defaults are used if nothing is passed.
+        Path or paths to the 'dot' graphviz executable. Some sensible defaults are used if nothing is passed.
         .PARAMETER ShowGraph
         Launches the graph when done
         .Example
@@ -67,9 +67,10 @@ function Export-PSGraph
 
         [Parameter()]
         [string[]]
-        $GraphVizPath = @(
+        $GraphVizPath = (
             'C:\Program Files\NuGet\Packages\Graphviz*\dot.exe',
-            'C:\program files*\GraphViz*\bin\dot.exe'
+            'C:\program files*\GraphViz*\bin\dot.exe',
+            '/usr/local/bin/dot'
         ),
 
         # launches the graph when done
@@ -79,23 +80,13 @@ function Export-PSGraph
 
     begin
     {
-        $PathCount = 0
-
-        do {
-            Write-Verbose "Export-PSGraph: Looking for dot.exe in path: $($GraphVizPath[$PathCount])"
-            if ( -not ($GraphVizPath[$PathCount]).EndsWith('dot.exe') ) {
-                $GPath = Join-Path $GraphVizPath[$PathCount] 'dot.exe'
-            }
-            else {
-                $GPath = $GraphVizPath[$PathCount]
-            }
-            $graphViz = Resolve-Path -path $GPath
-            $PathCount++
-        } Until (($graphViz -ne $null) -or ($PathCount -eq ($GraphVizPath.Count -1)) )
-
+        # Use Resolve-Path to test all passed paths
+        # Select only items with 'dot' BaseName and use first one
+        $graphViz = Resolve-Path -path $GraphVizPath -ErrorAction SilentlyContinue | Get-Item | Where-Object BaseName -eq 'dot' | Select-Object -First 1
+        
         if($graphViz -eq $null)
         {
-            throw "Could not find GraphViz installed on this system. Please run 'Find-Package graphviz | Install-Package -ForceBootstrap' or 'Install-GraphViz' to install the needed binaries and libraries. This module just a wrapper around GraphViz and is looking for it in your program files folder. Optionally pass a path to your dot.exe file with the GraphVizPath parameter"
+            throw "Could not find GraphViz installed on this system. Please run 'Install-GraphViz' to install the needed binaries and libraries. This module just a wrapper around GraphViz and is looking for it in your program files folder. Optionally pass a path to your dot.exe file with the GraphVizPath parameter"
         }
 
         $useStandardInput = $false
