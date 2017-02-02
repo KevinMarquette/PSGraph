@@ -24,7 +24,7 @@ function Rank
         .Notes
         Accepts an array of items or a list of strings.
     #>
-    
+
     [cmdletbinding()]
     param(
 
