@@ -85,7 +85,7 @@ function Node
             else 
             {
                 $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
-                Write-Output ('{0}"{1}" {2}' -f (Get-Indent), $nodeName, $GraphVizAttribute)
+                Write-Output ('{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute)
             }            
         }        
     }

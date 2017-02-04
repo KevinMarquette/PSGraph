@@ -77,12 +77,12 @@ Describe "Basic function unit tests" -Tags Build {
         }
 
         It "Creates a simple node" {
-            Node TestNode | Should Match '"TestNode"'
+            Node TestNode | Should Match 'TestNode'
         }
 
         It "Creates a node with attributes" {
-            Node TestNode @{shape='rectangle'} | Should Match '"TestNode" \[shape="rectangle";\]'
-            Node TestNode @{shape='rectangle';label="myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest";\]'
+            Node TestNode @{shape='rectangle'} | Should Match 'TestNode \[shape=rectangle;\]'
+            Node TestNode @{shape='rectangle';label="myTest"} | Should Match 'TestNode \[shape=rectangle;label=myTest;\]'
         }
     }
 
@@ -103,30 +103,30 @@ Describe "Basic function unit tests" -Tags Build {
         }
 
         It "Creates a simple Edge" {
-            Edge lhs rhs | Should Match '"lhs"->"rhs"'
+            Edge lhs rhs | Should Match 'lhs->rhs'
         }
 
         It "Creates a Edge with attributes" {
-            Edge lhs rhs @{label='test'} | Should Match '"lhs"->"rhs" \[label="test";\]'
+            Edge lhs rhs @{label='test'} | Should Match 'lhs->rhs \[label=test;\]'
         }
 
         It "Creates a Edge with multiple attributes" {
             $result = Edge lhs rhs @{label='test';arrowsize='2'} 
             
-            $result | Should Match 'label="test";'
-            $result | Should Match 'arrowsize="2";'
+            $result | Should Match 'label=test;'
+            $result | Should Match 'arrowsize=2;'
         }
 
         It "Creates an edge with scripted properties" {
             $object = @{source='here';target='there'}
             $result = edge $object -FromScript {$_.source} -ToScript {$_.target}
-            $result | Should Match '"here"->"there"'
+            $result | Should Match 'here->there'
         }
 
         It "Creates an edge with scripted properties and attributes" {
             $object = @{source='here';target='there';description='to'}
             $result = edge $object -FromScript {$_.source} -ToScript {$_.target} -Attributes @{label={$_.description}}
-            $result | Should Match '"here"->"there" \[label="to";\]'
+            $result | Should Match 'here->there \[label=to;\]'
         }
 
         It "Creates multiple edges with scripted properties and attributes" {
@@ -135,8 +135,8 @@ Describe "Basic function unit tests" -Tags Build {
                 @{source='LA';target='NY';description='roadtrip'}
             )
             $result = edge $object -FromScript {$_.source} -ToScript {$_.target} -Attributes @{label={$_.description}}
-            $result[0] | Should Match '"here"->"there" \[label="to";\]'
-            $result[1] | Should Match '"LA"->"NY" \[label="roadtrip";\]'
+            $result[0] | Should Match 'here->there \[label=to;\]'
+            $result[1] | Should Match 'LA->NY \[label=roadtrip;\]'
         }
     }
 
@@ -152,7 +152,7 @@ Describe "Basic function unit tests" -Tags Build {
         }         
 
         It "Creates a rank grouping" {
-            rank lhs rhs | Should Match '{ rank=same;  "lhs" "rhs"; }'
+            rank lhs rhs | Should Match '{ rank=same;  lhs; rhs; }'
         }
     }
 }
