@@ -137,13 +137,23 @@ function Edge
                 $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
             }        
         
+            $format = [ordered]@{
+                Indent = (Get-Indent)
+                From = ''
+                To = ''
+                Attributes = $GraphVizAttribute
+            }
+
             if ($To -ne $null)
             { # If we have a target array, cross multiply results
                 foreach($sNode in $From)
                 {                    
                     foreach($tNode in $To)
-                    {
-                        Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $sNode, $tNode, $GraphVizAttribute)
+                    {                        
+                        $format.from = (Format-Value $sNode -Edge)
+                        $format.to = (Format-Value $tNode -Edge)
+                            
+                        Write-Output ('{0}{1}->{2} {3}' -f $format.values)
                     }
                 }
             }
@@ -151,7 +161,16 @@ function Edge
             { # If we have a single array, connect them sequentially. 
                 for($index=0; $index -lt ($From.Count - 1); $index++)
                 {
-                    Write-Output ('{0}"{1}"->"{2}" {3}' -f (Get-Indent), $From[$index], $From[$index + 1], $GraphVizAttribute)
+                    $output = @(
+                        (Get-Indent)
+                        (Format-Value $From[$index] -Edge)
+                        (Format-Value $From[$index + 1] -Edge)
+                        $GraphVizAttribute
+                    )
+                    $format.from = (Format-Value $From[$index] -Edge)
+                    $format.to = (Format-Value $From[$index + 1] -Edge)
+                        
+                    Write-Output ('{0}{1}->{2} {3}' -f $format.values)
                 }
             }
         }

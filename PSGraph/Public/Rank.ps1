@@ -81,13 +81,14 @@ function Rank
                 {
                     $nodeName = $item
                 }
-                '"{0}"' -f $nodeName
+
+                Format-Value $nodeName -Node
             }
         }    
     } 
 
     end
     {
-        Write-Output ('{0}{{ rank=same;  {1}; }}' -f (Get-Indent), ($values -join ' '))
+        Write-Output ('{0}{{ rank=same;  {1}; }}' -f (Get-Indent), ($values -join '; '))
     }  
 }

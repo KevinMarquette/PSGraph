@@ -77,12 +77,12 @@ Describe "Basic function unit tests" -Tags Build {
         }
 
         It "Creates a simple node" {
-            Node TestNode | Should Match '"TestNode"'
+            Node TestNode | Should Match 'TestNode'
         }
 
         It "Creates a node with attributes" {
-            Node TestNode @{shape='rectangle'} | Should Match '"TestNode" \[shape="rectangle";\]'
-            Node TestNode @{shape='rectangle';label="myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest";\]'
+            Node TestNode @{shape='rectangle'} | Should Match 'TestNode \[shape=rectangle;\]'
+            Node TestNode @{shape='rectangle';label="myTest"} | Should Match 'TestNode \[shape=rectangle;label=myTest;\]'
         }
     }
 
@@ -152,7 +152,7 @@ Describe "Basic function unit tests" -Tags Build {
         }         
 
         It "Creates a rank grouping" {
-            rank lhs rhs | Should Match '{ rank=same;  "lhs" "rhs"; }'
+            rank lhs rhs | Should Match '{ rank=same;  lhs; rhs; }'
         }
     }
 }
