@@ -91,6 +91,10 @@ function Graph
     end
     {        
         $script:indent--
+        if($script:indent -lt 0)
+        {
+            $script:indent = 0
+        }
         "$(Get-Indent)}" # Close braces
         "" #Blank line
         Write-Verbose "End Graph $type $name"
