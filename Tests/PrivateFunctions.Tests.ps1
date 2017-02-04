@@ -89,11 +89,60 @@ InModuleScope -ModuleName PSGraph {
                 {Update-DefaultArguments @{}} | Should Not Throw
             }
         }
-    }
 
-    Describe "$ModuleName ConvertTo-GraphVizAttribute" {
+        Context "Format-Value" {
 
-        Context "Basic features" {
+            It "not throw an error" {
+                {Format-Value test} | Should Not Throw
+            }
+
+            It "not throw an error for edges" {
+                {Format-Value test -edge} | Should Not Throw
+            }
+
+            It "not throw an error for node" {
+                {Format-Value test -edge} | Should Not Throw
+            }
+
+            It "format basic strings without quotes" {
+                Format-Value test | Should Be 'test'
+                Format-Value test -node | Should Be 'test'
+                Format-Value test -edge | Should Be 'test'
+            }
+
+            It "format basic strings with spaces in quotes" {
+                Format-Value 'test value' | Should Be '"test value"'
+                Format-Value 'test value' -node | Should Be '"test value"'
+                Format-Value 'test value' -edge | Should Be '"test value"'
+            }
+
+            It "format basic strings with a colin correctly" {
+                Format-Value 'test:value' | Should Be '"test:value"'
+                Format-Value 'test:value' -node | Should Be '"test:value"'
+                Format-Value 'test:value' -edge | Should Be 'test:value'
+                Format-Value 'test value2:value' -edge | Should Be '"test value2":value'
+            }
+
+            It "Uses custom format script correctly" {
+                Set-NodeFormatScript -ScriptBlock {'NewValue'}
+                Format-Value 'test' | Should BeExactly 'test'
+                Format-Value 'test' -node | Should BeExactly 'NewValue'
+                Format-Value 'test' -edge | Should BeExactly 'NewValue'
+
+                Set-NodeFormatScript -ScriptBlock {$_.ToUpper()}                
+                Format-Value 'test' | Should BeExactly 'test'
+                Format-Value 'test' -node | Should BeExactly 'TEST'
+                Format-Value 'test' -edge | Should BeExactly 'TEST'
+                Format-Value 'test' | Should Not BeExactly 'TEST'
+                Format-Value 'test' -node | Should Not BeExactly 'test'
+                Format-Value 'test' -edge | Should Not BeExactly 'test'
+                
+                Set-NodeFormatScript
+            }
+
+        }
+
+        Context "ConvertTo-GraphVizAttribute" {
 
             It "Should not throw an error" {
 
@@ -101,15 +150,23 @@ InModuleScope -ModuleName PSGraph {
             }
 
             It "Creates well formatted attribute" {
-                ConvertTo-GraphVizAttribute @{label='test'} | Should Match '\[label="test";\]'
+                ConvertTo-GraphVizAttribute @{label='test'} | Should Match '\[label=test;\]'
+            }
+
+            It "Creates well formatted attribute with special characters" {
+                ConvertTo-GraphVizAttribute @{label='test label'} | Should Match '\[label="test label";\]'                
+            }
+
+            It "Creates well formatted attribute for html tables" {
+                ConvertTo-GraphVizAttribute @{label='<table>test label</table>'} | Should Match '\[label=<<table>test label</table>>;\]'                
             }
 
             It "Creates multiple attributes" {
                 $result = ConvertTo-GraphVizAttribute @{label='test';arrowsize='2'} 
                 
                 $result | Should Match '\['
-                $result | Should Match 'label="test";'
-                $result | Should Match 'arrowsize="2";'                
+                $result | Should Match 'label=test;'
+                $result | Should Match 'arrowsize=2;'                
                 $result | Should Match ';\]'
             }
 
@@ -120,12 +177,12 @@ InModuleScope -ModuleName PSGraph {
 
             It "Creates scripted attribute on an object" {
                 $object = [pscustomobject]@{description='test'}
-                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label="test";\]'
+                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label=test;\]'
             }
 
             It "Creates scripted attribute on a hashtable" {
                 $object = @{description='test'}
-                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label="test";\]'
+                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label=test;\]'
             }
         } 
     }

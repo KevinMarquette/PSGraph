@@ -12,6 +12,7 @@ function Set-NodeFormatScript
     #>
     [cmdletbinding()]
     param(
+        
         # The Scriptblock used to process every node value
         [ScriptBlock]
         $ScriptBlock = {$_}

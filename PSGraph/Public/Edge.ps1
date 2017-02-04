@@ -156,12 +156,8 @@ function Edge
             { # If we have a single array, connect them sequentially. 
                 for($index=0; $index -lt ($From.Count - 1); $index++)
                 {
-                    $format = @(
-                        
-                    )
-                        
-                    Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent).
-                        (Format-Value $From[$index] -Edge).
+                    Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent),
+                        (Format-Value $From[$index] -Edge),
                         (Format-Value $From[$index + 1] -Edge),
                         $GraphVizAttribute
                     )
