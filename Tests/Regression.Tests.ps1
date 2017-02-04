@@ -4,7 +4,7 @@ $moduleName = Split-Path $moduleRoot -Leaf
 
 Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
-Describe "Regression tests" {
+Describe "Regression tests" -Tag Build {
 
     Context "Github Issues" {
 

@@ -6,7 +6,7 @@ Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
 InModuleScope -ModuleName PSGraph {
 
-    Describe "$ModuleName private functions" {
+    Describe "$ModuleName private functions" -Tag Build {
         
         Context 'Get-LayoutEngine' {
 
@@ -136,7 +136,7 @@ InModuleScope -ModuleName PSGraph {
                 Format-Value 'test' | Should Not BeExactly 'TEST'
                 Format-Value 'test' -node | Should Not BeExactly 'test'
                 Format-Value 'test' -edge | Should Not BeExactly 'test'
-                
+
                 Set-NodeFormatScript
             }
 

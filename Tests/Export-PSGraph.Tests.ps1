@@ -4,6 +4,7 @@ $moduleName = Split-Path $moduleRoot -Leaf
 
 Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
+# This one is not tagged with Build because it requires GraphViz
 Describe "$ModuleName Export-PSGraph" {
 
     $dot = graph g {
