@@ -77,7 +77,7 @@ function Edge
         [Parameter(
             Position = 1,
             ParameterSetName='script'
-        )]
+        )]        
         [hashtable]
         $Attributes,
 
@@ -93,7 +93,8 @@ function Edge
         $Node,
 
         # start node script or source of edge
-        [Parameter(ParameterSetName='script')]
+        [Parameter(
+            ParameterSetName='script')]
         [alias('FromScriptBlock','SourceScript')]
         [scriptblock]
         $FromScript = {$_},
@@ -106,7 +107,11 @@ function Edge
 
         # A string for using native attribute syntax
         [string]
-        $LiteralAttribute = $null
+        $LiteralAttribute = $null,
+
+        # Not used, but can be specified for verbosity
+        [switch]
+        $Default
     )
 
     begin
@@ -119,6 +124,10 @@ function Edge
 
     process 
     {
+        if($Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript'))
+        { #Deducing the pattern 'edge @{}' as default edge definition
+             node 'edge' -attributes $Node[0]
+        }
         if($Node -ne $null)
         { # Used when scripted properties are specified
             foreach($item in $Node)

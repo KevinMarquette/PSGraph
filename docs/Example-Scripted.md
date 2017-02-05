@@ -11,7 +11,7 @@ This first example walk the folder structure and displays it as a tree graph. Th
     $folders = Get-ChildItem C:\workspace\PSGraph -Directory -Recurse
 
     graph folders {
-        node -Default @{shape='folder'}
+        node @{shape='folder'}
         node $folders -NodeScript {$_.fullname} @{label={$_.basename}}
         edge $folders -FromScript {split-path $_.fullname} -ToScript {$_.fullname}
     } | Export-PSGraph -ShowGraph 
@@ -21,7 +21,7 @@ This one also includes the files in the folder. Click on the image to see the wh
 
     $files = Get-ChildItem C:\workspace\PSGraph -Recurse
     graph folders  @{rankdir='LR'} {
-        node -Default @{shape='box'}
+        node @{shape='box'}
         node $files.Where({$_.PSIsContainer}).FullName @{shape='folder'}
         node $files -NodeScript {$_.fullname} @{label={$_.basename}}
         edge $files -FromScript {split-path $_.fullname} -ToScript {$_.fullname}
@@ -35,7 +35,7 @@ Because processors have owners, we can also chart the relationships between them
     $process = Get-CimInstance -ClassName CIM_Process
 
     graph processes @{rankdir='LR'} {
-        node -Default @{shape='box'}
+        node @{shape='box'}
         node $process -NodeScript {$_.ProcessId} -Attributes @{label={$_.ProcessName}}
         edge $process -FromScript {$_.ParentProcessId} -ToScript {$_.ProcessId}
     } | Export-PSGraph -ShowGraph 
@@ -48,7 +48,7 @@ Here is a mapping of active network connections from one machine to everything i
     $netstat = Get-NetTCPConnection | where LocalAddress -EQ '10.112.11.115'
 
     graph network @{rankdir='LR'}  {
-        node -Default @{shape='rect'}
+        node @{shape='rect'}
         edge $netstat -FromScript {$_.LocalAddress} -ToScript {$_.RemoteAddress} @{label={'{0}:{1}' -f $_.LocalPort,$_.RemotePort}}
     } | Export-PSGraph -ShowGraph 
 
@@ -60,7 +60,7 @@ We can take it the next step and map our processes to a network connection.
     $process = Get-Process | where id -in $netstat.OwningProcess
 
     graph network @{rankdir='LR'}  {
-        node -Default @{shape='rect'}
+        node @{shape='rect'}
         node $process -NodeScript {$_.ID} @{label={$_.ProcessName}}
         edge $netstat -FromScript {$_.OwningProcess} -ToScript {$_.RemoteAddress} @{label={'{0}:{1}' -f $_.LocalPort,$_.RemotePort}}
     } | Export-PSGraph -ShowGraph 
@@ -77,7 +77,7 @@ This one maps several things in a folder. It also fills in the local assemblies 
     $loaded  = $files | %{[reflection.assembly]::LoadFile($_.FullName)}
 
     graph assemblies @{rankdir='LR'} {
-        node -Default @{shape='rect'}
+        node @{shape='rect'}
         node $loaded -NodeScript {$_.getName().name} @{style='filled'}
         edge $loaded -FromScript {$_.getName().name} -ToScript {$_.GetReferencedAssemblies().name}
     } | Export-PSGraph -ShowGraph -LayoutEngine Circular

@@ -10,11 +10,11 @@ This small example illustrates dot's feature to draw nodes and edges in clusters
 
     graph g {
         subgraph 0 @{style='filled';color='lightgrey';label='process #1'} {
-            node -Default @{style='filled';color='white'}
+            node @{style='filled';color='white'}
             edge a0,a1,a2,a3
         }
         subgraph 1 @{label='Process #2';color='blue'} {
-            node -Default @{style='filled'}
+            node @{style='filled'}
             edge b0,b1,b2,b3
         }
         edge start -to a0,b0
@@ -53,7 +53,7 @@ Layouts made with neato (SpringModelSmall) have the property that all edges tend
     graph ER {
         inline 'edge [arrowsize=0]'
         node course, institute, student @{shape='box'}
-        node -default @{shape='ellipse'} 
+        node @{shape='ellipse'} 
         node name0, name1, name2 @{label='name'}
         node code, grade, number
         node "C-I","S-C","S-I" @{shape='diamond';style='filled';color='lightgrey'} 
@@ -80,7 +80,7 @@ This is a drawing of a finite automaton. The rankdir and orientation request a l
 
     graph finite_state_machine @{rankdir='LR';size=8.5} {
         node  LR_0,LR_3,LR_4,LR_8 @{shape='doublecircle'}
-        node -default @{shape = 'circle'}
+        node @{shape = 'circle'}
         edge LR_0 LR_2 @{ label = "SS(B)" }
         edge LR_0 LR_1 @{ label = "SS(S)" }
         edge LR_1 LR_3 @{ label = 'S($end)' }
