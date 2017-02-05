@@ -27,66 +27,54 @@ function Node
         I had conflits trying to alias Get-Node to node, so I droped the verb from the name.
         If you have subgraphs, it works best to define the node inside the subgraph before giving it an edge
     #>
-    [cmdletbinding(DefaultParameterSetName='Node')]
+    [cmdletbinding()]
     param(
         # The name of the node
         [Parameter(
             Mandatory = $true, 
             ValueFromPipeline = $true,
-            Position = 0,
-            ParameterSetName='Node'
+            Position = 0
         )]
         [object[]]
         $Name = 'node',
 
         # Script to run on each node
-        [Parameter(ParameterSetName='Node')]
+        [Parameter()]
         [alias('Script')]
         [scriptblock]
         $NodeScript = {$_},
 
-        # Set default values for all nodes
-        [Parameter(ParameterSetName='Default')]
-        [switch]
-        $Default,
-
         # Node attributes to apply to this node
-        [Parameter( 
-            Position = 1,
-            ParameterSetName='Node' 
-        )]
-        [Parameter( 
-            Position = 0,
-            ParameterSetName='Default' 
-        )]
+        [Parameter(Position = 1)]
         [hashtable]
         $Attributes    
     )
 
     process
     {        
-        foreach($node in $Name)
+        if($Name.count -eq 1 -and $Name[0] -is [hashtable] -and !$PSBoundParameters.ContainsKey('NodeScript'))
+        { 
+            # detected attept to set default values in this form 'node @{key=value}', the hashtable ends up in $name[0]
+            Node node -Attributes $Name[0] 
+        }
+        else
         {
-            
-            if($NodeScript)
-            {
-                $nodeName = [string](@($node).ForEach($NodeScript))
-            }
-            else 
-            {
-                $nodeName = $node
-            }
 
-            if($Default)
+            foreach($node in $Name)
             {
-                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
-                Write-Output ('{0}node {1}' -f (Get-Indent), $GraphVizAttribute)
-            }
-            else 
-            {
+            
+                if($NodeScript)
+                {
+                    $nodeName = [string](@($node).ForEach($NodeScript))
+                }
+                else 
+                {
+                    $nodeName = $node
+                }
+
                 $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
-                Write-Output ('{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute)
-            }            
-        }        
+                Write-Output ('{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute)                           
+            }   
+        }     
     }
 }

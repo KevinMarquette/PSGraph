@@ -3,16 +3,16 @@
 You can specify default node attributes and any node that gets defined down script will inherit those values.
 
     graph g {
-        node -Default @{shape='rectangle'}
+        node @{shape='rectangle'}
         edge a,b,c,a
     }
 
 You can also redefine the default values as you go along. 
 
    graph g {
-        node -Default @{shape='rectangle'}
+        node @{shape='rectangle'}
         edge a,b
-        node -Default @{shape='house'}
+        node @{shape='house'}
         edge b,c,d,a
     }
 

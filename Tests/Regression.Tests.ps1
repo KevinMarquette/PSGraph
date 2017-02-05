@@ -18,7 +18,7 @@ Describe "Regression tests" -Tag Build {
             edge "Struct 1:f1" "Struct 2:f2" | Should be '"STRUCT 1":f1->"STRUCT 2":f2 '
             
             {$struct = graph g {
-                node -default @{shape='record'}
+                node @{shape='record'}
                 node struct1 @{shape='record';label=" left|<f1> middle|<f2> right"}
                 node struct2 @{shape='record';label="<f0> one| two"}
                 node struct3 @{shape='record';label="hello\nworld |{ b |{c|<here> d|e}| f}| g | h"}
@@ -29,6 +29,10 @@ Describe "Regression tests" -Tag Build {
 
         It "#10 set edge defaults does not work" {
             edge @{arrowhead='none'} | should be 'edge [arrowhead=none;]'
+        }
+
+        It "#10 set node defaults does not work" {
+            node @{shape='house'} | should be 'node [shape=house;]'
         }
     }
 }
