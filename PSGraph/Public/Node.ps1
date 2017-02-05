@@ -47,7 +47,11 @@ function Node
         # Node attributes to apply to this node
         [Parameter(Position = 1)]
         [hashtable]
-        $Attributes    
+        $Attributes,
+
+        # not used anymore but offers backward compatibility or verbosity
+        [switch]
+        $Default 
     )
 
     process

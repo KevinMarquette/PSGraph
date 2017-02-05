@@ -107,7 +107,11 @@ function Edge
 
         # A string for using native attribute syntax
         [string]
-        $LiteralAttribute = $null
+        $LiteralAttribute = $null,
+
+        # Not used, but can be specified for verbosity
+        [switch]
+        $Default
     )
 
     begin
