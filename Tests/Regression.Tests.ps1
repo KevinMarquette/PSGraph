@@ -26,5 +26,9 @@ Describe "Regression tests" -Tag Build {
                 edge struct1:f2 struct3:here
             } } | Should Not Throw
         }
+
+        It "#10 set edge defaults does not work" {
+            edge @{arrowhead='none'} | should be 'edge [arrowhead=none;]'
+        }
     }
 }
