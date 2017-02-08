@@ -1,11 +1,11 @@
-function Get-GraphVizArguments
+function Get-GraphVizArgument
 {
     <#
         .Description
         Takes an array and converts it to commandline arguments for GraphViz
 
         .Example
-        Get-GraphVizArguments -InputObject @{OutputFormat='jpg'}
+        Get-GraphVizArgument -InputObject @{OutputFormat='jpg'}
 
         .Notes
         If no destination is provided, it will set the auto name flag.
@@ -26,8 +26,8 @@ function Get-GraphVizArguments
     {        
         if($InputObject -ne $null)
         {
-            $InputObject = Update-DefaultArguments -InputObject $InputObject  
-            $arguments = Get-TranslatedArguments -InputObject $InputObject  
+            $InputObject = Update-DefaultArgument -InputObject $InputObject  
+            $arguments = Get-TranslatedArgument -InputObject $InputObject  
         }
                       
         return $arguments

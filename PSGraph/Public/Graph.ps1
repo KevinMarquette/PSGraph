@@ -20,7 +20,9 @@ function Graph
         .Notes
         The output is a string so it can be saved to a variable or piped to other commands
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter","")]
     [cmdletbinding(DefaultParameterSetName='Default')]
+    [OutputType([string])]
     param(
 
         # Name or ID of the graph

@@ -59,13 +59,13 @@ function Rank
     process
     {
         $itemList = New-Object System.Collections.Queue
-        if($Nodes -ne $null)
+        if($null -ne $Nodes)
         {
-            $Nodes | %{$_} | %{$itemList.Enqueue($_)}
+            $Nodes | ForEach-Object{$_} | ForEach-Object{$itemList.Enqueue($_)}
         }
-        if($AdditionalNodes -ne $null)
+        if($null -ne $AdditionalNodes)
         {
-            $AdditionalNodes | %{$_} | %{$_} | %{$itemList.Enqueue($_)}
+            $AdditionalNodes | ForEach-Object{$_} | ForEach-Object{$_} | ForEach-Object{$itemList.Enqueue($_)}
         }
 
         $Values += foreach($item in $itemList)

@@ -11,7 +11,7 @@ function Format-Value
 
     begin
     {
-        if($Script:CustomFormat -eq $null)
+        if( $null -eq $Script:CustomFormat )
         {
             Set-NodeFormatScript
         }

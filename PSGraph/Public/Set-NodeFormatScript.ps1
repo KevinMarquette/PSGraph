@@ -10,12 +10,17 @@ function Set-NodeFormatScript
         .Notes
         This can be used if different datasets are not consistent.
     #>
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess)]
     param(
         
         # The Scriptblock used to process every node value
         [ScriptBlock]
         $ScriptBlock = {$_}
     )
-    $Script:CustomFormat = $ScriptBlock
+    
+    if($PSCmdlet.ShouldProcess('Change default code id format function'))
+    {
+         $Script:CustomFormat = $ScriptBlock
+    }
+   
 }
