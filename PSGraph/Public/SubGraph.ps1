@@ -18,7 +18,7 @@ function SubGraph
         This is just like the graph or digraph, except the name must match cluster_#
         The numbering must start at 0 and work up or the processor will fail.
     #>
-    
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter","")]
     [cmdletbinding(DefaultParameterSetName='Default')]
     param(
         # Numeric ID of subgraph starting at 0
@@ -27,7 +27,7 @@ function SubGraph
             Position = 0
         )]
         [int]
-        $ID = 0,
+        $ID,
 
         # The commands to execute inside the subgraph
         [Parameter(
@@ -53,7 +53,7 @@ function SubGraph
             ParameterSetName='Attributes'
         )]
         [hashtable]
-        $Attributes = @{}      
+        $Attributes = @{}
     )
 
     process

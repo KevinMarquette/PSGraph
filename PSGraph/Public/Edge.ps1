@@ -128,7 +128,7 @@ function Edge
         { #Deducing the pattern 'edge @{}' as default edge definition
              node 'edge' -attributes $Node[0]
         }
-        if($Node -ne $null)
+        elseif($null -ne $Node )
         { # Used when scripted properties are specified
             foreach($item in $Node)
             {            
@@ -141,12 +141,12 @@ function Edge
         } 
         else
         {
-            if ($Attributes -ne $null -and [string]::IsNullOrEmpty($LiteralAttribute))
+            if ($null -ne $Attributes -and [string]::IsNullOrEmpty($LiteralAttribute))
             {
                 $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
             }        
         
-            if ($To -ne $null)
+            if ($null -ne $To)
             { # If we have a target array, cross multiply results
                 foreach($sNode in $From)
                 {                    

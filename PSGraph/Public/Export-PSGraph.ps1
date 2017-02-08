@@ -30,7 +30,7 @@ function Export-PSGraph
         It checks the piped data for file paths. If it can't find a file, it assumes it is graph data.
         This may give unexpected errors when the file does not exist.
     #>
-    
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression","")]
     [cmdletbinding()]
     param(
         # The GraphViz file to process or contents of the graph in Dot notation
@@ -84,7 +84,7 @@ function Export-PSGraph
         # Select only items with 'dot' BaseName and use first one
         $graphViz = Resolve-Path -path $GraphVizPath -ErrorAction SilentlyContinue | Get-Item | Where-Object BaseName -eq 'dot' | Select-Object -First 1
         
-        if($graphViz -eq $null)
+        if( $null -eq $graphViz )
         {
             throw "Could not find GraphViz installed on this system. Please run 'Install-GraphViz' to install the needed binaries and libraries. This module just a wrapper around GraphViz and is looking for it in your program files folder. Optionally pass a path to your dot.exe file with the GraphVizPath parameter"
         }
@@ -96,16 +96,16 @@ function Export-PSGraph
     process
     {     
         
-        if($Source -ne $null)
+        if( $null -ne $Source )
         {
             # if $Source is a list of files, process each one
             $fileList = Resolve-Path -Path $Source -ea 0
-            if($fileList -ne $null)
+            if( $null -ne $fileList )
             {
-                foreach($file in $fileList )
+                foreach( $file in $fileList )
                 {     
                     Write-Verbose "Generating graph from '$($file.path)'"
-                    $arguments = Get-GraphVizArguments -InputObject $PSBoundParameters
+                    $arguments = Get-GraphVizArgument -InputObject $PSBoundParameters
                     & $graphViz @($arguments + $file.path)
                 }
             } 
@@ -129,7 +129,7 @@ function Export-PSGraph
                 $file = [System.IO.Path]::GetRandomFileName()               
                 $PSBoundParameters["DestinationPath"] = Join-Path $env:temp "$file.$OutputFormat"            
             }
-            $arguments = Get-GraphVizArguments $PSBoundParameters
+            $arguments = Get-GraphVizArgument $PSBoundParameters
              Write-Verbose " Arguments: $($arguments -join ' ')"
 
             $standardInput.ToString() | & $graphViz @($arguments)

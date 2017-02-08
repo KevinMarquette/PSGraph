@@ -1,13 +1,12 @@
-function Get-TranslatedArguments($InputObject)
+function Get-TranslatedArgument($InputObject)
 {
     $paramLookup = Get-ArgumentLookUpTable
-    $arguments = @()
 
     Write-Verbose 'Walking parameter mapping'
     foreach($key in $InputObject.keys)
     {
         Write-Debug $key
-        if($key -ne $null -and $paramLookup.ContainsKey($key))
+        if( $null -ne $key -and $paramLookup.ContainsKey($key))
         {
             $newArgument = $paramLookup[$key]
             if($newArgument -like '*{0}*')

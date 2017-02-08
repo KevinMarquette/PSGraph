@@ -4,7 +4,7 @@ function Get-Indent
     param($depth=$script:indent)
     process
     {
-        if($depth -eq $null -or $depth -lt 0)
+        if( $null -eq $depth -or $depth -lt 0 )
         {
             $depth = 0
         }

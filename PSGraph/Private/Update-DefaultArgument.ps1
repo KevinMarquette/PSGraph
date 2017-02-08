@@ -1,5 +1,6 @@
-function Update-DefaultArguments
+function Update-DefaultArgument
 {
+     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions","")]
     [cmdletbinding()]
     param($inputObject)
     

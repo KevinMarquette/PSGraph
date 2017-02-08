@@ -41,18 +41,18 @@ InModuleScope -ModuleName PSGraph {
         }
     
   
-        Context "Get-GraphVizArguments" {
+        Context "Get-GraphVizArgument" {
             
             It "Does not throw an error" {
-                {Get-GraphVizArguments} | Should Not Throw
+                {Get-GraphVizArgument} | Should Not Throw
             }
             
             It "Should not throw an error with empty hashtable" {
-                {Get-GraphVizArguments @{}} | Should Not Throw
+                {Get-GraphVizArgument @{}} | Should Not Throw
             }
 
             It "Should not throw an error with hashtable" {
-                {Get-GraphVizArguments @{OutputFormat='png'}} | Should Not Throw
+                {Get-GraphVizArgument @{OutputFormat='png'}} | Should Not Throw
             }
         }  
 
@@ -75,18 +75,18 @@ InModuleScope -ModuleName PSGraph {
         Context "Get-TranslatedArguments" {
             
             It "Does not throw an error" {
-                {Get-TranslatedArguments} | Should Not Throw
+                {Get-TranslatedArgument} | Should Not Throw
             }
             It "Translates DestinationPath" {
-                Get-TranslatedArguments @{DestinationPath='test.png'} | Should be '-otest.png'
-                Get-TranslatedArguments @{DestinationPath='test.png'} | Should not be '-o test.png'
+                Get-TranslatedArgument @{DestinationPath='test.png'} | Should be '-otest.png'
+                Get-TranslatedArgument @{DestinationPath='test.png'} | Should not be '-o test.png'
             }
         }  
 
-        Context "Update-DefaultArguments" {
+        Context "Update-DefaultArgument" {
 
             It "Does not throw an error" {
-                {Update-DefaultArguments @{}} | Should Not Throw
+                {Update-DefaultArgument @{}} | Should Not Throw
             }
         }
 

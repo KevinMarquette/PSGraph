@@ -20,8 +20,11 @@ Describe "Help tests for $moduleName" -Tags Build {
             }
             foreach($parameter in $node.parameters.parameter)
             {
-                it "parameter $($parameter.name) has a description" {
-                    $parameter.Description.text | Should Not BeNullOrEmpty
+                if($parameter -notmatch 'whatif|confirm')
+                {
+                    it "parameter $($parameter.name) has a description" {
+                        $parameter.Description.text | Should Not BeNullOrEmpty
+                    }
                 }
             }
         }
