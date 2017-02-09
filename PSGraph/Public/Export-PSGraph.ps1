@@ -96,11 +96,11 @@ function Export-PSGraph
     process
     {     
         
-        if( $null -ne $Source )
+        if( $null -ne $Source -and $Source.Count -gt 0)
         {
             # if $Source is a list of files, process each one
             $fileList = Resolve-Path -Path $Source -ea 0
-            if( $null -ne $fileList )
+            if( $null -ne $fileList -and $Source.Count -gt 0)
             {
                 foreach( $file in $fileList )
                 {     
