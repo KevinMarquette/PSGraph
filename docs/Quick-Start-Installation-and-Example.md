@@ -18,7 +18,7 @@ PSGraph has a unique syntax for defining a graph. This is because it was built s
 
     graph "myGraph" {
         edge start,middle,end        
-    } | Export-Graph -ShowGraph
+    } | Export-PSGraph -ShowGraph
 
 This will create a new graph with three nodes linking each other. 
 
