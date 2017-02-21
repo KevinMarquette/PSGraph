@@ -103,7 +103,7 @@ function Export-PSGraph
 
             # Only resolve paths, if there are NO empty string entries in the $Source
 			# Resolve-path spits out an error with empty string paths, even with SilentlyContinue
-            if (@($Source | where { [String]::IsNullOrEmpty($_) } ).Count -eq 0)
+            if (@($Source | Where-Object { [String]::IsNullOrEmpty($_) } ).Count -eq 0)
             {
                 $fileList = Resolve-Path -Path $Source -ErrorAction SilentlyContinue
             }
