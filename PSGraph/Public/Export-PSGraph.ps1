@@ -99,7 +99,15 @@ function Export-PSGraph
         if( $null -ne $Source -and $Source.Count -gt 0)
         {
             # if $Source is a list of files, process each one
-            $fileList = Resolve-Path -Path $Source -ea 0
+			$fileList = $null
+
+            # Only resolve paths, if there are NO empty string entries in the $Source
+			# Resolve-path spits out an error with empty string paths, even with SilentlyContinue
+            if (@($Source | where { [String]::IsNullOrEmpty($_) } ).Count -eq 0)
+            {
+                $fileList = Resolve-Path -Path $Source -ErrorAction SilentlyContinue
+            }
+			
             if( $null -ne $fileList -and $Source.Count -gt 0)
             {
                 foreach( $file in $fileList )
