@@ -47,8 +47,8 @@ Task Test -Depends UnitTests  {
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -Tag Build
-
+    #$TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -Tag Build
+    & $ProjectRoot\Tests\Invoke-RSpester.ps1 -Path $ProjectRoot\Tests
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If($ENV:BHBuildSystem -eq 'AppVeyor')
     {

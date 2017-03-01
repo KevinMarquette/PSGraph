@@ -3,7 +3,7 @@ $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 $moduleName = Split-Path $moduleRoot -Leaf
 
 
-Describe "Testing all Script against default PSScriptAnalyzer rule-set" {
+Describe "Testing all Script against default PSScriptAnalyzer rule-set" -Tag Build {
 
     $Rules   = Get-ScriptAnalyzerRule
     $scripts = Get-ChildItem $moduleRoot -Include *.ps1,*.psm1,*.psd1 -Recurse | where fullname -notmatch 'classes'
