@@ -14,7 +14,7 @@
     Unzip = @{
         DependencyType = 'Command'
         Source = 'Unblock-File -Path "C:\ProgramData\PSGraphViz\psgraphviz.zip"',
-            'Expand-Archive -Path "C:\ProgramData\PSGraphViz\psgraphviz.zip" -DestinationPath "C:\ProgramData\PSGraphViz"'
+        'Expand-Archive -Path "C:\ProgramData\PSGraphViz\psgraphviz.zip" -DestinationPath "C:\ProgramData\PSGraphViz"'
         DependsOn = 'DownloadFile'
     }
 }

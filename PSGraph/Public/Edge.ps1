@@ -81,7 +81,7 @@ function Edge
         [hashtable]
         $Attributes,
 
-         # a list of nodes to process
+        # a list of nodes to process
         [Parameter(
             Mandatory = $true, 
             Position = 0,
@@ -126,7 +126,7 @@ function Edge
     {
         if($Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript'))
         { #Deducing the pattern 'edge @{}' as default edge definition
-             node 'edge' -attributes $Node[0]
+            node 'edge' -attributes $Node[0]
         }
         elseif($null -ne $Node )
         { # Used when scripted properties are specified

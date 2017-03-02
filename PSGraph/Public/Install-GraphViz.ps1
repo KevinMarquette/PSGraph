@@ -9,9 +9,12 @@ function Install-GraphViz
     [cmdletbinding()]
     param()
 
-    if ($IsOSX) {
+    if ($IsOSX)
+    {
         brew install graphviz
-    } else {
+    }
+    else
+    {
         Find-Package graphviz | Install-Package -Verbose -ForceBootstrap
     }
     

@@ -35,15 +35,18 @@ function Format-Value
             switch -Regex ($value)
             {
                 # HTML label, special designation
-                '^<\s*table.*>.*' {
+                '^<\s*table.*>.*'
+                {
                     "<$value>"
                 }
                 # Normal value, no quotes
-                '^[\w]+$' {
+                '^[\w]+$'
+                {
                     $value
                 }
                 # Anything else, use quotes
-                default {
+                default
+                {
                     '"{0}"' -f $value
                 }
             }
