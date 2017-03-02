@@ -52,12 +52,12 @@ Task Test -Depends UnitTests  {
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If($ENV:BHBuildSystem -eq 'AppVeyor')
     {
-        "Uploading $ProjectRoot\$TestFile to AppVeyor"
-        "JobID: $env:APPVEYOR_JOB_ID"
-        (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path "$ProjectRoot\$TestFile"))
+        # "Uploading $ProjectRoot\$TestFile to AppVeyor"
+        # "JobID: $env:APPVEYOR_JOB_ID"
+        # (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path "$ProjectRoot\$TestFile"))
     }
 
-    Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
+    # Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
