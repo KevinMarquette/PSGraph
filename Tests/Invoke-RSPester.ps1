@@ -35,7 +35,7 @@ function Format-PesterTest
             Write-Host $TestResult.FailureMessage -ForegroundColor Yellow
             if($TestResult.StackTrace)
             {
-                 Write-Host $TestResult.StackTrace.ToString() -ForegroundColor Yellow
+                Write-Host $TestResult.StackTrace.ToString() -ForegroundColor Yellow
             }
         }
     }
