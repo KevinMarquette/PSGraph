@@ -20,7 +20,7 @@ function Set-NodeFormatScript
     
     if($PSCmdlet.ShouldProcess('Change default code id format function'))
     {
-         $Script:CustomFormat = $ScriptBlock
+        $Script:CustomFormat = $ScriptBlock
     }
    
 }

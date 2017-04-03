@@ -47,7 +47,7 @@ function SubGraph
         [Parameter(
             ParameterSetName='Default'
         )]
-         [Parameter(             
+        [Parameter(             
             Mandatory = $true, 
             Position = 1,
             ParameterSetName='Attributes'

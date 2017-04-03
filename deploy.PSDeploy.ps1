@@ -3,15 +3,15 @@
 
 # ASSUMPTIONS:
 
- # folder structure of:
- # - RepoFolder
- #   - This PSDeploy file
- #   - ModuleName
- #     - ModuleName.psd1
+# folder structure of:
+# - RepoFolder
+#   - This PSDeploy file
+#   - ModuleName
+#     - ModuleName.psd1
 
- # Nuget key in $ENV:NugetApiKey
+# Nuget key in $ENV:NugetApiKey
 
- # Set-BuildEnvironment from BuildHelpers module has populated ENV:BHProjectName
+# Set-BuildEnvironment from BuildHelpers module has populated ENV:BHProjectName
 
 # find a folder that has psd1 of same name...
 

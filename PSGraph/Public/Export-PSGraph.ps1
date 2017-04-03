@@ -42,7 +42,7 @@ function Export-PSGraph
         $Source,
 
         #The destination for the generated file.
-         [Parameter(            
+        [Parameter(            
             Position = 0
         )]
         [string]
@@ -99,11 +99,11 @@ function Export-PSGraph
         if( $null -ne $Source -and $Source.Count -gt 0)
         {
             # if $Source is a list of files, process each one
-			$fileList = $null
+            $fileList = $null
 
             # Only resolve paths, if there are NO empty string entries in the $Source
-			# Resolve-path spits out an error with empty string paths, even with SilentlyContinue
-            if (@($Source | where { [String]::IsNullOrEmpty($_) } ).Count -eq 0)
+            # Resolve-path spits out an error with empty string paths, even with SilentlyContinue
+            if (@($Source | Where-Object { [String]::IsNullOrEmpty($_) } ).Count -eq 0)
             {
                 $fileList = Resolve-Path -Path $Source -ErrorAction SilentlyContinue
             }
@@ -138,7 +138,7 @@ function Export-PSGraph
                 $PSBoundParameters["DestinationPath"] = Join-Path $env:temp "$file.$OutputFormat"            
             }
             $arguments = Get-GraphVizArgument $PSBoundParameters
-             Write-Verbose " Arguments: $($arguments -join ' ')"
+            Write-Verbose " Arguments: $($arguments -join ' ')"
 
             $standardInput.ToString() | & $graphViz @($arguments)
             
