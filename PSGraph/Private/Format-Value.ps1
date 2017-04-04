@@ -47,7 +47,7 @@ function Format-Value
                 # Anything else, use quotes
                 default
                 {
-                    '"{0}"' -f $value
+                    '"{0}"' -f $value.Replace("`"", '\"') # Escape quotes in the string value
                 }
             }
         }
