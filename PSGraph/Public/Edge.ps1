@@ -1,4 +1,4 @@
-function Edge 
+function Edge
 {
     <#
         .Description
