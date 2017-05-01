@@ -24,13 +24,20 @@ Scenario: Should have correct module structure
     And it will have a public folder for public functions
     And it will have a public\*.ps1 file for a public function
 
-
+Scenario: Module should import
+    Given the module root folder
+    And it had a *.psd1 file
+    When the module is imported
+    Then Get-Module will show the module
+    And Get-Command will list functions
 
 Scenario: Should be well documented
-    Given we have public functions
+    Given the module is imported
+    And we have public functions
+    Then Node should have comment based help
     Then all public functions should have comment based help
     And all public functions should have a feature specification
-    And all public functions should have a pester test        
+    And all public functions should have a pester test
     And should have readthedoc pages
     And should be posted on the blog
     And should have a pitchme.md presentation
