@@ -52,20 +52,20 @@ Then 'Get-Command will list functions' {
     Get-Command -Module $ModuleName | Should Not BeNullOrEmpty
 }
 
-Then '(?<Function>\S*) should have comment based help' {
+Then '(?<Function>\S*) will have comment based help' {
     Param($Function)
     $help = Get-Help $Function
     $help | Should Not BeNullOrEmpty
 }
 
-Then 'all public functions should have comment based help' {
+Then 'all public functions will have comment based help' {
 
     $step = @{keyword = 'Then'}
     foreach($command in (Get-Command -Module $ModuleName  ))
     {
-        $step.text = ('{0} should have comment based help' -f $command.Name)           
+        $step.text = ('{0} will have comment based help' -f $command.Name)           
         Invoke-GherkinStep $step -Pester $Pester -verbose
-        
+
         $step.keyword = 'And'
     }
 }

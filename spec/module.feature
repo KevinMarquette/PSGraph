@@ -34,17 +34,17 @@ Scenario: Module should import
 Scenario: Should be well documented
     Given the module is imported
     And we have public functions
-    Then Node should have comment based help
-    Then all public functions should have comment based help
-    And all public functions should have a feature specification
-    And all public functions should have a pester test
-    And should have readthedoc pages
-    And should be posted on the blog
-    And should have a pitchme.md presentation
+    Then Node Will have comment based help
+    Then all public functions will have comment based help
+    And all public functions will have a feature specification
+    And all public functions will have a pester test
+    And will have readthedoc pages
+    And will be posted on the blog
+    And will have a pitchme.md presentation
     
 
 Scenario: Should be publically available
     Given we have a module
-    Then is should be published to github
-    And should be listed in the PSGallery
-    And should be explained on the blog
+    Then is will be published to github
+    And will be listed in the PSGallery
+    And will be explained on the blog
