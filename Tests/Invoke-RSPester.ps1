@@ -48,20 +48,34 @@ $jobs = $Tests | Start-RSJob -Name {$_.BaseName}  -ScriptBlock {
     Invoke-Pester -Script $test.FullName -PassThru -Show None -Tag Build | Add-Member -PassThru -Name Script -Value $test.FullName -MemberType NoteProperty
 } 
 
-#$failed = New-Object 'System.Collections.Queue'
-$scriptResults = $jobs | Wait-RSJob | Receive-RSJob
+$processed = New-Object 'System.Collections.Queue'
 
-# $script = $scriptResults[3]
-foreach( $script in $scriptResults)
+While( ( Get-RSJob -ID $jobs.ID ).Where({ $_.HasMoreData -or $_.State -eq 'Running' }) )
 {
-    Write-Output ( '[Script] {0}' -f $script.Script)
-    # $result = $script.TestResult[0]
-    $script.TestResult | Format-PesterTest
-
-    if($script.FailedCount -gt 0 -and $ThrowOnFailure)
+    Get-RSJob
+    Write-Verbose 'sleep'
+    Start-Sleep -Seconds 15
+    $scriptResults = Get-RSJob -ID $jobs.ID -HasMoreData | Receive-RSJob
+    
+    # $script = $scriptResults[3]
+    foreach( $script in $scriptResults)
     {
-        throw [System.Security.Policy.PolicyException]::new(('Script {0} has {1} failing tests' -f $script.Script,$script.FailedCount))
+        Write-Output ( '[Script] {0}' -f $script.Script)
+        # $result = $script.TestResult[0]
+        $script.TestResult | Format-PesterTest
+
+        if($script.FailedCount -gt 0 -and $ThrowOnFailure)
+        {
+            Write-Error ('Script {0} has {1} failing tests' -f $script.Script, $script.FailedCount)
+        }
+        $processed.Enqueue( $script )
     }
 }
 
-$scriptResults.TestResult.Where({$_.Passed -eq $false}) | Format-PesterTest
+$failedTests = $processed.ToArray().TestResult.Where({$_.Passed -eq $false}) 
+if($failedTests)
+{
+    Write-Host 'Please review these failed tests:'
+    $failedTests | Format-PesterTest
+    throw [System.Security.Policy.PolicyException]::new('Pester test(s) completed with failures')
+}
