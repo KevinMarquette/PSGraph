@@ -7,9 +7,7 @@
 Given 'the module was named (\S*)' {
     Param($Name)
     $Script:ModuleName = $Name
-}
 
-Given 'it had a psm1 file' {
     $path = "$PSScriptRoot\.."
     $ModuleName | should be 'PSGraph'
     $module = Get-ChildItem -Path $path -Recurse -Filter "$ModuleName.psm1" -verbose
@@ -19,7 +17,7 @@ Given 'it had a psm1 file' {
     $Script:ModuleRoot = Split-Path $module.fullname
 }
 
-Given 'the (\S*) root folder' {
+Given 'we use the (\S*) root folder' {
     Param($root)
     Switch($root)
     {
@@ -40,7 +38,7 @@ Then 'it (will have|had) a (?<Path>\S*) (file|folder).*' {
     Join-Path $script:BaseFolder $Path | Should Exist
 }
 
-When 'the module is imported' {
+When 'the module (is|can be) imported' {
     { Import-Module $ModuleRoot } | Should Not Throw
 }
 
@@ -52,24 +50,45 @@ Then 'Get-Command will list functions' {
     Get-Command -Module $ModuleName | Should Not BeNullOrEmpty
 }
 
-Then '(?<Function>\S*) will have comment based help' {
+Then '(function )?(?<Function>\S*) will have comment based help' {
     Param($Function)
     $help = Get-Help $Function
     $help | Should Not BeNullOrEmpty
 }
 
-Then 'all public functions will have comment based help' {
+Then 'will have readthedoc pages' {
+    { Invoke-Webrequest -uri "https://$ModuleName.readthedocs.io" -UseBasicParsing } | Should Not Throw
+}
 
+Then '(function )?(?<Function>\S*) will have a feature specification or a pester test' {
+    param($Function)
+
+    $file = Get-ChildItem -Path $PSScriptRoot\.. -Include "$Function.feature","$Function.Tests.ps1" -Recurse
+    $file.fullname | Should Not BeNullOrEmpty
+}
+
+Then 'all public functions (?<Action>.*)' {
+    Param($Action)
     $step = @{keyword = 'Then'}
+    $AllPassed = $true
     foreach($command in (Get-Command -Module $ModuleName  ))
     {
-        $step.text = ('{0} will have comment based help' -f $command.Name)           
-        Invoke-GherkinStep $step -Pester $Pester -verbose
+        $step.text = ('function {0} {1}' -f $command.Name, $Action )           
+        
+        Invoke-GherkinStep $step -Pester $Pester
+        If( -Not $Pester.TestResult[-1].Passed )
+        {
+            $AllPassed = $false
+        } 
 
         $step.keyword = 'And'
     }
+    $AllPassed | Should be $true
 }
 
+Then 'will be listed in the PSGallery' {
+    Find-Module $ModuleName | Should Not BeNullOrEmpty
+}
 
 
 
