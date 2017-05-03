@@ -8,14 +8,22 @@ function Install-GraphViz
     #>
     [cmdletbinding()]
     param()
-
-    if ($IsOSX)
+    process
     {
-        brew install graphviz
+        try
+        {            
+            if ($IsOSX)
+            {
+                brew install graphviz
+            }
+            else
+            {
+                Find-Package graphviz | Install-Package -Verbose -ForceBootstrap
+            }            
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
+        }
     }
-    else
-    {
-        Find-Package graphviz | Install-Package -Verbose -ForceBootstrap
-    }
-    
 }

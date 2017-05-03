@@ -1,9 +1,3 @@
-<#BeforeEachFeature {
-    $Script:ModuleName = $null
-    $Script:ModuleRoot = $null
-    $Script:BaseFolder = $null
-}#>
-
 Given 'the module was named (\S*)' {
     Param($Name)
     $Script:ModuleName = $Name
@@ -19,7 +13,7 @@ Given 'the module was named (\S*)' {
 
 Given 'we use the (\S*) root folder' {
     Param($root)
-    Switch($root)
+    Switch ($root)
     {
         'Project'
         {
@@ -39,7 +33,7 @@ Then 'it (will have|had) a (?<Path>\S*) (file|folder).*' {
 }
 
 When 'the module (is|can be) imported' {
-    { Import-Module $ModuleRoot } | Should Not Throw
+    { Import-Module $ModuleRoot -Force } | Should Not Throw
 }
 
 Then 'Get-Module will show the module' {
@@ -48,6 +42,18 @@ Then 'Get-Module will show the module' {
 
 Then 'Get-Command will list functions' {
     Get-Command -Module $ModuleName | Should Not BeNullOrEmpty
+}
+
+Then '(function )?(?<Function>\S*) will be listed in module manifest' {
+    Param($Function)
+    (Get-Content $ModuleRoot\$ModuleName.psd1 -Raw) -match [regex]::Escape($Function) | Should Be $true
+}
+
+Then '(function )?(?<Function>\S*) will contain (?<Text>.*)' {
+    Param($Function, $Text)
+    $Command = Get-Command $Function -Module $ModuleName
+    $match = [regex]::Escape($Text)
+    ($Command.Definition -match $match ) | Should Be True
 }
 
 Then '(function )?(?<Function>\S*) will have comment based help' {
@@ -63,7 +69,7 @@ Then 'will have readthedoc pages' {
 Then '(function )?(?<Function>\S*) will have a feature specification or a pester test' {
     param($Function)
 
-    $file = Get-ChildItem -Path $PSScriptRoot\.. -Include "$Function.feature","$Function.Tests.ps1" -Recurse
+    $file = Get-ChildItem -Path $PSScriptRoot\.. -Include "$Function.feature", "$Function.Tests.ps1" -Recurse
     $file.fullname | Should Not BeNullOrEmpty
 }
 
@@ -71,12 +77,12 @@ Then 'all public functions (?<Action>.*)' {
     Param($Action)
     $step = @{keyword = 'Then'}
     $AllPassed = $true
-    foreach($command in (Get-Command -Module $ModuleName  ))
+    foreach ($command in (Get-Command -Module $ModuleName  ))
     {
         $step.text = ('function {0} {1}' -f $command.Name, $Action )           
         
         Invoke-GherkinStep $step -Pester $Pester
-        If( -Not $Pester.TestResult[-1].Passed )
+        If ( -Not $Pester.TestResult[-1].Passed )
         {
             $AllPassed = $false
         } 
@@ -90,33 +96,8 @@ Then 'will be listed in the PSGallery' {
     Find-Module $ModuleName | Should Not BeNullOrEmpty
 }
 
-
-
 Given 'we have (?<folder>(public)) functions?' {
     param($folder)
     "$psscriptroot\..\psgraph\$folder\*.ps1" | Should Exist
-}
-
-Given 'we have a (?<name>.+?) function' {
-    param($name)
-    "$psscriptroot\..\psgraph\*\$name.ps1" | Should Exist
-}
-
-Given 'We have these functions' {
-    param($table)
-    foreach ($row in $table)
-    {
-        $step = @{
-            text = ('we have a {0} function' -f $row.Name)
-            keyword = 'Given'           
-        }
-    
-        Invoke-GherkinStep $step -Pester $pester -Verbose
-    }    
-}
-
-Given "extra text" {    
-    Param($value)
-    $value.count | should be 1
 }
 

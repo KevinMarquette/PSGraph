@@ -18,8 +18,8 @@ function SubGraph
         This is just like the graph or digraph, except the name must match cluster_#
         The numbering must start at 0 and work up or the processor will fail.
     #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter","")]
-    [cmdletbinding(DefaultParameterSetName='Default')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter", "")]
+    [cmdletbinding(DefaultParameterSetName = 'Default')]
     param(
         # Numeric ID of subgraph starting at 0
         [Parameter(
@@ -33,24 +33,24 @@ function SubGraph
         [Parameter(
             Mandatory = $true, 
             Position = 1,
-            ParameterSetName='Default'
+            ParameterSetName = 'Default'
         )]
         [Parameter(
             Mandatory = $true, 
             Position = 2,
-            ParameterSetName='Attributes'
+            ParameterSetName = 'Attributes'
         )]
         [scriptblock]
         $ScriptBlock,
 
         # Hashtable that gets translated to graph attributes
         [Parameter(
-            ParameterSetName='Default'
+            ParameterSetName = 'Default'
         )]
         [Parameter(             
             Mandatory = $true, 
             Position = 1,
-            ParameterSetName='Attributes'
+            ParameterSetName = 'Attributes'
         )]
         [hashtable]
         $Attributes = @{}
@@ -58,6 +58,13 @@ function SubGraph
 
     process
     {
-        Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
+        try
+        {
+            Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
+        }
     }
 }

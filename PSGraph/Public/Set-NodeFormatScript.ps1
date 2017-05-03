@@ -18,9 +18,18 @@ function Set-NodeFormatScript
         $ScriptBlock = {$_}
     )
     
-    if($PSCmdlet.ShouldProcess('Change default code id format function'))
+    process
     {
-        $Script:CustomFormat = $ScriptBlock
+        try
+        {
+            if ($PSCmdlet.ShouldProcess('Change default code id format function'))
+            {
+                $Script:CustomFormat = $ScriptBlock
+            }            
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
+        }
     }
-   
 }

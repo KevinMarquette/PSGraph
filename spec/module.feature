@@ -34,6 +34,12 @@ Scenario: Module should import
     Then Get-Module will show the module
     And Get-Command will list functions
 
+Scenario: Public function features
+    Given the module is imported
+    And we have public functions
+    Then all public functions will be listed in module manifest
+    And all public functions will contain cmdletbinding
+    And all public functions will contain ThrowTerminatingError
 
 Scenario: Should be well documented
     Given the module is imported
