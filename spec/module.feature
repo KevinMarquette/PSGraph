@@ -34,12 +34,14 @@ Scenario: Module should import
     Then Get-Module will show the module
     And Get-Command will list functions
 
+
 Scenario: Public function features
     Given the module is imported
     And we have public functions
     Then all public functions will be listed in module manifest
     And all public functions will contain cmdletbinding
     And all public functions will contain ThrowTerminatingError
+
 
 Scenario: Should be well documented
     Given the module is imported
@@ -52,6 +54,11 @@ Scenario: Should be well documented
     And will have readthedoc pages    
     And it will have a PITCHME.md file for project promotion
     
+@PSScriptAnalyzer
+Scenario: Should pass PSScriptAnalyzer rules
+    Given we use the module root folder    
+    Then it will have a public\*.ps1 file for a public function
+    And all script files pass PSScriptAnalyzer rules
     
 @Slow
 Scenario: Should be published
