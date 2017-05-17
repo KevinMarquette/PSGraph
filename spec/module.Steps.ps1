@@ -8,7 +8,8 @@ Given 'the module was named (\S*)' {
     $module | should not benullorempty
     $module.fullname | Should Exist
 
-    $Script:ModuleRoot = Split-Path $module.fullname
+    $Script:ModuleSource = "$PSScriptRoot\..\$ModuleName"
+    $Script:ModuleOutput = "$PSScriptRoot\..\Output\$ModuleName"
 }
 
 Given 'we use the (\S*) root folder' {
@@ -19,9 +20,13 @@ Given 'we use the (\S*) root folder' {
         {
             $script:BaseFolder = Resolve-Path "$PSScriptRoot\.." | Select -ExpandProperty Path
         }
-        'Module'
+        'ModuleSource'
         {
-            $script:BaseFolder = $Script:ModuleRoot
+            $script:BaseFolder = $Script:ModuleSource
+        }
+        'ModuleOutput'
+        {
+            $script:BaseFolder = $Script:ModuleOutput
         }
     }
 }
@@ -33,7 +38,7 @@ Then 'it (will have|had) a (?<Path>\S*) (file|folder).*' {
 }
 
 When 'the module (is|can be) imported' {
-    { Import-Module $ModuleRoot -Force } | Should Not Throw
+    { Import-Module $ModuleOutput -Force } | Should Not Throw
 }
 
 Then 'Get-Module will show the module' {
@@ -46,7 +51,7 @@ Then 'Get-Command will list functions' {
 
 Then '(function )?(?<Function>\S*) will be listed in module manifest' {
     Param($Function)
-    (Get-Content $ModuleRoot\$ModuleName.psd1 -Raw) -match [regex]::Escape($Function) | Should Be $true
+    (Get-Content $ModuleSource\$ModuleName.psd1 -Raw) -match [regex]::Escape($Function) | Should Be $true
 }
 
 Then '(function )?(?<Function>\S*) will contain (?<Text>.*)' {
@@ -105,18 +110,22 @@ Then 'all script files pass PSScriptAnalyzer rules' {
     
     $Rules = Get-ScriptAnalyzerRule
     $scripts = Get-ChildItem $BaseFolder -Include *.ps1, *.psm1, *.psd1 -Recurse | where fullname -notmatch 'classes'
-    
    
     $AllPassed = $true
 
     foreach ($Script in $scripts )
     {      
         $file = $script.fullname.replace($BaseFolder, '$')
-        foreach ( $rule in $rules )
-        {
-            It " [$file] Rule [$rule]" {
+       
 
-                (Invoke-ScriptAnalyzer -Path $script.FullName -IncludeRule $rule.RuleName ).Count | Should Be 0
+        context $file {
+        
+            foreach ( $rule in $rules )
+            {
+                It " [$file] Rule [$rule]" {
+
+                    (Invoke-ScriptAnalyzer -Path $script.FullName -IncludeRule $rule.RuleName ).Count | Should Be 0
+                }
             }
         }
 
@@ -125,5 +134,6 @@ Then 'all script files pass PSScriptAnalyzer rules' {
             $AllPassed = $false
         } 
     }
+    
     $AllPassed | Should be $true
 }

@@ -158,6 +158,7 @@ We can pull that all together and generate quite the data driven driven diagram.
 Make sure you are running Powershell 5.0 (WMF 5.0). I don't know that it is a hard requirement at the moment but I plan on using 5.0 features.
 
     # Install GraphViz from the Chocolatey repo
+    Register-PackageSource -Name Chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/
     Find-Package graphviz | Install-Package -ForceBootstrap
 
     # Install PSGraph from the Powershell Gallery
@@ -165,6 +166,10 @@ Make sure you are running Powershell 5.0 (WMF 5.0). I don't know that it is a ha
 
     # Import Module
     Import-Module PSGraph
+
+For OSX, you can use brew to install graphviz.
+
+    brew install graphviz
 
 # Generating a graph image
 I am still working out the workflow for this, but for now just do this.

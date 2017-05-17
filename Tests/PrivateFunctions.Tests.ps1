@@ -2,7 +2,7 @@ $projectRoot = Resolve-Path "$PSScriptRoot\.."
 $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 $moduleName = Split-Path $moduleRoot -Leaf
 
-Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
+#Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
 InModuleScope -ModuleName PSGraph {
 
@@ -19,7 +19,7 @@ InModuleScope -ModuleName PSGraph {
                     Radial            = 'twopi'
                     Circular          = 'circo'
                 }
-                foreach($layout in $layoutEngine.GetEnumerator())
+                foreach ($layout in $layoutEngine.GetEnumerator())
                 {
                     Get-LayoutEngine -Name $layout.name | Should be $layout.value
                 }            
@@ -52,7 +52,7 @@ InModuleScope -ModuleName PSGraph {
             }
 
             It "Should not throw an error with hashtable" {
-                {Get-GraphVizArgument @{OutputFormat='png'}} | Should Not Throw
+                {Get-GraphVizArgument @{OutputFormat = 'png'}} | Should Not Throw
             }
         }  
 
@@ -78,8 +78,8 @@ InModuleScope -ModuleName PSGraph {
                 {Get-TranslatedArgument} | Should Not Throw
             }
             It "Translates DestinationPath" {
-                Get-TranslatedArgument @{DestinationPath='test.png'} | Should be '-otest.png'
-                Get-TranslatedArgument @{DestinationPath='test.png'} | Should not be '-o test.png'
+                Get-TranslatedArgument @{DestinationPath = 'test.png'} | Should be '-otest.png'
+                Get-TranslatedArgument @{DestinationPath = 'test.png'} | Should not be '-o test.png'
             }
         }  
 
@@ -150,19 +150,19 @@ InModuleScope -ModuleName PSGraph {
             }
 
             It "Creates well formatted attribute" {
-                ConvertTo-GraphVizAttribute @{label='test'} | Should Match '\[label=test;\]'
+                ConvertTo-GraphVizAttribute @{label = 'test'} | Should Match '\[label=test;\]'
             }
 
             It "Creates well formatted attribute with special characters" {
-                ConvertTo-GraphVizAttribute @{label='test label'} | Should Match '\[label="test label";\]'                
+                ConvertTo-GraphVizAttribute @{label = 'test label'} | Should Match '\[label="test label";\]'                
             }
 
             It "Creates well formatted attribute for html tables" {
-                ConvertTo-GraphVizAttribute @{label='<table>test label</table>'} | Should Match '\[label=<<table>test label</table>>;\]'                
+                ConvertTo-GraphVizAttribute @{label = '<table>test label</table>'} | Should Match '\[label=<<table>test label</table>>;\]'                
             }
 
             It "Creates multiple attributes" {
-                $result = ConvertTo-GraphVizAttribute @{label='test';arrowsize='2'} 
+                $result = ConvertTo-GraphVizAttribute @{label = 'test'; arrowsize = '2'} 
                 
                 $result | Should Match '\['
                 $result | Should Match 'label=test;'
@@ -171,18 +171,18 @@ InModuleScope -ModuleName PSGraph {
             }
 
             It "Places graphstyle attributes on multiple lines" {
-                $result = ConvertTo-GraphVizAttribute @{label='test';arrowsize='2'} -UseGraphStyle
+                $result = ConvertTo-GraphVizAttribute @{label = 'test'; arrowsize = '2'} -UseGraphStyle
                 $result.count | Should Be 2
             }
 
             It "Creates scripted attribute on an object" {
-                $object = [pscustomobject]@{description='test'}
-                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label=test;\]'
+                $object = [pscustomobject]@{description = 'test'}
+                ConvertTo-GraphVizAttribute @{label = {$_.description}} -InputObject $object | Should Match '\[label=test;\]'
             }
 
             It "Creates scripted attribute on a hashtable" {
-                $object = @{description='test'}
-                ConvertTo-GraphVizAttribute @{label={$_.description}} -InputObject $object | Should Match '\[label=test;\]'
+                $object = @{description = 'test'}
+                ConvertTo-GraphVizAttribute @{label = {$_.description}} -InputObject $object | Should Match '\[label=test;\]'
             }
         } 
     }

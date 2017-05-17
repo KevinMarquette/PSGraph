@@ -21,7 +21,8 @@ function Graph
         The output is a string so it can be saved to a variable or piped to other commands
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter", "")]
-    [cmdletbinding(DefaultParameterSetName = 'Default')]
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [Alias('DiGraph')]
     [OutputType([string])]
     param(
 

@@ -19,21 +19,31 @@ Scenario: Should have correct project structure and files
     And it will have a appveyor.yml file for build automation
 
 
-Scenario: Should have correct module structure
-    Given we use the module root folder
+Scenario: Should have correct module structure in source
+    Given we use the ModuleSource root folder
     Then it will have a *.psd1 file for module manifest
     And it will have a *.psm1 file for module 
     And it will have a public folder for public functions
     And it will have a public\*.ps1 file for a public function
 
+Scenario: Should have correct module structure in source
+    Given we use the ModuleOutput root folder
+    Then it will have a *.psd1 file for module manifest
+    And it will have a *.psm1 file for module 
 
-Scenario: Module should import
-    Given we use the module root folder
+Scenario: the module source should import
+    Given we use the ModuleSource root folder
     And it had a *.psd1 file
     When the module is imported
     Then Get-Module will show the module
     And Get-Command will list functions
 
+Scenario: The built Module should import
+    Given we use the ModuleOutput root folder
+    And it had a *.psd1 file
+    When the module is imported
+    Then Get-Module will show the module
+    And Get-Command will list functions
 
 Scenario: Public function features
     Given the module is imported
@@ -41,7 +51,6 @@ Scenario: Public function features
     Then all public functions will be listed in module manifest
     And all public functions will contain cmdletbinding
     And all public functions will contain ThrowTerminatingError
-
 
 Scenario: Should be well documented
     Given the module is imported
@@ -54,7 +63,7 @@ Scenario: Should be well documented
     And will have readthedoc pages    
     And it will have a PITCHME.md file for project promotion
     
-@PSScriptAnalyzer
+@PSScriptAnalyzer @Slow
 Scenario: Should pass PSScriptAnalyzer rules
     Given we use the module root folder    
     Then it will have a public\*.ps1 file for a public function
