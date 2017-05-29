@@ -147,7 +147,7 @@ Task Publish {
     )
     {
         $Params = @{
-            Path  = $ModulePath
+            Path  = $Destination
             Force = $true
         }
 
