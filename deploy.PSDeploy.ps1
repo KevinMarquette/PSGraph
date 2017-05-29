@@ -15,11 +15,11 @@
 
 # find a folder that has psd1 of same name...
 
-if($ENV:BHProjectName -and $ENV:BHProjectName.Count -eq 1)
+if ($ENV:BHProjectName -and $ENV:BHProjectName.Count -eq 1)
 {
     Deploy Module {
         By PSGalleryModule {
-            FromSource $ENV:BHProjectName
+            FromSource output\$ENV:BHProjectName
             To PSGallery
             WithOptions @{
                 ApiKey = $ENV:NugetApiKey

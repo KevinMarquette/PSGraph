@@ -1,7 +1,7 @@
 
 $script:ModuleName = 'PSGraph'
-$script:Source = Join-Path $PSScriptRoot $ModuleName
-$script:Output = Join-Path $PSScriptRoot output
+$script:Source = Join-Path $BuildRoot $ModuleName
+$script:Output = Join-Path $BuildRoot output
 $script:Destination = Join-Path $Output $ModuleName
 $script:ModulePath = "$Destination\$ModuleName.psm1"
 $script:ManifestPath = "$Destination\$ModuleName.psd1"
@@ -147,7 +147,7 @@ Task Publish {
     )
     {
         $Params = @{
-            Path  = $ModulePath
+            Path  = $BuildRoot
             Force = $true
         }
 
