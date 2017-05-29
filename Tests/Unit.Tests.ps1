@@ -2,7 +2,7 @@ $projectRoot = Resolve-Path "$PSScriptRoot\.."
 $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 $moduleName = Split-Path $moduleRoot -Leaf
 
-Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
+#Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
 Describe "Basic function unit tests" -Tags Build {
 
@@ -15,12 +15,12 @@ Describe "Basic function unit tests" -Tags Build {
 
         it "Graph attributes should not throw an error" {
 
-            {Graph g -Attributes @{label='test'} {}} | Should Not Throw
+            {Graph g -Attributes @{label = 'test'} {}} | Should Not Throw
         }
 
         it "Graph positional attributes should not throw an error" {
 
-            {Graph g @{label='test'} {}} | Should Not Throw
+            {Graph g @{label = 'test'} {}} | Should Not Throw
         }
 
         it "Builds basic graph" {
@@ -36,7 +36,7 @@ Describe "Basic function unit tests" -Tags Build {
         }
     }
 
-     Context "SubGraph" {
+    Context "SubGraph" {
 
         it "SubGraph alias should not throw an error" {
 
@@ -45,12 +45,12 @@ Describe "Basic function unit tests" -Tags Build {
 
         it "SubGraph attributes should not throw an error" {
 
-            {SubGraph 0 -Attributes @{label='test'} {}} | Should Not Throw
+            {SubGraph 0 -Attributes @{label = 'test'} {}} | Should Not Throw
         }
 
         it "SubGraph positional attributes should not throw an error" {
 
-            {SubGraph 0 @{label='test'} {}} | Should Not Throw
+            {SubGraph 0 @{label = 'test'} {}} | Should Not Throw
         }
 
         it "Builds basic graph" {
@@ -73,7 +73,7 @@ Describe "Basic function unit tests" -Tags Build {
 
         it "Node attributes should not throw an error" {
 
-            {Node TestNode @{shape='rectangle'}} | Should Not Throw
+            {Node TestNode @{shape = 'rectangle'}} | Should Not Throw
         }
 
         It "Creates a simple node" {
@@ -81,8 +81,8 @@ Describe "Basic function unit tests" -Tags Build {
         }
 
         It "Creates a node with attributes" {
-            Node TestNode @{shape='rectangle'} | Should Match 'TestNode \[shape=rectangle;\]'
-            Node TestNode @{shape='rectangle';label="myTest"} | Should Match 'TestNode \[shape=rectangle;label=myTest;\]'
+            Node TestNode @{shape = 'rectangle'} | Should Match 'TestNode \[shape=rectangle;\]'
+            Node TestNode @{shape = 'rectangle'; label = "myTest"} | Should Match 'TestNode \[shape=rectangle;label=myTest;\]'
         }
     }
 
@@ -99,7 +99,7 @@ Describe "Basic function unit tests" -Tags Build {
 
         It "Edge attributes should not throw an error" {
 
-            {Edge lhs rhs @{label='test'}} | Should Not Throw
+            {Edge lhs rhs @{label = 'test'}} | Should Not Throw
         }
 
         It "Creates a simple Edge" {
@@ -107,34 +107,34 @@ Describe "Basic function unit tests" -Tags Build {
         }
 
         It "Creates a Edge with attributes" {
-            Edge lhs rhs @{label='test'} | Should Match 'lhs->rhs \[label=test;\]'
+            Edge lhs rhs @{label = 'test'} | Should Match 'lhs->rhs \[label=test;\]'
         }
 
         It "Creates a Edge with multiple attributes" {
-            $result = Edge lhs rhs @{label='test';arrowsize='2'} 
+            $result = Edge lhs rhs @{label = 'test'; arrowsize = '2'} 
             
             $result | Should Match 'label=test;'
             $result | Should Match 'arrowsize=2;'
         }
 
         It "Creates an edge with scripted properties" {
-            $object = @{source='here';target='there'}
+            $object = @{source = 'here'; target = 'there'}
             $result = edge $object -FromScript {$_.source} -ToScript {$_.target}
             $result | Should Match 'here->there'
         }
 
         It "Creates an edge with scripted properties and attributes" {
-            $object = @{source='here';target='there';description='to'}
-            $result = edge $object -FromScript {$_.source} -ToScript {$_.target} -Attributes @{label={$_.description}}
+            $object = @{source = 'here'; target = 'there'; description = 'to'}
+            $result = edge $object -FromScript {$_.source} -ToScript {$_.target} -Attributes @{label = {$_.description}}
             $result | Should Match 'here->there \[label=to;\]'
         }
 
         It "Creates multiple edges with scripted properties and attributes" {
             $object = @(
-                @{source='here';target='there';description='to'}
-                @{source='LA';target='NY';description='roadtrip'}
+                @{source = 'here'; target = 'there'; description = 'to'}
+                @{source = 'LA'; target = 'NY'; description = 'roadtrip'}
             )
-            $result = edge $object -FromScript {$_.source} -ToScript {$_.target} -Attributes @{label={$_.description}}
+            $result = edge $object -FromScript {$_.source} -ToScript {$_.target} -Attributes @{label = {$_.description}}
             $result[0] | Should Match 'here->there \[label=to;\]'
             $result[1] | Should Match 'LA->NY \[label=roadtrip;\]'
         }

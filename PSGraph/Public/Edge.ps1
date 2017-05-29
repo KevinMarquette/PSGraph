@@ -47,15 +47,15 @@ function Edge
         If an array is specified for the From property, but not for the To property, then the From list will be procesed in order and will map the array in a chain.
 
     #>
-    [cmdletbinding(DefaultParameterSetName='Node')]
+    [cmdletbinding(DefaultParameterSetName = 'Node')]
     param(
         # start node or source of edge
         [Parameter(
             Mandatory = $true, 
             Position = 0,
-            ParameterSetName='Node'
+            ParameterSetName = 'Node'
         )]
-        [alias('NodeName','Name','SourceName','LeftHandSide','lhs')]
+        [alias('NodeName', 'Name', 'SourceName', 'LeftHandSide', 'lhs')]
         [string[]]
         $From,
 
@@ -63,20 +63,20 @@ function Edge
         [Parameter(
             Mandatory = $false, 
             Position = 1,
-            ParameterSetName='Node'
+            ParameterSetName = 'Node'
         )]
-        [alias('Destination','TargetName','RightHandSide','rhs')]
+        [alias('Destination', 'TargetName', 'RightHandSide', 'rhs')]
         [string[]]
         $To,
 
         # Hashtable that gets translated to an edge modifier
         [Parameter(
             Position = 2,
-            ParameterSetName='Node'
+            ParameterSetName = 'Node'
         )]
         [Parameter(
             Position = 1,
-            ParameterSetName='script'
+            ParameterSetName = 'script'
         )]        
         [hashtable]
         $Attributes,
@@ -86,7 +86,7 @@ function Edge
             Mandatory = $true, 
             Position = 0,
             ValueFromPipeline = $true,
-            ParameterSetName='script'
+            ParameterSetName = 'script'
         )]
         [Alias('InputObject')]
         [Object[]]
@@ -94,14 +94,14 @@ function Edge
 
         # start node script or source of edge
         [Parameter(
-            ParameterSetName='script')]
-        [alias('FromScriptBlock','SourceScript')]
+            ParameterSetName = 'script')]
+        [alias('FromScriptBlock', 'SourceScript')]
         [scriptblock]
         $FromScript = {$_},
 
         # Destination node script or target of edge
-        [Parameter(ParameterSetName='script')]
-        [alias('ToScriptBlock','TargetScript')]
+        [Parameter(ParameterSetName = 'script')]
+        [alias('ToScriptBlock', 'TargetScript')]
         [scriptblock]
         $ToScript = {$null},
 
@@ -116,7 +116,7 @@ function Edge
 
     begin
     {
-        if( -Not [string]::IsNullOrEmpty($LiteralAttribute))
+        if ( -Not [string]::IsNullOrEmpty($LiteralAttribute) )
         {
             $GraphVizAttribute = $LiteralAttribute
         }
@@ -124,54 +124,66 @@ function Edge
 
     process 
     {
-        if($Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript'))
-        { #Deducing the pattern 'edge @{}' as default edge definition
-            node 'edge' -attributes $Node[0]
-        }
-        elseif($null -ne $Node )
-        { # Used when scripted properties are specified
-            foreach($item in $Node)
-            {            
-                $fromValue = (@($item).ForEach($FromScript))
-                $toValue = (@($item).ForEach($ToScript))
-                $LiteralAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $item
-
-                edge -From $fromValue -To $toValue -LiteralAttribute $LiteralAttribute
-            }
-        } 
-        else
+        try
         {
-            if ($null -ne $Attributes -and [string]::IsNullOrEmpty($LiteralAttribute))
+            
+            if ( $Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript') )
             {
-                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
-            }        
-        
-            if ($null -ne $To)
-            { # If we have a target array, cross multiply results
-                foreach($sNode in $From)
-                {                    
-                    foreach($tNode in $To)
-                    {                        
-                      
-                        Write-Output ('{0}{1}->{2} {3}' -f  (Get-Indent),                        
-                            (Format-Value $sNode -Edge),
-                            (Format-Value $tNode -Edge),                            
+                #Deducing the pattern 'edge @{}' as default edge definition
+                node 'edge' -attributes $Node[0]
+            }
+            elseif ( $null -ne $Node )
+            {
+                # Used when scripted properties are specified
+                foreach ( $item in $Node )
+                {            
+                    $fromValue = (@($item).ForEach($FromScript))
+                    $toValue = (@($item).ForEach($ToScript))
+                    $LiteralAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $item
+
+                    edge -From $fromValue -To $toValue -LiteralAttribute $LiteralAttribute
+                }
+            } 
+            else
+            {
+                if ( $null -ne $Attributes -and [string]::IsNullOrEmpty($LiteralAttribute) )
+                {
+                    $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
+                }        
+            
+                if ( $null -ne $To )
+                {
+                    # If we have a target array, cross multiply results
+                    foreach ( $sNode in $From )
+                    {                    
+                        foreach ( $tNode in $To )
+                        {                        
+                        
+                            Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent),                        
+                                (Format-Value $sNode -Edge),
+                                (Format-Value $tNode -Edge),                            
+                                $GraphVizAttribute
+                            )
+                        }
+                    }
+                }
+                else
+                {
+                    # If we have a single array, connect them sequentially. 
+                    for ( $index = 0; $index -lt ($From.Count - 1); $index++ )
+                    {
+                        Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent),
+                            (Format-Value $From[$index] -Edge),
+                            (Format-Value $From[$index + 1] -Edge),
                             $GraphVizAttribute
                         )
                     }
                 }
             }
-            else
-            { # If we have a single array, connect them sequentially. 
-                for($index=0; $index -lt ($From.Count - 1); $index++)
-                {
-                    Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent),
-                        (Format-Value $From[$index] -Edge),
-                        (Format-Value $From[$index + 1] -Edge),
-                        $GraphVizAttribute
-                    )
-                }
-            }
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
         }
     }
 }

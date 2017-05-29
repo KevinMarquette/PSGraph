@@ -20,8 +20,9 @@ function Graph
         .Notes
         The output is a string so it can be saved to a variable or piped to other commands
     #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter","")]
-    [cmdletbinding(DefaultParameterSetName='Default')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter", "")]
+    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [Alias('DiGraph')]
     [OutputType([string])]
     param(
 
@@ -37,24 +38,24 @@ function Graph
         [Parameter(
             Mandatory = $true, 
             Position = 1,
-            ParameterSetName='Default'
+            ParameterSetName = 'Default'
         )]
         [Parameter(
             Mandatory = $true, 
             Position = 2,
-            ParameterSetName='Attributes'
+            ParameterSetName = 'Attributes'
         )]
         [scriptblock]
         $ScriptBlock,
 
         # Hashtable that gets translated to graph attributes
         [Parameter(
-            ParameterSetName='Default'
+            ParameterSetName = 'Default'
         )]
         [Parameter(             
             Mandatory = $true, 
             Position = 1,
-            ParameterSetName='Attributes'
+            ParameterSetName = 'Attributes'
         )]
         [hashtable]
         $Attributes = @{},
@@ -66,39 +67,61 @@ function Graph
     
     begin
     {
-        Write-Verbose "Begin Graph $type $Name"
-        if($Type -eq 'digraph')
+        try
         {
-            $script:indent = 0
+            
+            Write-Verbose "Begin Graph $type $Name"
+            if ($Type -eq 'digraph')
+            {
+                $script:indent = 0
+            }
+
+            "" # Blank line
+            "{0}{1} {2} {{" -f (Get-Indent), $Type, $name
+            $script:indent++
+
+            if ($Attributes -ne $null)
+            {
+                ConvertTo-GraphVizAttribute -Attributes $Attributes -UseGraphStyle
+            }
+
+            "" # Blank line      
         }
-
-        "" # Blank line
-        "{0}{1} {2} {{" -f (Get-Indent), $Type, $name
-        $script:indent++
-
-        if($Attributes -ne $null)
+        catch
         {
-            ConvertTo-GraphVizAttribute -Attributes $Attributes -UseGraphStyle
+            $PSCmdlet.ThrowTerminatingError($PSitem)
         }
-
-        "" # Blank line      
     }
 
     process
     {
-        Write-Verbose "Process Graph $type $name"
-        & $ScriptBlock
+        try
+        {
+            Write-Verbose "Process Graph $type $name"
+            & $ScriptBlock
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
+        }
     }
 
     end
-    {        
-        $script:indent--
-        if($script:indent -lt 0)
+    {       
+        try
         {
-            $script:indent = 0
+            $script:indent--
+            if ($script:indent -lt 0)
+            {
+                $script:indent = 0
+            }
+            "$(Get-Indent)}" # Close braces
+            "" #Blank line
+            Write-Verbose "End Graph $type $name"            
         }
-        "$(Get-Indent)}" # Close braces
-        "" #Blank line
-        Write-Verbose "End Graph $type $name"
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
+        } 
     }
 }

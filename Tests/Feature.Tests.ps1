@@ -2,7 +2,7 @@ $projectRoot = Resolve-Path "$PSScriptRoot\.."
 $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 $moduleName = Split-Path $moduleRoot -Leaf
 
-Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
+#Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
 Describe "Basic function feature tests" -Tags Build {
 
@@ -10,9 +10,9 @@ Describe "Basic function feature tests" -Tags Build {
         
         It "Graph support attributes" {
 
-            {graph g {} -Attributes @{label="testcase";style='filled'}} | Should Not Throw
+            {graph g {} -Attributes @{label = "testcase"; style = 'filled'}} | Should Not Throw
             
-            $resutls = (graph g {} -Attributes @{label="testcase";style='filled'}) -join ''
+            $resutls = (graph g {} -Attributes @{label = "testcase"; style = 'filled'}) -join ''
 
             $resutls | Should Match 'label=testcase;'
             $resutls | Should Match 'style=filled;'
@@ -61,27 +61,27 @@ Describe "Basic function feature tests" -Tags Build {
             $result[0] | Should match '1'
             $result[4] | Should match '5'
 
-            {node one,two,three,four} | Should Not Throw
+            {node one, two, three, four} | Should Not Throw
             {node @(Write-Output one two three four)} | Should Not Throw
         }
 
         It "Supports Node scriptblocks" {
-            $object = @{name='mName'}
+            $object = @{name = 'mName'}
             node $object -NodeScript {$_.name}
         }
 
         It "Supports node scriptblocks and attribute scriptblocks" {
-            $object = @{name='mName';shape='rectangle'}
-            node $object -NodeScript {$_.name} @{shape={$_.shape}}
+            $object = @{name = 'mName'; shape = 'rectangle'}
+            node $object -NodeScript {$_.name} @{shape = {$_.shape}}
         }
     }
     
     Context "Edge" {
 
         It "Can define multiple edges at once in a chain" {
-            {edge one,two,three} | Should Not Throw
+            {edge one, two, three} | Should Not Throw
 
-            $result = Edge one,two,three
+            $result = Edge one, two, three
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 2
             $result[0] | Should match 'one->two'
@@ -89,9 +89,9 @@ Describe "Basic function feature tests" -Tags Build {
         }
 
         It "Can define multiple edges at once, with cross multiply" {
-            {Edge one,two three,four} | Should Not Throw
+            {Edge one, two three, four} | Should Not Throw
 
-            $result = Edge one,two three,four
+            $result = Edge one, two three, four
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 4
             $result[0] | Should match 'one->three'
@@ -113,7 +113,7 @@ Describe "Basic function feature tests" -Tags Build {
             $result | should match '{ rank=same;  1; 2; 3; }'
         }
 
-         It "Can rank a list of items" {
+        It "Can rank a list of items" {
 
             {rank one two three} | Should Not Throw
 
@@ -125,9 +125,9 @@ Describe "Basic function feature tests" -Tags Build {
 
         it "Can rank objects with a script block" {
             $objects = @(
-                @{name='one'}
-                @{name='two'}
-                @{name='three'}
+                @{name = 'one'}
+                @{name = 'two'}
+                @{name = 'three'}
             )
                 
             {rank $objects -NodeScript {$_.name}} | Should Not Throw
@@ -138,7 +138,7 @@ Describe "Basic function feature tests" -Tags Build {
 
         It "Has no indention for first graph element" {
             $result = graph g {node test}
-            $result | Where-Object{$_ -match 'digraph'} | Should Match '^digraph'
+            $result | Where-Object {$_ -match 'digraph'} | Should Match '^digraph'
         }
 
         It "Has 4 space indention for first level items" {
@@ -147,9 +147,9 @@ Describe "Basic function feature tests" -Tags Build {
                 edge testEdge1 testEdge2
                 rank testRank
             }
-            $result | Where-Object{$_ -match 'testNode'}  | Should Match '^    testNode'
-            $result | Where-Object{$_ -match 'testEdge1'} | Should Match '^    testEdge1'
-            $result | Where-Object{$_ -match 'rank'}  | Should Match '^    { rank'
+            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^    testNode'
+            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^    testEdge1'
+            $result | Where-Object {$_ -match 'rank'}  | Should Match '^    { rank'
         }
 
         It "Has 4 space indention for first subbraph" {
@@ -158,7 +158,7 @@ Describe "Basic function feature tests" -Tags Build {
                     node test
                 }                
             }
-            $result | Where-Object{$_ -match 'subgraph'} | Should Match '^    subgraph'
+            $result | Where-Object {$_ -match 'subgraph'} | Should Match '^    subgraph'
         }
 
         It "Has 8 space indention for nested items" {
@@ -169,9 +169,9 @@ Describe "Basic function feature tests" -Tags Build {
                     rank testRank
                 }                
             }
-            $result | Where-Object{$_ -match 'testNode'}  | Should Match '^        testNode'
-            $result | Where-Object{$_ -match 'testEdge1'} | Should Match '^        testEdge1'
-            $result | Where-Object{$_ -match 'rank'}  | Should Match '^        { rank'
+            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^        testNode'
+            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^        testEdge1'
+            $result | Where-Object {$_ -match 'rank'}  | Should Match '^        { rank'
         }
 
         It "Has 12 space indention for nested items" {
@@ -184,9 +184,9 @@ Describe "Basic function feature tests" -Tags Build {
                     }
                 }                
             }
-            $result | Where-Object{$_ -match 'testNode'}  | Should Match '^            testNode'
-            $result | Where-Object{$_ -match 'testEdge1'} | Should Match '^            testEdge1'
-            $result | Where-Object{$_ -match 'rank'}  | Should Match '^            { rank'
+            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^            testNode'
+            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^            testEdge1'
+            $result | Where-Object {$_ -match 'rank'}  | Should Match '^            { rank'
         }
     }
 }

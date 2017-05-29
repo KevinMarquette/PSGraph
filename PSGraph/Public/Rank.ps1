@@ -30,17 +30,17 @@ function Rank
 
         # List of nodes to be on the same level as each other
         [Parameter(
-            Mandatory=$true, 
-            ValueFromPipeline=$true,
-            Position=0
+            Mandatory = $true, 
+            ValueFromPipeline = $true,
+            Position = 0
         )]
         [object[]]
         $Nodes,
 
         # Used to catch alternate style of specifying nodes
         [Parameter(
-            ValueFromRemainingArguments=$true, 
-            Position=1
+            ValueFromRemainingArguments = $true, 
+            Position = 1
         )]
         [object[]]
         $AdditionalNodes,
@@ -58,33 +58,41 @@ function Rank
     
     process
     {
-        $itemList = New-Object System.Collections.Queue
-        if($null -ne $Nodes)
+        try
         {
-            $Nodes | ForEach-Object{$_} | ForEach-Object{$itemList.Enqueue($_)}
-        }
-        if($null -ne $AdditionalNodes)
-        {
-            $AdditionalNodes | ForEach-Object{$_} | ForEach-Object{$_} | ForEach-Object{$itemList.Enqueue($_)}
-        }
-
-        $Values += foreach($item in $itemList)
-        {
-            # Adding these arrays ceates an empty element that we want to exclude
-            if(-Not [string]::IsNullOrWhiteSpace($item))
+            
+            $itemList = New-Object System.Collections.Queue
+            if ($null -ne $Nodes)
             {
-                if($NodeScript)
-                {
-                    $nodeName = [string](@($item).ForEach($NodeScript))
-                }
-                else 
-                {
-                    $nodeName = $item
-                }
-
-                Format-Value $nodeName -Node
+                $Nodes | ForEach-Object {$_} | ForEach-Object {$itemList.Enqueue($_)}
             }
-        }    
+            if ($null -ne $AdditionalNodes)
+            {
+                $AdditionalNodes | ForEach-Object {$_} | ForEach-Object {$_} | ForEach-Object {$itemList.Enqueue($_)}
+            }
+
+            $Values += foreach ($item in $itemList)
+            {
+                # Adding these arrays ceates an empty element that we want to exclude
+                if (-Not [string]::IsNullOrWhiteSpace($item))
+                {
+                    if ($NodeScript)
+                    {
+                        $nodeName = [string](@($item).ForEach($NodeScript))
+                    }
+                    else 
+                    {
+                        $nodeName = $item
+                    }
+
+                    Format-Value $nodeName -Node
+                }
+            }    
+        }
+        catch
+        {
+            $PSCmdlet.ThrowTerminatingError($PSitem)
+        }
     } 
 
     end
