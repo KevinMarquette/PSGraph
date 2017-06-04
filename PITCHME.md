@@ -51,7 +51,9 @@ The real fun starts when you generate data driven graphs.
 
 ### Example: Server farm data
 
-Imagine you wanted to diagram a server farm dynamically.
+Imagine you wanted to diagram a server farm.
+
+I'm generating example servers here:
 
     # Server counts
     $WebServerCount = 2
@@ -62,6 +64,8 @@ Imagine you wanted to diagram a server farm dynamically.
     $WebServer = 1..$WebServerCount | % {"Web_$_"}
     $APIServer = 1..$APIServerCount | % {"API_$_"}
     $DatabaseServer = 1..$DatabaseServerCount | % {"DB_$_"}
+
+But you could source these from AD or your CMDB
 
 ---
 
