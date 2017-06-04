@@ -40,3 +40,39 @@ Then we can render the graph as an image.
 
 
 ![firstGraph](http://psgraph.readthedocs.io/en/latest/images/firstGraph.png)
+
+---
+
+### Data driven graphs
+
+The real fun starts when you generate data driven graphs.
+
+---
+
+### Example: Server Farm data
+
+Imagine you wanted to diagram a server farm dynamically.
+
+    # Server counts
+    $WebServerCount = 2
+    $APIServerCount = 2
+    $DatabaseServerCount = 2
+
+    # Server lists
+    $WebServer = 1..$WebServerCount | % {"Web_$_"}
+    $APIServer = 1..$APIServerCount | % {"API_$_"}
+    $DatabaseServer = 1..$DatabaseServerCount | % {"DB_$_"}
+
+---
+
+### Example: Server Farm graph
+
+    graph servers {
+        node -Default @{shape='box'}
+        edge LoadBalancer -To $WebServer
+        edge $WebServer -To $APIServer
+        edge $APIServer -To AvailabilityGroup
+        edge AvailabilityGroup -To $DatabaseServer
+    } | Export-PSGraph -ShowGraph 
+
+![servers](https://kevinmarquette.github.io/img/servers.png)
