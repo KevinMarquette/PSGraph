@@ -3,7 +3,6 @@ Given 'the module was named (\S*)' {
     $Script:ModuleName = $Name
 
     $path = "$PSScriptRoot\.."
-    $ModuleName | should be 'PSGraph'
     $module = Get-ChildItem -Path $path -Recurse -Filter "$ModuleName.psm1" -verbose
     $module | should not benullorempty
     $module.fullname | Should Exist
