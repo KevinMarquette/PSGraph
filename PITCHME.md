@@ -45,7 +45,7 @@ Then we can render the graph as an image.
 
 ### Data driven graphs
 
-The real fun starts when you generate data driven graphs.
+The real fun starts when they are data driven
 
 ---
 
@@ -71,7 +71,7 @@ But you could source these from AD or your CMDB
 
 ### Example: Server farm graph
 
-Then describe how those lists of servers relate to each other
+Then describe how those lists of servers are related
 
     graph servers {
         node -Default @{shape='box'}
@@ -89,19 +89,19 @@ Then describe how those lists of servers relate to each other
 
 ---
 
-### Project structures
+### Example: Project structures
 
 ![files structure](http://psgraph.readthedocs.io/en/latest/images/filesSmall.png)
 
 ---
 
-### Parent and child processes
+### Example: Parent and child processes
 
 ![related processes](http://psgraph.readthedocs.io/en/latest/images/processSmall.png)
 
 ---
 
-### Network connections
+### Example: Network connections
 
 ![network connections](http://psgraph.readthedocs.io/en/latest/images/networkConnection.png)
 
