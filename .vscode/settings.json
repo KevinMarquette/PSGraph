@@ -1,0 +1,12 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+  "powershell.codeFormatting.openBraceOnSameLine": false,
+  "powershell.codeFormatting.newLineAfterOpenBrace": true,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "files.defaultLanguage": "powershell",
+  "[json]": {
+    "editor.tabSize": 2
+  }
+}
