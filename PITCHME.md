@@ -2,6 +2,8 @@
 
 PSGraph is a PowerShell module that allows you to script the generation of graphs using the GraphViz engine. It makes it easy to produce data driven visualizations.
 
+![basic graph](https://kevinmarquette.github.io/img/basic.png)
+
 ---
 ### Install GraphViz from the Chocolatey repo
 
