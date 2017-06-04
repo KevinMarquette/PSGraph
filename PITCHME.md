@@ -49,7 +49,7 @@ The real fun starts when you generate data driven graphs.
 
 ---
 
-### Example: Server Farm data
+### Example: Server farm data
 
 Imagine you wanted to diagram a server farm dynamically.
 
@@ -65,7 +65,9 @@ Imagine you wanted to diagram a server farm dynamically.
 
 ---
 
-### Example: Server Farm graph
+### Example: Server farm graph
+
+Then describe how those lists of servers relate to each other
 
     graph servers {
         node -Default @{shape='box'}
@@ -75,4 +77,36 @@ Imagine you wanted to diagram a server farm dynamically.
         edge AvailabilityGroup -To $DatabaseServer
     } | Export-PSGraph -ShowGraph 
 
+---
+
+### Example: Server farm graph image
+
 ![servers](https://kevinmarquette.github.io/img/servers.png)
+
+---
+
+### Project structures
+
+![files structure](http://psgraph.readthedocs.io/en/latest/images/filesSmall.png)
+
+---
+
+### Parent and child processes
+
+![related processes](http://psgraph.readthedocs.io/en/latest/images/processSmall.png)
+
+---
+
+### Network connections
+
+![network connections](http://psgraph.readthedocs.io/en/latest/images/networkConnection.png)
+
+---
+
+### What will you graph?
+
+For more information
+
+* [psgraph.readthedocs.io](http://psgraph.readthedocs.io)
+* [github.com/kevinmarquette/psgraph](https://github.com/kevinmarquette/psgraph)
+* [kevinmarquette.github.io](https://kevinmarquette.github.io)
