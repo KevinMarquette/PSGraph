@@ -162,7 +162,7 @@ Make sure you are running Powershell 5.0 (WMF 5.0). I don't know that it is a ha
     Find-Package graphviz | Install-Package -ForceBootstrap
 
     # Install PSGraph from the Powershell Gallery
-    Find-Module PSGraph | Install-Module 
+    Find-Module PSGraph | Install-Module
 
     # Import Module
     Import-Module PSGraph

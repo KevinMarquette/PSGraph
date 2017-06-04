@@ -2,6 +2,7 @@
 Make sure you are running Powershell 5.0 (WMF 5.0). I don't know that it is a hard requirement at the moment but I plan on using 5.0 features.
 
     # Install GraphViz from the Chocolatey repo
+    Register-PackageSource -Name Chocolatey -ProviderName Chocolatey -Location http://chocolatey.org/api/v2/
     Find-Package graphviz | Install-Package -ForceBootstrap
 
     # Install PSGraph from the Powershell Gallery
