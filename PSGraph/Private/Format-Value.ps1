@@ -1,7 +1,6 @@
 function Format-Value
 {
     param(
-        [string]
         $value,
         [switch]
         $Edge,
@@ -11,7 +10,7 @@ function Format-Value
 
     begin
     {
-        if( $null -eq $Script:CustomFormat )
+        if ( $null -eq $Script:CustomFormat )
         {
             Set-NodeFormatScript
         }
@@ -19,7 +18,7 @@ function Format-Value
     process
     {
         # edges can point to record cells
-        if($Edge -and $value -match '(?<node>.*):(?<Record>\w*)')
+        if ($Edge -and $value -match '(?<node>.*):(?<Record>\w*)')
         {
             # Recursive call to this function to format just the node
             "{0}:{1}" -f (Format-Value $matches.node -Node), $matches.record
@@ -27,7 +26,7 @@ function Format-Value
         else 
         {
             # Allows for custom node ID formats
-            if($Edge -Or $Node)
+            if ($Edge -Or $Node)
             {
                 $value = @($value).ForEach($Script:CustomFormat)
             }
@@ -39,15 +38,10 @@ function Format-Value
                 {
                     "<$value>"
                 }
-                # Normal value, no quotes
-                '^[\w]+$'
-                {
-                    $value
-                }
                 # Anything else, use quotes
                 default
                 {
-                    '"{0}"' -f $value.Replace("`"", '\"') # Escape quotes in the string value
+                    '"{0}"' -f ([string]$value).Replace("`"", '\"') # Escape quotes in the string value
                 }
             }
         }

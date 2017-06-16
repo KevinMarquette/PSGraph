@@ -44,7 +44,7 @@ Task Specification {
 
 Task CopyToOutput {
 
-    Write-Output "  Create Directory [$Destination]"
+    "  Create Directory [$Destination]"
     $null = New-Item -Type Directory -Path $Destination -ErrorAction Ignore
 
     Get-ChildItem $source -File | 
@@ -70,14 +70,14 @@ Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
             foreach ($file in $fileList)
             {
                 $shortName = $file.fullname.replace($PSScriptRoot, '')
-                Write-Output "  Importing [.$shortName]"
+                "  Importing [.$shortName]"
                 [void]$stringbuilder.AppendLine( "# .$shortName" ) 
                 [void]$stringbuilder.AppendLine( [System.IO.File]::ReadAllText($file.fullname) )
             }
         }
     }
     
-    Write-Output "  Creating module [$ModulePath]"
+    "  Creating module [$ModulePath]"
     Set-Content -Path  $ModulePath -Value $stringbuilder.ToString() 
 }
 
@@ -88,7 +88,7 @@ Task NextPSGalleryVersion -if (-Not ( Test-Path "$output\version.xml" ) ) -Befor
 
 Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $ManifestPath {
    
-    Write-Output "  Update [$ManifestPath]"
+    "  Update [$ManifestPath]"
     Copy-Item "$source\$ModuleName.psd1" -Destination $ManifestPath
 
     $bumpVersionType = 'Patch'
@@ -109,9 +109,9 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     {
         $version = $galleryVersion
     }
-    Write-Output "  Stepping [$bumpVersionType] version [$version]"
+    "  Stepping [$bumpVersionType] version [$version]"
     $version = [version] (Step-Version $version -Type $bumpVersionType)
-    Write-Output "  Using version: $version"
+    "  Using version: $version"
     
     Update-Metadata -Path $ManifestPath -PropertyName ModuleVersion -Value $version
 }
@@ -123,17 +123,17 @@ Task UpdateSource {
 Task ImportModule {
     if ( -Not ( Test-Path $ManifestPath ) )
     {
-        Write-Output "  Modue [$ModuleName] is not built, cannot find [$ManifestPath]"
+        "  Modue [$ModuleName] is not built, cannot find [$ManifestPath]"
         Write-Error "Could not find module manifest [$ManifestPath]. You may need to build the module first"
     }
     else
     {
         if (Get-Module $ModuleName)
         {
-            Write-Output "  Unloading Module [$ModuleName] from previous import"
+            "  Unloading Module [$ModuleName] from previous import"
             Remove-Module $ModuleName
         }
-        Write-Output "  Importing Module [$ModuleName] from [$ManifestPath]"
+        "  Importing Module [$ModuleName] from [$ManifestPath]"
         Import-Module $ManifestPath -Force
     }
 }

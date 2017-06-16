@@ -67,7 +67,8 @@ function Node
             )
             { 
                 # detected attept to set default values in this form 'node @{key=value}', the hashtable ends up in $name[0]
-                Node 'node' -Attributes $Name[0] 
+                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Name[0]
+                '{0}node {1}' -f (Get-Indent), $GraphVizAttribute
             }
             else
             {
@@ -75,7 +76,7 @@ function Node
                 {                
                     if ( $NodeScript )
                     {
-                        $nodeName = [string](@($node).ForEach($NodeScript))
+                        $nodeName = (@($node).ForEach($NodeScript))
                     }
                     else 
                     {
@@ -83,7 +84,7 @@ function Node
                     }
 
                     $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
-                    Write-Output ('{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute)                           
+                    '{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute                        
                 }   
             }     
         }

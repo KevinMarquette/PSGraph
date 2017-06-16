@@ -15,7 +15,7 @@ function Get-TranslatedArgument($InputObject)
             }
 
             Write-Debug $newArgument
-            Write-Output "-$newArgument"
+            "-$newArgument"
         }            
     }
 }

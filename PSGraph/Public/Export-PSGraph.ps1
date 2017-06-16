@@ -166,7 +166,7 @@ function Export-PSGraph
                     Invoke-Expression $PSBoundParameters["DestinationPath"]
                 }
 
-                Write-Output (Get-ChildItem $PSBoundParameters["DestinationPath"])
+                Get-ChildItem $PSBoundParameters["DestinationPath"]
             }
         }
         catch
