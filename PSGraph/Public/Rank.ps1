@@ -97,6 +97,6 @@ function Rank
 
     end
     {
-        Write-Output ('{0}{{ rank=same;  {1}; }}' -f (Get-Indent), ($values -join '; '))
+        '{0}{{ rank=same;  {1}; }}' -f (Get-Indent), ($values -join '; ')
     }  
 }

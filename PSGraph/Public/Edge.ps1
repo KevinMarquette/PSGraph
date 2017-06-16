@@ -130,7 +130,8 @@ function Edge
             if ( $Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript') )
             {
                 #Deducing the pattern 'edge @{}' as default edge definition
-                node 'edge' -attributes $Node[0]
+                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Node[0]
+                '{0}edge {1}' -f (Get-Indent), $GraphVizAttribute
             }
             elseif ( $null -ne $Node )
             {
@@ -159,7 +160,7 @@ function Edge
                         foreach ( $tNode in $To )
                         {                        
                         
-                            Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent),                        
+                            ('{0}{1}->{2} {3}' -f (Get-Indent),                        
                                 (Format-Value $sNode -Edge),
                                 (Format-Value $tNode -Edge),                            
                                 $GraphVizAttribute
@@ -172,7 +173,7 @@ function Edge
                     # If we have a single array, connect them sequentially. 
                     for ( $index = 0; $index -lt ($From.Count - 1); $index++ )
                     {
-                        Write-Output ('{0}{1}->{2} {3}' -f (Get-Indent),
+                        ('{0}{1}->{2} {3}' -f (Get-Indent),
                             (Format-Value $From[$index] -Edge),
                             (Format-Value $From[$index + 1] -Edge),
                             $GraphVizAttribute

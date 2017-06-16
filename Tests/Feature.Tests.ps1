@@ -12,8 +12,8 @@ Describe "Basic function feature tests" -Tags Build {
             
             $resutls = (graph g {} -Attributes @{label = "testcase"; style = 'filled'}) -join ''
 
-            $resutls | Should Match 'label=testcase;'
-            $resutls | Should Match 'style=filled;'
+            $resutls | Should Match 'label="testcase";'
+            $resutls | Should Match 'style="filled";'
         }
 
         It "Items can be placed in a graph" {
@@ -82,8 +82,8 @@ Describe "Basic function feature tests" -Tags Build {
             $result = Edge one, two, three
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 2
-            $result[0] | Should match 'one->two'
-            $result[1] | Should match 'two->three'
+            $result[0] | Should match '"one"->"two"'
+            $result[1] | Should match '"two"->"three"'
         }
 
         It "Can define multiple edges at once, with cross multiply" {
@@ -92,10 +92,10 @@ Describe "Basic function feature tests" -Tags Build {
             $result = Edge one, two three, four
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 4
-            $result[0] | Should match 'one->three'
-            $result[1] | Should match 'one->four'
-            $result[2] | Should match 'two->three'
-            $result[3] | Should match 'two->four'
+            $result[0] | Should match '"one"->"three"'
+            $result[1] | Should match '"one"->"four"'
+            $result[2] | Should match '"two"->"three"'
+            $result[3] | Should match '"two"->"four"'
         }
     }
 
@@ -108,7 +108,7 @@ Describe "Basic function feature tests" -Tags Build {
             $result = rank (1..3)
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 1
-            $result | should match '{ rank=same;  1; 2; 3; }'
+            $result | should match '{ rank=same;  "1"; "2"; "3"; }'
         }
 
         It "Can rank a list of items" {
@@ -118,7 +118,7 @@ Describe "Basic function feature tests" -Tags Build {
             $result = rank one two three
             $result | Should Not BeNullOrEmpty
             $result.count | Should be 1
-            $result | should match '{ rank=same;  one; two; three; }'
+            $result | should match '{ rank=same;  "one"; "two"; "three"; }'
         }
 
         it "Can rank objects with a script block" {
@@ -145,8 +145,8 @@ Describe "Basic function feature tests" -Tags Build {
                 edge testEdge1 testEdge2
                 rank testRank
             }
-            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^    testNode'
-            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^    testEdge1'
+            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^    "testNode"'
+            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^    "testEdge1"'
             $result | Where-Object {$_ -match 'rank'}  | Should Match '^    { rank'
         }
 
@@ -167,8 +167,8 @@ Describe "Basic function feature tests" -Tags Build {
                     rank testRank
                 }                
             }
-            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^        testNode'
-            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^        testEdge1'
+            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^        "testNode"'
+            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^        "testEdge1"'
             $result | Where-Object {$_ -match 'rank'}  | Should Match '^        { rank'
         }
 
@@ -182,8 +182,8 @@ Describe "Basic function feature tests" -Tags Build {
                     }
                 }                
             }
-            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^            testNode'
-            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^            testEdge1'
+            $result | Where-Object {$_ -match 'testNode'}  | Should Match '^            "testNode"'
+            $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^            "testEdge1"'
             $result | Where-Object {$_ -match 'rank'}  | Should Match '^            { rank'
         }
     }

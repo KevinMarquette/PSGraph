@@ -19,7 +19,7 @@ function Format-PesterTest
     {
         Write-Host -NoNewline '['
 
-        if($TestResult.Passed)
+        if ($TestResult.Passed)
         {
             Write-Host 'Passed' -NoNewline -ForegroundColor Green
         }
@@ -30,10 +30,10 @@ function Format-PesterTest
 
         Write-Host ( '] {0}: {1}: {2}' -f $TestResult.Describe, $TestResult.Context, $TestResult.Name )
 
-        if($TestResult.Passed -eq $false)
+        if ($TestResult.Passed -eq $false)
         {               
             Write-Host $TestResult.FailureMessage -ForegroundColor Yellow
-            if($TestResult.StackTrace)
+            if ($TestResult.StackTrace)
             {
                 Write-Host $TestResult.StackTrace.ToString() -ForegroundColor Yellow
             }
@@ -50,7 +50,7 @@ $jobs = $Tests | Start-RSJob -Name {$_.BaseName}  -ScriptBlock {
 
 $processed = New-Object 'System.Collections.Queue'
 
-While( ( Get-RSJob -ID $jobs.ID ).Where({ $_.HasMoreData -or $_.State -eq 'Running' }) )
+While ( ( Get-RSJob -ID $jobs.ID ).Where( { $_.HasMoreData -or $_.State -eq 'Running' }) )
 {
     Get-RSJob
     Write-Verbose 'sleep'
@@ -58,13 +58,13 @@ While( ( Get-RSJob -ID $jobs.ID ).Where({ $_.HasMoreData -or $_.State -eq 'Runni
     $scriptResults = Get-RSJob -ID $jobs.ID -HasMoreData | Receive-RSJob
     
     # $script = $scriptResults[3]
-    foreach( $script in $scriptResults)
+    foreach ( $script in $scriptResults)
     {
-        Write-Output ( '[Script] {0}' -f $script.Script)
+        '[Script] {0}' -f $script.Script
         # $result = $script.TestResult[0]
         $script.TestResult | Format-PesterTest
 
-        if($script.FailedCount -gt 0 -and $ThrowOnFailure)
+        if ($script.FailedCount -gt 0 -and $ThrowOnFailure)
         {
             Write-Error ('Script {0} has {1} failing tests' -f $script.Script, $script.FailedCount)
         }
@@ -72,8 +72,8 @@ While( ( Get-RSJob -ID $jobs.ID ).Where({ $_.HasMoreData -or $_.State -eq 'Runni
     }
 }
 
-$failedTests = $processed.ToArray().TestResult.Where({$_.Passed -eq $false}) 
-if($failedTests)
+$failedTests = $processed.ToArray().TestResult.Where( {$_.Passed -eq $false}) 
+if ($failedTests)
 {
     Write-Host 'Please review these failed tests:'
     $failedTests | Format-PesterTest
