@@ -30,7 +30,7 @@ This one also includes the files in the folder. Click on the image to see the wh
 ## Process info
 Because processors have owners, we can also chart the relationships between them. Click on the image to view the whole chart.
 
-[![Source](images/processSmall.png)](images/process.png)
+[![Source](images/processSmall.png)](images/processes.png)
 
     $process = Get-CimInstance -ClassName CIM_Process
 
@@ -43,7 +43,7 @@ Because processors have owners, we can also chart the relationships between them
 ## Network Connections
 Here is a mapping of active network connections from one machine to everything it is connected to.
 
-[![Source](images/networkConnection.png)](images/NetworkConnection.png)
+[![Source](images/networkConnection.png)](images/networkConnection.png)
 
     $netstat = Get-NetTCPConnection | where LocalAddress -EQ '10.112.11.115'
 
