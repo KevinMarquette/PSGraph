@@ -114,7 +114,7 @@ Then 'all script files pass PSScriptAnalyzer rules' {
 
     foreach ($Script in $scripts )
     {      
-        $file = $script.fullname.replace($BaseFolder, '$')
+        $file = $script.fullname.Replace($BaseFolder, '$')
        
 
         context $file {
