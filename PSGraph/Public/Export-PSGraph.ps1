@@ -152,7 +152,7 @@ function Export-PSGraph
                 {                
                     Write-Verbose 'Creating temporary path to save graph'
                     $file = [System.IO.Path]::GetRandomFileName()               
-                    $PSBoundParameters["DestinationPath"] = Join-Path $env:temp "$file.$OutputFormat"            
+                    $PSBoundParameters["DestinationPath"] = Join-Path ([system.io.path]::GetTempPath()) "$file.$OutputFormat"            
                 }
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
