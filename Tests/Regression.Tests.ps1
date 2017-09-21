@@ -36,17 +36,18 @@ Describe "Regression tests for Github issues" -Tag Build {
         }
     }
 
-    context "#30 Keywords for node names causing parsing errors" {
+    context "#30 #44 Keywords for node names causing parsing errors" {
         $keywordList = @(
             'graph'
             'node'
             'edge'
             'subgraph'
             'rank'
+            'digraph'
         )
 
-        It "#30 graph (and other keywords) for node name should be in quotes" {
-
+        It "#30 #44 graph (and other keywords) for node name should be in quotes" {
+        
             foreach ($keyword in $keywordList)
             {
                 $graph = graph g {
@@ -57,7 +58,7 @@ Describe "Regression tests for Github issues" -Tag Build {
             }
         }
         
-        It "#30 graph (and other keywords) for edges should be in quotes" {
+        It "#30 #44 graph (and other keywords) for edges should be in quotes" {
 
             foreach ($keyword in $keywordList)
             {
