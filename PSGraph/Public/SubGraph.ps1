@@ -23,7 +23,7 @@ function SubGraph
     param(
         # Numeric ID of subgraph starting at 0
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 0
         )]
         [int]
@@ -31,12 +31,12 @@ function SubGraph
 
         # The commands to execute inside the subgraph
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 1,
             ParameterSetName = 'Default'
         )]
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 2,
             ParameterSetName = 'Attributes'
         )]
@@ -47,8 +47,8 @@ function SubGraph
         [Parameter(
             ParameterSetName = 'Default'
         )]
-        [Parameter(             
-            Mandatory = $true, 
+        [Parameter(
+            Mandatory = $true,
             Position = 1,
             ParameterSetName = 'Attributes'
         )]
@@ -64,7 +64,7 @@ function SubGraph
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 }

@@ -6,23 +6,23 @@ function Install-GraphViz
         .Example
         Install-GraphViz
     #>
-    [cmdletbinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
+    [cmdletbinding( SupportsShouldProcess = $true, ConfirmImpact = "High" )]
     param()
 
     process
     {
         try
-        {            
-            if ($IsOSX)
+        {
+            if ( $IsOSX )
             {
-                if ($PSCmdlet.ShouldProcess('Install graphviz'))
+                if ( $PSCmdlet.ShouldProcess( 'Install graphviz' ) )
                 {
                     brew install graphviz
                 }
             }
             else
             {
-                if ($PSCmdlet.ShouldProcess('Register Chocolatey provider and install graphviz'))
+                if ( $PSCmdlet.ShouldProcess('Register Chocolatey provider and install graphviz' ) )
                 {
                     if ( -Not ( Get-PackageProvider | Where-Object ProviderName -eq 'Chocolatey' ) )
                     {
@@ -30,12 +30,12 @@ function Install-GraphViz
                     }
 
                     Find-Package graphviz | Install-Package -Verbose -ForceBootstrap
-                }                
-            }            
+                }
+            }
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 }

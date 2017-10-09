@@ -42,7 +42,7 @@ function Export-PSGraph
         $Source,
 
         #The destination for the generated file.
-        [Parameter(            
+        [Parameter(
             Position = 0
         )]
         [string]
@@ -52,13 +52,13 @@ function Export-PSGraph
         [ValidateSet('jpg', 'png', 'gif', 'imap', 'cmapx', 'jp2', 'json', 'pdf', 'plain', 'dot')]
         [string]
         $OutputFormat = 'png',
-        
+
         # The layout engine used to generate the image
         [ValidateSet(
             'Hierarchical',
             'SpringModelSmall' ,
-            'SpringModelMedium', 
-            'SpringModelLarge', 
+            'SpringModelMedium',
+            'SpringModelLarge',
             'Radial',
             'Circular'
         )]
@@ -85,53 +85,53 @@ function Export-PSGraph
             # Use Resolve-Path to test all passed paths
             # Select only items with 'dot' BaseName and use first one
             $graphViz = Resolve-Path -path $GraphVizPath -ErrorAction SilentlyContinue | Get-Item | Where-Object BaseName -eq 'dot' | Select-Object -First 1
-            
+
             if ( $null -eq $graphViz )
             {
                 throw "Could not find GraphViz installed on this system. Please run 'Install-GraphViz' to install the needed binaries and libraries. This module just a wrapper around GraphViz and is looking for it in your program files folder. Optionally pass a path to your dot.exe file with the GraphVizPath parameter"
             }
 
             $useStandardInput = $false
-            $standardInput = New-Object System.Text.StringBuilder            
+            $standardInput = New-Object System.Text.StringBuilder
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 
     process
-    {     
+    {
         try
         {
-            
-            if ( $null -ne $Source -and $Source.Count -gt 0)
+
+            if ( $null -ne $Source -and $Source.Count -gt 0 )
             {
                 # if $Source is a list of files, process each one
                 $fileList = $null
 
                 # Only resolve paths, if there are NO empty string entries in the $Source
                 # Resolve-path spits out an error with empty string paths, even with SilentlyContinue
-                if (@($Source | Where-Object { [String]::IsNullOrEmpty($_) } ).Count -eq 0)
+                if ( @( $Source | Where-Object { [String]::IsNullOrEmpty($_) } ).Count -eq 0 )
                 {
                     $fileList = Resolve-Path -Path $Source -ErrorAction SilentlyContinue
                 }
-                
-                if ( $null -ne $fileList -and $Source.Count -gt 0)
+
+                if ( $null -ne $fileList -and $Source.Count -gt 0 )
                 {
                     foreach ( $file in $fileList )
-                    {     
+                    {
                         Write-Verbose "Generating graph from '$($file.path)'"
                         $arguments = Get-GraphVizArgument -InputObject $PSBoundParameters
                         & $graphViz @($arguments + $file.path)
                     }
-                } 
-                else 
+                }
+                else
                 {
                     Write-Debug 'Using standard input to process graph'
-                    $useStandardInput = $true                
-                    [void]$standardInput.AppendLine($Source)            
-                }    
+                    $useStandardInput = $true
+                    [void]$standardInput.AppendLine($Source)
+                }
             }
         }
         catch
@@ -144,22 +144,22 @@ function Export-PSGraph
     {
         try
         {
-            
-            if ($useStandardInput)
+
+            if ( $useStandardInput )
             {
                 Write-Verbose 'Processing standard input'
-                if (-Not $PSBoundParameters.ContainsKey('DestinationPath'))
-                {                
+                if ( -Not $PSBoundParameters.ContainsKey( 'DestinationPath' ) )
+                {
                     Write-Verbose 'Creating temporary path to save graph'
-                    $file = [System.IO.Path]::GetRandomFileName()               
-                    $PSBoundParameters["DestinationPath"] = Join-Path ([system.io.path]::GetTempPath()) "$file.$OutputFormat"            
+                    $file = [System.IO.Path]::GetRandomFileName()
+                    $PSBoundParameters["DestinationPath"] = Join-Path ([system.io.path]::GetTempPath()) "$file.$OutputFormat"
                 }
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
 
                 $standardInput.ToString() | & $graphViz @($arguments)
-            
-                if ($ShowGraph)
+
+                if ( $ShowGraph )
                 {
                     # Launches image with default viewer as decided by explorer
                     Write-Verbose "Launching $($PSBoundParameters["DestinationPath"])"

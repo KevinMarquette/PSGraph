@@ -1,4 +1,4 @@
-function Node 
+function Node
 {
     <#
         .Description
@@ -18,9 +18,9 @@ function Node
         }
 
         .Example
-        
+
         graph g {
-            node (1..10) 
+            node (1..10)
         }
 
         .Notes
@@ -32,7 +32,7 @@ function Node
     param(
         # The name of the node
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             ValueFromPipeline = $true,
             Position = 0
         )]
@@ -52,20 +52,20 @@ function Node
 
         # not used anymore but offers backward compatibility or verbosity
         [switch]
-        $Default 
+        $Default
     )
 
     process
-    {        
+    {
         try
         {
-            
-            if ( 
-                $Name.count -eq 1 -and 
-                $Name[0] -is [hashtable] -and 
-                !$PSBoundParameters.ContainsKey('NodeScript')
+
+            if (
+                $Name.count -eq 1 -and
+                $Name[0] -is [hashtable] -and
+                !$PSBoundParameters.ContainsKey( 'NodeScript' )
             )
-            { 
+            {
                 # detected attept to set default values in this form 'node @{key=value}', the hashtable ends up in $name[0]
                 $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Name[0]
                 '{0}node {1}' -f (Get-Indent), $GraphVizAttribute
@@ -73,24 +73,24 @@ function Node
             else
             {
                 foreach ( $node in $Name )
-                {                
+                {
                     if ( $NodeScript )
                     {
                         $nodeName = (@($node).ForEach($NodeScript))
                     }
-                    else 
+                    else
                     {
                         $nodeName = $node
                     }
 
                     $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
-                    '{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute                        
-                }   
-            }     
+                    '{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute
+                }
+            }
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 }

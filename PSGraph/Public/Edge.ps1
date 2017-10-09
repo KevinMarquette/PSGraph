@@ -12,9 +12,9 @@ function Edge
         Generates this graph syntax:
 
         digraph g {
-            "FirstNode"->"SecondNode" 
+            "FirstNode"->"SecondNode"
         }
-        
+
         .Example
         $folder = Get-ChildItem -Recurse -Directory
         graph g {
@@ -24,16 +24,16 @@ function Edge
         # with parameter names specified
         graph g {
             $folder | %{ edge -From $_.parent -To $_.name }
-        } 
+        }
 
         # with scripted properties
         graph g {
             edge $folder -FromScript {$_.parent} -ToScript {$_.name}
-        } 
+        }
 
         .Example
         $folder = Get-ChildItem -Recurse -Directory
-        
+
 
         .Example
         graph g {
@@ -47,21 +47,21 @@ function Edge
         If an array is specified for the From property, but not for the To property, then the From list will be procesed in order and will map the array in a chain.
 
     #>
-    [cmdletbinding(DefaultParameterSetName = 'Node')]
+    [cmdletbinding( DefaultParameterSetName = 'Node' )]
     param(
         # start node or source of edge
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 0,
             ParameterSetName = 'Node'
         )]
-        [alias('NodeName', 'Name', 'SourceName', 'LeftHandSide', 'lhs')]
+        [alias( 'NodeName', 'Name', 'SourceName', 'LeftHandSide', 'lhs' )]
         [string[]]
         $From,
 
         # Destination node or target of edge
         [Parameter(
-            Mandatory = $false, 
+            Mandatory = $false,
             Position = 1,
             ParameterSetName = 'Node'
         )]
@@ -77,13 +77,13 @@ function Edge
         [Parameter(
             Position = 1,
             ParameterSetName = 'script'
-        )]        
+        )]
         [hashtable]
         $Attributes,
 
         # a list of nodes to process
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 0,
             ValueFromPipeline = $true,
             ParameterSetName = 'script'
@@ -122,11 +122,11 @@ function Edge
         }
     }
 
-    process 
+    process
     {
         try
         {
-            
+
             if ( $Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript') )
             {
                 #Deducing the pattern 'edge @{}' as default edge definition
@@ -137,32 +137,32 @@ function Edge
             {
                 # Used when scripted properties are specified
                 foreach ( $item in $Node )
-                {            
-                    $fromValue = (@($item).ForEach($FromScript))
-                    $toValue = (@($item).ForEach($ToScript))
+                {
+                    $fromValue = ( @($item).ForEach($FromScript) )
+                    $toValue = ( @($item).ForEach($ToScript) )
                     $LiteralAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $item
 
                     edge -From $fromValue -To $toValue -LiteralAttribute $LiteralAttribute
                 }
-            } 
+            }
             else
             {
-                if ( $null -ne $Attributes -and [string]::IsNullOrEmpty($LiteralAttribute) )
+                if ( $null -ne $Attributes -and [string]::IsNullOrEmpty( $LiteralAttribute ) )
                 {
                     $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
-                }        
-            
+                }
+
                 if ( $null -ne $To )
                 {
                     # If we have a target array, cross multiply results
                     foreach ( $sNode in $From )
-                    {                    
+                    {
                         foreach ( $tNode in $To )
-                        {                        
-                        
-                            ('{0}{1}->{2} {3}' -f (Get-Indent),                        
+                        {
+
+                            ( '{0}{1}->{2} {3}' -f (Get-Indent),
                                 (Format-Value $sNode -Edge),
-                                (Format-Value $tNode -Edge),                            
+                                (Format-Value $tNode -Edge),
                                 $GraphVizAttribute
                             )
                         }
@@ -170,8 +170,8 @@ function Edge
                 }
                 else
                 {
-                    # If we have a single array, connect them sequentially. 
-                    for ( $index = 0; $index -lt ($From.Count - 1); $index++ )
+                    # If we have a single array, connect them sequentially.
+                    for ( $index = 0; $index -lt ( $From.Count - 1 ); $index++ )
                     {
                         ('{0}{1}->{2} {3}' -f (Get-Indent),
                             (Format-Value $From[$index] -Edge),
@@ -184,7 +184,7 @@ function Edge
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 }

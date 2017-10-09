@@ -30,7 +30,7 @@ function Rank
 
         # List of nodes to be on the same level as each other
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             ValueFromPipeline = $true,
             Position = 0
         )]
@@ -39,7 +39,7 @@ function Rank
 
         # Used to catch alternate style of specifying nodes
         [Parameter(
-            ValueFromRemainingArguments = $true, 
+            ValueFromRemainingArguments = $true,
             Position = 1
         )]
         [object[]]
@@ -55,18 +55,18 @@ function Rank
     {
         $values = @()
     }
-    
+
     process
     {
         try
         {
-            
+
             $itemList = New-Object System.Collections.Queue
-            if ($null -ne $Nodes)
+            if ( $null -ne $Nodes )
             {
                 $Nodes | ForEach-Object {$_} | ForEach-Object {$itemList.Enqueue($_)}
             }
-            if ($null -ne $AdditionalNodes)
+            if ( $null -ne $AdditionalNodes )
             {
                 $AdditionalNodes | ForEach-Object {$_} | ForEach-Object {$_} | ForEach-Object {$itemList.Enqueue($_)}
             }
@@ -74,29 +74,29 @@ function Rank
             $Values += foreach ($item in $itemList)
             {
                 # Adding these arrays ceates an empty element that we want to exclude
-                if (-Not [string]::IsNullOrWhiteSpace($item))
+                if ( -Not [string]::IsNullOrWhiteSpace( $item ) )
                 {
-                    if ($NodeScript)
+                    if ( $NodeScript )
                     {
-                        $nodeName = [string](@($item).ForEach($NodeScript))
+                        $nodeName = [string]( @( $item ).ForEach( $NodeScript ) )
                     }
-                    else 
+                    else
                     {
                         $nodeName = $item
                     }
 
                     Format-Value $nodeName -Node
                 }
-            }    
+            }
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
-    } 
+    }
 
     end
     {
         '{0}{{ rank=same;  {1}; }}' -f (Get-Indent), ($values -join '; ')
-    }  
+    }
 }

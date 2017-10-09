@@ -34,7 +34,7 @@ Task FullTests {
 }
 
 Task Specification {
-    
+
     $TestResults = Invoke-Gherkin $PSScriptRoot\Spec -PassThru
     if ($TestResults.FailedCount -gt 0)
     {
@@ -47,20 +47,20 @@ Task CopyToOutput {
     "  Create Directory [$Destination]"
     $null = New-Item -Type Directory -Path $Destination -ErrorAction Ignore
 
-    Get-ChildItem $source -File | 
-        where name -NotMatch "$ModuleName\.ps[dm]1" | 
-        Copy-Item -Destination $Destination -Force -PassThru | 
+    Get-ChildItem $source -File |
+        where name -NotMatch "$ModuleName\.ps[dm]1" |
+        Copy-Item -Destination $Destination -Force -PassThru |
         ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '')}
 
-    Get-ChildItem $source -Directory | 
-        where name -NotIn $imports | 
-        Copy-Item -Destination $Destination -Recurse -Force -PassThru | 
+    Get-ChildItem $source -Directory |
+        where name -NotIn $imports |
+        Copy-Item -Destination $Destination -Recurse -Force -PassThru |
         ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '')}
 }
 
 Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
 
-    [System.Text.StringBuilder]$stringbuilder = [System.Text.StringBuilder]::new()    
+    [System.Text.StringBuilder]$stringbuilder = [System.Text.StringBuilder]::new()
     foreach ($folder in $imports )
     {
         [void]$stringbuilder.AppendLine( "Write-Verbose 'Importing from [$Source\$folder]'" )
@@ -71,14 +71,14 @@ Task BuildPSM1 -Inputs (Get-Item "$source\*\*.ps1") -Outputs $ModulePath {
             {
                 $shortName = $file.fullname.replace($PSScriptRoot, '')
                 "  Importing [.$shortName]"
-                [void]$stringbuilder.AppendLine( "# .$shortName" ) 
+                [void]$stringbuilder.AppendLine( "# .$shortName" )
                 [void]$stringbuilder.AppendLine( [System.IO.File]::ReadAllText($file.fullname) )
             }
         }
     }
-    
+
     "  Creating module [$ModulePath]"
-    Set-Content -Path  $ModulePath -Value $stringbuilder.ToString() 
+    Set-Content -Path  $ModulePath -Value $stringbuilder.ToString()
 }
 
 Task NextPSGalleryVersion -if (-Not ( Test-Path "$output\version.xml" ) ) -Before BuildPSD1 {
@@ -87,13 +87,13 @@ Task NextPSGalleryVersion -if (-Not ( Test-Path "$output\version.xml" ) ) -Befor
 }
 
 Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $ManifestPath {
-   
+
     "  Update [$ManifestPath]"
     Copy-Item "$source\$ModuleName.psd1" -Destination $ManifestPath
 
     $bumpVersionType = 'Patch'
 
-    $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests'} | Select-Object -ExpandProperty basename      
+    $functions = Get-ChildItem "$ModuleName\Public\*.ps1" | Where-Object { $_.name -notmatch 'Tests'} | Select-Object -ExpandProperty basename
 
     $oldFunctions = (Get-Metadata -Path $manifestPath -PropertyName 'FunctionsToExport')
 
@@ -112,7 +112,7 @@ Task BuildPSD1 -inputs (Get-ChildItem $Source -Recurse -File) -Outputs $Manifest
     "  Stepping [$bumpVersionType] version [$version]"
     $version = [version] (Step-Version $version -Type $bumpVersionType)
     "  Using version: $version"
-    
+
     Update-Metadata -Path $ManifestPath -PropertyName ModuleVersion -Value $version
 }
 
@@ -141,8 +141,8 @@ Task ImportModule {
 Task Publish {
     # Gate deployment
     if (
-        $ENV:BHBuildSystem -ne 'Unknown' -and 
-        $ENV:BHBranchName -eq "master" -and 
+        $ENV:BHBuildSystem -ne 'Unknown' -and
+        $ENV:BHBranchName -eq "master" -and
         $ENV:BHCommitMessage -match '!deploy'
     )
     {
@@ -155,9 +155,9 @@ Task Publish {
     }
     else
     {
-        "Skipping deployment: To deploy, ensure that...`n" + 
-        "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" + 
-        "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" + 
+        "Skipping deployment: To deploy, ensure that...`n" +
+        "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
+        "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
         "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)"
     }
 }

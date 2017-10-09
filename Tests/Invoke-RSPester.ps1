@@ -5,13 +5,13 @@ param(
     [Switch]$ThrowOnFailure = $true
 )
 
-function Format-PesterTest 
+function Format-PesterTest
 {
     param(
         # A pester test result
         [Parameter(
             ValueFromPipeline = $true
-        )]       
+        )]
         $TestResult
     )
 
@@ -23,7 +23,7 @@ function Format-PesterTest
         {
             Write-Host 'Passed' -NoNewline -ForegroundColor Green
         }
-        else 
+        else
         {
             Write-Host 'FAILED' -NoNewline -ForegroundColor Red
         }
@@ -31,7 +31,7 @@ function Format-PesterTest
         Write-Host ( '] {0}: {1}: {2}' -f $TestResult.Describe, $TestResult.Context, $TestResult.Name )
 
         if ($TestResult.Passed -eq $false)
-        {               
+        {
             Write-Host $TestResult.FailureMessage -ForegroundColor Yellow
             if ($TestResult.StackTrace)
             {
@@ -46,7 +46,7 @@ $Tests = Get-ChildItem -Path $Path -Include *.Tests.ps1 -Recurse
 $jobs = $Tests | Start-RSJob -Name {$_.BaseName}  -ScriptBlock {
     $test = $_
     Invoke-Pester -Script $test.FullName -PassThru -Show None -Tag Build | Add-Member -PassThru -Name Script -Value $test.FullName -MemberType NoteProperty
-} 
+}
 
 $processed = New-Object 'System.Collections.Queue'
 
@@ -56,7 +56,7 @@ While ( ( Get-RSJob -ID $jobs.ID ).Where( { $_.HasMoreData -or $_.State -eq 'Run
     Write-Verbose 'sleep'
     Start-Sleep -Seconds 15
     $scriptResults = Get-RSJob -ID $jobs.ID -HasMoreData | Receive-RSJob
-    
+
     # $script = $scriptResults[3]
     foreach ( $script in $scriptResults)
     {
@@ -72,7 +72,7 @@ While ( ( Get-RSJob -ID $jobs.ID ).Where( { $_.HasMoreData -or $_.State -eq 'Run
     }
 }
 
-$failedTests = $processed.ToArray().TestResult.Where( {$_.Passed -eq $false}) 
+$failedTests = $processed.ToArray().TestResult.Where( {$_.Passed -eq $false})
 if ($failedTests)
 {
     Write-Host 'Please review these failed tests:'

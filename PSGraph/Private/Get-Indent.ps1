@@ -1,10 +1,10 @@
 function Get-Indent
 {
     [cmdletbinding()]
-    param($depth=$script:indent)
+    param( $depth = $script:indent )
     process
     {
-        if( $null -eq $depth -or $depth -lt 0 )
+        if ( $null -eq $depth -or $depth -lt 0 )
         {
             $depth = 0
         }

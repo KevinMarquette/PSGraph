@@ -111,8 +111,8 @@ Describe "Basic function unit tests" -Tags Build {
         }
 
         It "Creates a Edge with multiple attributes" {
-            $result = Edge lhs rhs @{label = 'test'; arrowsize = '2'} 
-            
+            $result = Edge lhs rhs @{label = 'test'; arrowsize = '2'}
+
             $result | Should Match 'label="test";'
             $result | Should Match 'arrowsize="2";'
         }
@@ -149,7 +149,7 @@ Describe "Basic function unit tests" -Tags Build {
         it "Rank alias should not throw an error" {
 
             {Rank lhs rhs} | Should Not Throw
-        }         
+        }
 
         It "Creates a rank grouping" {
             rank lhs rhs | Should Match '{ rank=same;  "lhs"; "rhs"; }'
