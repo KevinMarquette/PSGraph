@@ -16,7 +16,7 @@ Describe "Regression tests for Github issues" -Tag Build {
         It "#5 Struct syntax not recognized" {
             edge Struct1:f1 Struct2:f2 | Should be '"STRUCT1":f1->"STRUCT2":f2 '
             edge "Struct 1:f1" "Struct 2:f2" | Should be '"STRUCT 1":f1->"STRUCT 2":f2 '
-            
+
             {$struct = graph g {
                     node @{shape = 'record'}
                     node struct1 @{shape = 'record'; label = " left|<f1> middle|<f2> right"}
@@ -46,7 +46,7 @@ Describe "Regression tests for Github issues" -Tag Build {
         )
 
         It "#30 graph (and other keywords) for node name should be in quotes" {
-        
+
             foreach ($keyword in $keywordList)
             {
                 $graph = graph g {
@@ -54,10 +54,11 @@ Describe "Regression tests for Github issues" -Tag Build {
                 }
                 $graph | Out-String | Should Match ('"{0}"' -f $keyword)
                 $graph | Out-String | Should Not Match ('\s{0}\s' -f $keyword)
-            }            
+            }
         }
-        It "#30 graph (and other keywords) for edges should be in quotes" {
         
+        It "#30 graph (and other keywords) for edges should be in quotes" {
+
             foreach ($keyword in $keywordList)
             {
                 $graph = graph g {
@@ -65,21 +66,23 @@ Describe "Regression tests for Github issues" -Tag Build {
                 }
                 $graph | Out-String | Should Match ('"{0}"' -f $keyword)
                 $graph | Out-String | Should Not Match ('\s{0}\s' -f $keyword)
-            }            
+            }
         }
+
         It "#30 node default keyword should not be in quotes" {
-            
+
             $graph = graph g {
                 node @{label = 'test1'}
             }
-            $graph | Out-String | Should Match ' node '                   
+            $graph | Out-String | Should Match ' node '
         }
+
         It "#30 edge default keyword should not be in quotes" {
-            
+
             $graph = graph g {
                 edge @{label = 'test1'}
             }
-            $graph | Out-String | Should Match ' edge '                    
+            $graph | Out-String | Should Match ' edge '
         }
     }
 
@@ -95,15 +98,16 @@ Describe "Regression tests for Github issues" -Tag Build {
             $graph = graph g {
                 node @{label = 'test1'}
             }
-            $graph | Out-String | Should Match ' node '                   
+            $graph | Out-String | Should Match ' node '
         }
+
         It "#32 edge default keyword should ignore format scripts" {
-            
+
             Set-NodeFormatScript -ScriptBlock {"--$_--"}
             $graph = graph g {
                 edge @{label = 'test1'}
             }
-            $graph | Out-String | Should Match ' edge '                    
+            $graph | Out-String | Should Match ' edge '
         }
     }
 }

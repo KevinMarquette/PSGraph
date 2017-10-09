@@ -81,7 +81,7 @@ Then describe how those lists of servers are related
         edge $WebServer -To $APIServer
         edge $APIServer -To AvailabilityGroup
         edge AvailabilityGroup -To $DatabaseServer
-    } | Export-PSGraph -ShowGraph 
+    } | Export-PSGraph -ShowGraph
 
 ---
 

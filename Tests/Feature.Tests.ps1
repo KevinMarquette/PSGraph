@@ -5,11 +5,11 @@ $moduleName = Split-Path $moduleRoot -Leaf
 Describe "Basic function feature tests" -Tags Build {
 
     Context "Graph" {
-        
+
         It "Graph support attributes" {
 
             {graph g {} -Attributes @{label = "testcase"; style = 'filled'}} | Should Not Throw
-            
+
             $resutls = (graph g {} -Attributes @{label = "testcase"; style = 'filled'}) -join ''
 
             $resutls | Should Match 'label="testcase";'
@@ -73,7 +73,7 @@ Describe "Basic function feature tests" -Tags Build {
             node $object -NodeScript {$_.name} @{shape = {$_.shape}}
         }
     }
-    
+
     Context "Edge" {
 
         It "Can define multiple edges at once in a chain" {
@@ -127,7 +127,7 @@ Describe "Basic function feature tests" -Tags Build {
                 @{name = 'two'}
                 @{name = 'three'}
             )
-                
+
             {rank $objects -NodeScript {$_.name}} | Should Not Throw
         }
     }
@@ -154,7 +154,7 @@ Describe "Basic function feature tests" -Tags Build {
             $result = graph g {
                 subgraph 0 {
                     node test
-                }                
+                }
             }
             $result | Where-Object {$_ -match 'subgraph'} | Should Match '^    subgraph'
         }
@@ -165,7 +165,7 @@ Describe "Basic function feature tests" -Tags Build {
                     node testNode
                     edge testEdge1 testEdge2
                     rank testRank
-                }                
+                }
             }
             $result | Where-Object {$_ -match 'testNode'}  | Should Match '^        "testNode"'
             $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^        "testEdge1"'
@@ -180,7 +180,7 @@ Describe "Basic function feature tests" -Tags Build {
                         edge testEdge1 testEdge2
                         rank testRank
                     }
-                }                
+                }
             }
             $result | Where-Object {$_ -match 'testNode'}  | Should Match '^            "testNode"'
             $result | Where-Object {$_ -match 'testEdge1'} | Should Match '^            "testEdge1"'

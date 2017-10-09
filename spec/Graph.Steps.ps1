@@ -7,12 +7,12 @@ then " Graph unit tests will all pass" {
 
     it "Graph attributes should not throw an error" {
 
-        {Graph g -Attributes @{label='test'} {}} | Should Not Throw
+        {Graph g -Attributes @{label = 'test'} {}} | Should Not Throw
     }
 
     it "Graph positional attributes should not throw an error" {
 
-        {Graph g @{label='test'} {}} | Should Not Throw
+        {Graph g @{label = 'test'} {}} | Should Not Throw
     }
 
     it "Builds basic graph" {
@@ -29,12 +29,12 @@ then " Graph unit tests will all pass" {
 }
 
 Then  "Graph feature tests will all pass" {
-        
+
     It "Graph support attributes" {
 
-        {graph g {} -Attributes @{label="testcase";style='filled'}} | Should Not Throw
-        
-        $resutls = (graph g {} -Attributes @{label="testcase";style='filled'}) -join ''
+        {graph g {} -Attributes @{label = "testcase"; style = 'filled'}} | Should Not Throw
+
+        $resutls = (graph g {} -Attributes @{label = "testcase"; style = 'filled'}) -join ''
 
         $resutls | Should Match 'label=testcase;'
         $resutls | Should Match 'style=filled;'

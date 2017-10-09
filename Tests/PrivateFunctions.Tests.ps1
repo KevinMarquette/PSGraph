@@ -7,7 +7,7 @@ $moduleName = Split-Path $moduleRoot -Leaf
 InModuleScope -ModuleName PSGraph {
 
     Describe "$ModuleName private functions" -Tag Build {
-        
+
         Context 'Get-LayoutEngine' {
 
             it "performs basic lookups" {
@@ -22,7 +22,7 @@ InModuleScope -ModuleName PSGraph {
                 foreach ($layout in $layoutEngine.GetEnumerator())
                 {
                     Get-LayoutEngine -Name $layout.name | Should be $layout.value
-                }            
+                }
             }
         }
 
@@ -36,17 +36,17 @@ InModuleScope -ModuleName PSGraph {
             It "Processes a hashtable" {
                 $result = Get-ArgumentLookUpTable
                 $result | Should Not BeNullOrEmpty
-                $result.gettype().name | Should Be 'Hashtable'        
-            }        
+                $result.gettype().name | Should Be 'Hashtable'
+            }
         }
-    
-  
+
+
         Context "Get-GraphVizArgument" {
-            
+
             It "Does not throw an error" {
                 {Get-GraphVizArgument} | Should Not Throw
             }
-            
+
             It "Should not throw an error with empty hashtable" {
                 {Get-GraphVizArgument @{}} | Should Not Throw
             }
@@ -54,10 +54,10 @@ InModuleScope -ModuleName PSGraph {
             It "Should not throw an error with hashtable" {
                 {Get-GraphVizArgument @{OutputFormat = 'png'}} | Should Not Throw
             }
-        }  
+        }
 
         Context "Get-OutputFormatFromPath" {
-            
+
             It "Does not throw an error" {
                 {Get-OutputFormatFromPath $null} | Should Not Throw
             }
@@ -70,10 +70,10 @@ InModuleScope -ModuleName PSGraph {
             It "Handles no match correctly" {
                 Get-OutputFormatFromPath 'test.notapath' | Should BeNullOrEmpty
             }
-        } 
+        }
 
         Context "Get-TranslatedArguments" {
-            
+
             It "Does not throw an error" {
                 {Get-TranslatedArgument} | Should Not Throw
             }
@@ -81,7 +81,7 @@ InModuleScope -ModuleName PSGraph {
                 Get-TranslatedArgument @{DestinationPath = 'test.png'} | Should be '-otest.png'
                 Get-TranslatedArgument @{DestinationPath = 'test.png'} | Should not be '-o test.png'
             }
-        }  
+        }
 
         Context "Update-DefaultArgument" {
 
@@ -132,7 +132,7 @@ InModuleScope -ModuleName PSGraph {
                 Format-Value 'test' -node | Should BeExactly '"NewValue"'
                 Format-Value 'test' -edge | Should BeExactly '"NewValue"'
 
-                Set-NodeFormatScript -ScriptBlock {$_.ToUpper()}                
+                Set-NodeFormatScript -ScriptBlock {$_.ToUpper()}
                 Format-Value 'test' | Should BeExactly '"test"'
                 Format-Value 'test' -node | Should BeExactly '"TEST"'
                 Format-Value 'test' -edge | Should BeExactly '"TEST"'
@@ -155,19 +155,19 @@ InModuleScope -ModuleName PSGraph {
             }
 
             It "Creates well formatted attribute with special characters" {
-                ConvertTo-GraphVizAttribute @{label = 'test label'} | Should Match '\[label="test label";\]'                
+                ConvertTo-GraphVizAttribute @{label = 'test label'} | Should Match '\[label="test label";\]'
             }
 
             It "Creates well formatted attribute for html tables" {
-                ConvertTo-GraphVizAttribute @{label = '<table>test label</table>'} | Should Match '\[label=<<table>test label</table>>;\]'                
+                ConvertTo-GraphVizAttribute @{label = '<table>test label</table>'} | Should Match '\[label=<<table>test label</table>>;\]'
             }
 
             It "Creates multiple attributes" {
-                $result = ConvertTo-GraphVizAttribute @{label = 'test'; arrowsize = '2'} 
-                
+                $result = ConvertTo-GraphVizAttribute @{label = 'test'; arrowsize = '2'}
+
                 $result | Should Match '\['
                 $result | Should Match 'label="test";'
-                $result | Should Match 'arrowsize="2";'                
+                $result | Should Match 'arrowsize="2";'
                 $result | Should Match ';\]'
             }
 
@@ -185,8 +185,6 @@ InModuleScope -ModuleName PSGraph {
                 $object = @{description = 'test'}
                 ConvertTo-GraphVizAttribute @{label = {$_.description}} -InputObject $object | Should Match '\[label="test";\]'
             }
-        } 
+        }
     }
 }
-
-

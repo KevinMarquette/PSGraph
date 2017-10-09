@@ -50,31 +50,32 @@ function ConvertTo-GraphVizAttribute
         $InputObject
     )
 
-    if($Attributes -ne $null -and $Attributes.Keys.Count -gt 0)
+    if ($Attributes -ne $null -and $Attributes.Keys.Count -gt 0)
     {
-        $values = foreach($key in $Attributes.GetEnumerator())
+        $values = foreach ( $key in $Attributes.GetEnumerator() )
         {
-            if($key.value -is [scriptblock])
+            if ($key.value -is [scriptblock])
             {
                 Write-Debug "Executing Script on Key $($key.name)"
-                $value = ([string](@($InputObject).ForEach($key.value))) 
+                $value = ( [string]( @( $InputObject ).ForEach( $key.value ) ) )
             }
-            else 
+            else
             {
                 $value = $key.value
             }
-            '{0}={1};'-f $key.name, (Format-Value $value)
+            '{0}={1};' -f $key.name, ( Format-Value $value )
         }
 
-        if($UseGraphStyle)
-        { # Graph style is each line on its own and no brackets
-            $indent = Get-Indent
-            $values | ForEach-Object{"$indent$_"}
-        }
-        else 
+        if ( $UseGraphStyle )
         {
-            "[{0}]" -f ($values -join '')
-        }            
-        
+            # Graph style is each line on its own and no brackets
+            $indent = Get-Indent
+            $values | ForEach-Object {"$indent$_"}
+        }
+        else
+        {
+            "[{0}]" -f ( $values -join '' )
+        }
+
     }
 }

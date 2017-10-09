@@ -1,4 +1,4 @@
-function Graph  
+function Graph
 {
     <#
         .Description
@@ -20,15 +20,15 @@ function Graph
         .Notes
         The output is a string so it can be saved to a variable or piped to other commands
     #>
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter", "")]
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
-    [Alias('DiGraph')]
-    [OutputType([string])]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute( "PSAvoidDefaultValueForMandatoryParameter", "" )]
+    [CmdletBinding( DefaultParameterSetName = 'Default' )]
+    [Alias( 'DiGraph' )]
+    [OutputType( [string] )]
     param(
 
         # Name or ID of the graph
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 0
         )]
         [string]
@@ -36,12 +36,12 @@ function Graph
 
         # The commands to execute inside the graph
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 1,
             ParameterSetName = 'Default'
         )]
         [Parameter(
-            Mandatory = $true, 
+            Mandatory = $true,
             Position = 2,
             ParameterSetName = 'Attributes'
         )]
@@ -52,8 +52,8 @@ function Graph
         [Parameter(
             ParameterSetName = 'Default'
         )]
-        [Parameter(             
-            Mandatory = $true, 
+        [Parameter(
+            Mandatory = $true,
             Position = 1,
             ParameterSetName = 'Attributes'
         )]
@@ -64,12 +64,12 @@ function Graph
         [string]
         $Type = 'digraph'
     )
-    
+
     begin
     {
         try
         {
-            
+
             Write-Verbose "Begin Graph $type $Name"
             if ($Type -eq 'digraph')
             {
@@ -85,11 +85,11 @@ function Graph
                 ConvertTo-GraphVizAttribute -Attributes $Attributes -UseGraphStyle
             }
 
-            "" # Blank line      
+            "" # Blank line
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 
@@ -102,26 +102,26 @@ function Graph
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
     }
 
     end
-    {       
+    {
         try
         {
             $script:indent--
-            if ($script:indent -lt 0)
+            if ( $script:indent -lt 0 )
             {
                 $script:indent = 0
             }
             "$(Get-Indent)}" # Close braces
             "" #Blank line
-            Write-Verbose "End Graph $type $name"            
+            Write-Verbose "End Graph $type $name"
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
-        } 
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
+        }
     }
 }

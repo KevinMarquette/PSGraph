@@ -1,4 +1,4 @@
-function Get-OutputFormatFromPath([string]$path)
+function Get-OutputFormatFromPath( [string]$path )
 {
     $formats = @(
         'jpg'
@@ -13,9 +13,9 @@ function Get-OutputFormatFromPath([string]$path)
         'dot'
     )
 
-    foreach($ext in $formats)
+    foreach ( $ext in $formats )
     {
-        if($Path -like "*.$ext")
+        if ( $Path -like "*.$ext" )
         {
             return $ext
         }

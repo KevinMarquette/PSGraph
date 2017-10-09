@@ -25,7 +25,7 @@ if ($Result.Error)
 {
     exit 1
 }
-else 
+else
 {
     exit 0
 }

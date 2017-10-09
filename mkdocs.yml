@@ -8,8 +8,8 @@ pages:
     - Quick Start: Quick-Start-Installation-and-Example.md
   - Basic Commands:
     - Graph: Command-Graph.md
-    - Edge: Command-Edge.md    
-    - Node: Command-Node.md   
+    - Edge: Command-Edge.md
+    - Node: Command-Node.md
     - Inline: Command-Inline.md
     - SubGraph: Command-SubGraph.md
     - Export-PSGraph: Command-Export-PSGraph.md

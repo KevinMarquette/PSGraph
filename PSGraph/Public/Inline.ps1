@@ -1,4 +1,4 @@
-function Inline 
+function Inline
 {
     <#
         .Description
@@ -6,7 +6,7 @@ function Inline
 
         .Example
         graph g {
-            inline 'node [shape="rect";]' 
+            inline 'node [shape="rect";]'
         }
         .Notes
         You can just place a string in the graph, but it will not indent correctly. So all this does is give you correct indents.
@@ -17,7 +17,7 @@ function Inline
         [string[]]
         $InlineCommand
     )
-    
+
     process
     {
         try
@@ -25,11 +25,11 @@ function Inline
             foreach ($line in $InlineCommand)
             {
                 "{0}{1}" -f (Get-Indent), $line
-            }            
+            }
         }
         catch
         {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+            $PSCmdlet.ThrowTerminatingError( $PSitem )
         }
 
     }

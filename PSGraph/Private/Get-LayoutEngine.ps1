@@ -1,4 +1,4 @@
-function Get-LayoutEngine($name)
+function Get-LayoutEngine( $name )
 {
     $layoutEngine = @{
         Hierarchical      = 'dot'

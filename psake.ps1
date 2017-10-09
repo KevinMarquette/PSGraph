@@ -2,11 +2,11 @@
 # Init some things
 Properties {
     # Find the build folder based on build system
-        $ProjectRoot = $ENV:BHProjectPath
-        if(-not $ProjectRoot)
-        {
-            $ProjectRoot = $PSScriptRoot
-        }
+    $ProjectRoot = $ENV:BHProjectPath
+    if (-not $ProjectRoot)
+    {
+        $ProjectRoot = $PSScriptRoot
+    }
 
     $Timestamp = Get-date -uformat "%Y%m%d-%H%M%S"
     $PSVersion = $PSVersionTable.PSVersion.Major
@@ -14,7 +14,7 @@ Properties {
     $lines = '----------------------------------------------------------------------'
 
     $Verbose = @{}
-    if($ENV:BHCommitMessage -match "!verbose")
+    if ($ENV:BHCommitMessage -match "!verbose")
     {
         $Verbose = @{Verbose = $True}
     }
@@ -33,16 +33,16 @@ Task Init {
 Task UnitTests -Depends Init {
     $lines
     'Running quick unit tests to fail early if there is an error'
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests\*unit* -PassThru -Tag Build 
-    
-    if($TestResults.FailedCount -gt 0)
+    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests\*unit* -PassThru -Tag Build
+
+    if ($TestResults.FailedCount -gt 0)
     {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
     }
     "`n"
 }
 
-Task Test -Depends UnitTests  {
+Task Test -Depends UnitTests {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
@@ -50,7 +50,7 @@ Task Test -Depends UnitTests  {
     #$TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -Tag Build
     & "$ProjectRoot\Tests\Invoke-RSPester.ps1" -Path $ProjectRoot\Tests
     # In Appveyor?  Upload our tests! #Abstract this into a function?
-    If($ENV:BHBuildSystem -eq 'AppVeyor')
+    If ($ENV:BHBuildSystem -eq 'AppVeyor')
     {
         # "Uploading $ProjectRoot\$TestFile to AppVeyor"
         # "JobID: $env:APPVEYOR_JOB_ID"
@@ -61,7 +61,7 @@ Task Test -Depends UnitTests  {
 
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
-    if($TestResults.FailedCount -gt 0)
+    if ($TestResults.FailedCount -gt 0)
     {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
     }
@@ -71,9 +71,9 @@ Task Test -Depends UnitTests  {
 Task Build -Depends Test {
     $lines
 
-    $functions = Get-ChildItem "$PSScriptRoot\$env:BHProjectName\Public\*.ps1" | 
-            Where-Object{ $_.name -notmatch 'Tests'} |
-            Select-Object -ExpandProperty basename      
+    $functions = Get-ChildItem "$PSScriptRoot\$env:BHProjectName\Public\*.ps1" |
+        Where-Object { $_.name -notmatch 'Tests'} |
+        Select-Object -ExpandProperty basename
 
     # Load the module, read the exported functions, update the psd1 FunctionsToExport
     Set-ModuleFunctions -Name $env:BHPSModuleManifest -FunctionsToExport $functions
@@ -81,13 +81,13 @@ Task Build -Depends Test {
     # Bump the module version
     $version = [version] (Step-Version (Get-Metadata -Path $env:BHPSModuleManifest))
     $galleryVersion = Get-NextPSGalleryVersion -Name $env:BHProjectName
-    if($version -lt $galleryVersion)
+    if ($version -lt $galleryVersion)
     {
         $version = $galleryVersion
     }
-    $version = [version]::New($version.Major,$version.Minor,$version.Build,$env:BHBuildNumber)
+    $version = [version]::New($version.Major, $version.Minor, $version.Build, $env:BHBuildNumber)
     Write-Host "Using version: $version"
-    
+
     Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $version
 }
 
@@ -95,14 +95,14 @@ Task Deploy -Depends Build {
     $lines
 
     # Gate deployment
-    if(
+    if (
         $ENV:BHBuildSystem -ne 'Unknown' -and
         $ENV:BHBranchName -eq "master" -and
         $ENV:BHCommitMessage -match '!deploy'
     )
     {
         $Params = @{
-            Path = $ProjectRoot
+            Path  = $ProjectRoot
             Force = $true
         }
 
