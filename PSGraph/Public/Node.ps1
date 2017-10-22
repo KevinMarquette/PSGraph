@@ -50,6 +50,12 @@ function Node
         [hashtable]
         $Attributes,
 
+        # Will automatically add these nodes to a rank
+        [Parameter()]
+        [alias('Rank')]
+        [switch]
+        $Ranked,
+
         # not used anymore but offers backward compatibility or verbosity
         [switch]
         $Default
@@ -72,6 +78,7 @@ function Node
             }
             else
             {
+                $nodeList = @()
                 foreach ( $node in $Name )
                 {
                     if ( $NodeScript )
@@ -82,9 +89,17 @@ function Node
                     {
                         $nodeName = $node
                     }
+                    
 
                     $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
                     '{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute
+
+                    $nodeList += $nodeName
+                }
+
+                if ($Ranked -and $null -ne $nodeList -and $nodeList.count -gt 1)
+                {
+                    Rank -Nodes $nodeList
                 }
             }
         }

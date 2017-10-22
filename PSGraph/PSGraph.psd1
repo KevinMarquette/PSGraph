@@ -12,7 +12,7 @@
     RootModule        = 'PSGraph.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.1.1'
+    ModuleVersion     = '1.1.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Edge','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Set-NodeFormatScript','SubGraph')
+    FunctionsToExport = @('Edge', 'Export-PSGraph', 'Graph', 'Inline', 'Install-GraphViz', 'Node', 'Rank', 'Set-NodeFormatScript', 'SubGraph')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -108,7 +108,10 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
-1.1 20171021
+1.1.1 20171021
+* Added -ranked switch to node to auto create a rank
+
+1.1.0 20171021
 * Made graph name optional
 * Added legacy layout engine names to export-psgraph
 
