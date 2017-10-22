@@ -230,6 +230,7 @@ Set-NodeFormatScript:WhatIf
 Set-NodeFormatScript:wi
 Set-NodeFormatScript:Confirm
 Set-NodeFormatScript:cf
+SubGraph:Name
 SubGraph:ID
 SubGraph:ScriptBlock
 SubGraph:Attributes

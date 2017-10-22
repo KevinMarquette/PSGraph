@@ -21,35 +21,53 @@ function SubGraph
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidDefaultValueForMandatoryParameter", "")]
     [cmdletbinding(DefaultParameterSetName = 'Default')]
     param(
-        # Numeric ID of subgraph starting at 0
+        # Name of subgraph
         [Parameter(
             Mandatory = $true,
-            Position = 0
+            Position = 0,
+            ParameterSetName = 'Named'
         )]
-        [int]
-        $ID,
+        [Parameter(
+            Mandatory = $true,
+            Position = 0,
+            ParameterSetName = 'NamedAttributes'
+        )]
+        [alias('ID')]
+        $Name,
 
         # The commands to execute inside the subgraph
         [Parameter(
             Mandatory = $true,
-            Position = 1,
+            Position = 0,
             ParameterSetName = 'Default'
+        )]        
+        [Parameter(
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'Named'
+        )]
+        [Parameter(
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'Attributes'
         )]
         [Parameter(
             Mandatory = $true,
             Position = 2,
-            ParameterSetName = 'Attributes'
+            ParameterSetName = 'NamedAttributes'
         )]
         [scriptblock]
         $ScriptBlock,
 
         # Hashtable that gets translated to graph attributes
         [Parameter(
-            ParameterSetName = 'Default'
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'NamedAttributes'
         )]
         [Parameter(
             Mandatory = $true,
-            Position = 1,
+            Position = 0,
             ParameterSetName = 'Attributes'
         )]
         [hashtable]
@@ -60,7 +78,12 @@ function SubGraph
     {
         try
         {
-            Graph -Name "cluster_$ID" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
+            if ( $null -eq $Name )
+            {
+                $name = ((New-Guid ) -split '-')[4]
+            }
+
+            Graph -Name "cluster$Name" -ScriptBlock $ScriptBlock -Attributes $Attributes -Type 'subgraph'
         }
         catch
         {

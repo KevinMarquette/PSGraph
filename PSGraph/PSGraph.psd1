@@ -12,7 +12,7 @@
     RootModule        = 'PSGraph.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.1.4'
+    ModuleVersion     = '1.1.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -108,7 +108,10 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
-1.1.3 20171021
+1.1.5 20171022
+* #55 subgraph name is now optional
+
+1.1.4 20171021
 * #51 Updated build script 
 
 1.1.3 20171021

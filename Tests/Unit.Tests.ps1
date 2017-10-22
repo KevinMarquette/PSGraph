@@ -67,7 +67,7 @@ Describe "Basic function unit tests" -Tags Build {
             $result = (SubGraph 0 {}) -join ''
 
             $result | Should Not BeNullOrEmpty
-            $result | Should match 'cluster_0'
+            $result | Should match 'cluster0'
             $result | Should match '{'
             $result | Should match '}'
             $result | Should match 'subgraph'

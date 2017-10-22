@@ -45,6 +45,20 @@ Describe "Basic function feature tests" -Tags Build {
                 }
             } | Should Not Throw
         }
+        It "#55 Supports un-named subgraphs" {
+            {
+                graph {
+                    subgraph {
+                        node helo
+                        edge hello world
+                        rank same level
+                        subgraph {
+
+                        }
+                    }
+                }
+            } | Should Not Throw
+        }
     }
 
     Context "Node" {
