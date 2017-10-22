@@ -60,7 +60,13 @@ function Export-PSGraph
             'SpringModelMedium',
             'SpringModelLarge',
             'Radial',
-            'Circular'
+            'Circular',
+            'dot',
+            'neato',
+            'fdp',
+            'sfdp',
+            'twopi',
+            'circo'
         )]
         [string]
         $LayoutEngine,

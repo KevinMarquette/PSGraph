@@ -7,6 +7,12 @@ function Get-LayoutEngine( $name )
         SpringModelLarge  = 'sfdp'
         Radial            = 'twopi'
         Circular          = 'circo'
+        dot               = 'dot'
+        neato             = 'neato'
+        fdp               = 'fdp'
+        sfdp              = 'sfdp'
+        twopi             = 'twopi'
+        circo             = 'circo'
     }
 
     return $layoutEngine[$name]
