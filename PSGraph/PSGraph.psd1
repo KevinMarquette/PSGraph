@@ -12,7 +12,7 @@
     RootModule        = 'PSGraph.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.0.1'
+    ModuleVersion     = '1.1.4'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -95,19 +95,33 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = @('graph', 'visualization', 'DSL')
+            Tags         = @('graph', 'visualization', 'DSL')
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/KevinMarquette/PSGraph/blob/master/LICENSE'
+            LicenseUri   = 'https://github.com/KevinMarquette/PSGraph/blob/master/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/KevinMarquette/PSGraph'
+            ProjectUri   = 'https://github.com/KevinMarquette/PSGraph'
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = @'
+1.1.3 20171021
+* #51 Updated build script 
+
+1.1.3 20171021
+* #40 fixed positional attributes with Edge
+
+1.1.1 20171021
+* Added -ranked switch to node to auto create a rank
+
+1.1.0 20171021
+* Made graph name optional
+* Added legacy layout engine names to export-psgraph
+
+'@
 
         } # End of PSData hashtable
 

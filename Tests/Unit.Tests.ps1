@@ -13,6 +13,11 @@ Describe "Basic function unit tests" -Tags Build {
             {Graph g {}} | Should Not Throw
         }
 
+        it "Graph without name should not throw an error #41" {
+            
+            {Graph {}} | Should Not Throw
+        }
+
         it "Graph attributes should not throw an error" {
 
             {Graph g -Attributes @{label = 'test'} {}} | Should Not Throw
@@ -21,6 +26,11 @@ Describe "Basic function unit tests" -Tags Build {
         it "Graph positional attributes should not throw an error" {
 
             {Graph g @{label = 'test'} {}} | Should Not Throw
+        }
+
+        it "Graph without name positional attributes should not throw an error #41" {
+            
+            {Graph @{label = 'test'} {}} | Should Not Throw
         }
 
         it "Builds basic graph" {

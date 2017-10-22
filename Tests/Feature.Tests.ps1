@@ -72,6 +72,20 @@ Describe "Basic function feature tests" -Tags Build {
             $object = @{name = 'mName'; shape = 'rectangle'}
             node $object -NodeScript {$_.name} @{shape = {$_.shape}}
         }
+
+        It "Supports -ranked swtich with multiple nodes #43" {
+            $testNode = 'Test123'
+            $result = Node one, two, $testNode -Ranked
+            $result | Out-String | Should match 'rank'
+            ($result -match $testNode).count | Should Be 2
+        }
+
+        It "-ranked with one node should not create a rank #43" {
+            $testNode = 'Test456'
+            $result = Node $testNode
+            $result | Out-String | Should not match 'rank'
+            ($result -match $testNode).count | Should Be 1
+        }
     }
 
     Context "Edge" {

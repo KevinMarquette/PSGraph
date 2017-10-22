@@ -36,7 +36,7 @@ Describe "Regression tests for Github issues" -Tag Build {
         }
     }
 
-    context "#30 Keywords for node names causing parsing errors" {
+    context "#30 #44 Keywords for node names causing parsing errors" {
         $keywordList = @(
             'graph'
             'node'
@@ -45,8 +45,8 @@ Describe "Regression tests for Github issues" -Tag Build {
             'rank'
         )
 
-        It "#30 graph (and other keywords) for node name should be in quotes" {
-
+        It "#30 #44 graph (and other keywords) for node name should be in quotes" {
+        
             foreach ($keyword in $keywordList)
             {
                 $graph = graph g {
@@ -57,7 +57,7 @@ Describe "Regression tests for Github issues" -Tag Build {
             }
         }
         
-        It "#30 graph (and other keywords) for edges should be in quotes" {
+        It "#30 #44 graph (and other keywords) for edges should be in quotes" {
 
             foreach ($keyword in $keywordList)
             {
@@ -108,6 +108,15 @@ Describe "Regression tests for Github issues" -Tag Build {
                 edge @{label = 'test1'}
             }
             $graph | Out-String | Should Match ' edge '
+        }
+    }
+    Context "Sequential edges require parameter name for attributes #40" {
+
+        It "#40 correctly handles the positional attributes" {
+            $graph = Graph g {      
+                Edge a, b, c, d, a @{label = 'to'}            
+            }
+            $graph | Out-String | Should Not Match 'System.Collections.Hashtable'
         }
     }
 }
