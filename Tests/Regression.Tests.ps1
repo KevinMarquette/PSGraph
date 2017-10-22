@@ -110,4 +110,13 @@ Describe "Regression tests for Github issues" -Tag Build {
             $graph | Out-String | Should Match ' edge '
         }
     }
+    Context "Sequential edges require parameter name for attributes #40" {
+
+        It "#40 correctly handles the positional attributes" {
+            $graph = Graph g {      
+                Edge a, b, c, d, a @{label = 'to'}            
+            }
+            $graph | Out-String | Should Not Match 'System.Collections.Hashtable'
+        }
+    }
 }

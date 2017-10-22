@@ -55,6 +55,11 @@ function Edge
             Position = 0,
             ParameterSetName = 'Node'
         )]
+        [Parameter(
+            Mandatory = $true,
+            Position = 0,
+            ParameterSetName = 'Attributes'
+        )]
         [alias( 'NodeName', 'Name', 'SourceName', 'LeftHandSide', 'lhs' )]
         [string[]]
         $From,
@@ -70,6 +75,11 @@ function Edge
         $To,
 
         # Hashtable that gets translated to an edge modifier
+        [Parameter(
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'Attributes'
+        )]
         [Parameter(
             Position = 2,
             ParameterSetName = 'Node'
