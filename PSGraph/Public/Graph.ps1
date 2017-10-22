@@ -29,32 +29,50 @@ function Graph
         # Name or ID of the graph
         [Parameter(
             Mandatory = $true,
-            Position = 0
+            Position = 0,
+            ParameterSetName = 'Named'
+        )]
+        [Parameter(
+            Mandatory = $true,
+            Position = 0,
+            ParameterSetName = 'NamedAttributes'
         )]
         [string]
-        $Name,
+        $Name = 'g',
 
         # The commands to execute inside the graph
         [Parameter(
             Mandatory = $true,
-            Position = 1,
+            Position = 0,
             ParameterSetName = 'Default'
+        )]        
+        [Parameter(
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'Named'
+        )]
+        [Parameter(
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'Attributes'
         )]
         [Parameter(
             Mandatory = $true,
             Position = 2,
-            ParameterSetName = 'Attributes'
+            ParameterSetName = 'NamedAttributes'
         )]
         [scriptblock]
         $ScriptBlock,
 
         # Hashtable that gets translated to graph attributes
         [Parameter(
-            ParameterSetName = 'Default'
+            Mandatory = $true,
+            Position = 1,
+            ParameterSetName = 'NamedAttributes'
         )]
         [Parameter(
             Mandatory = $true,
-            Position = 1,
+            Position = 0,
             ParameterSetName = 'Attributes'
         )]
         [hashtable]
