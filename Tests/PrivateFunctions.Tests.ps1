@@ -139,6 +139,7 @@ InModuleScope -ModuleName PSGraph {
                 Format-Value 'test' | Should Not BeExactly '"TEST"'
                 Format-Value 'test' -node | Should Not BeExactly '"test"'
                 Format-Value 'test' -edge | Should Not BeExactly '"test"'
+                Set-NodeFormatScript
             }
 
         }

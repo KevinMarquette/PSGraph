@@ -89,7 +89,7 @@ function Edge
             ParameterSetName = 'script'
         )]
         [hashtable]
-        $Attributes,
+        $Attributes = @{},
 
         # a list of nodes to process
         [Parameter(
@@ -150,18 +150,14 @@ function Edge
                 {
                     $fromValue = ( @($item).ForEach($FromScript) )
                     $toValue = ( @($item).ForEach($ToScript) )
-                    $LiteralAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $item
+
+                    $LiteralAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $item -From $fromValue -To $toValue
 
                     edge -From $fromValue -To $toValue -LiteralAttribute $LiteralAttribute
                 }
             }
             else
-            {
-                if ( $null -ne $Attributes -and [string]::IsNullOrEmpty( $LiteralAttribute ) )
-                {
-                    $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes
-                }
-
+            {           
                 if ( $null -ne $To )
                 {
                     # If we have a target array, cross multiply results
@@ -169,6 +165,10 @@ function Edge
                     {
                         foreach ( $tNode in $To )
                         {
+                            if ([string]::IsNullOrEmpty( $LiteralAttribute ) )
+                            {
+                                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $sNode -To $tNode
+                            }
 
                             ( '{0}{1}->{2} {3}' -f (Get-Indent),
                                 (Format-Value $sNode -Edge),
@@ -183,6 +183,10 @@ function Edge
                     # If we have a single array, connect them sequentially.
                     for ( $index = 0; $index -lt ( $From.Count - 1 ); $index++ )
                     {
+                        if ([string]::IsNullOrEmpty( $LiteralAttribute ) )
+                        {
+                            $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $From[$index] -To $From[$index + 1]
+                        }
                         ('{0}{1}->{2} {3}' -f (Get-Indent),
                             (Format-Value $From[$index] -Edge),
                             (Format-Value $From[$index + 1] -Edge),

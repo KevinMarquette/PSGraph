@@ -87,14 +87,14 @@ function Graph
     {
         try
         {
-
             Write-Verbose "Begin Graph $type $Name"
             if ($Type -eq 'digraph')
             {
                 $script:indent = 0
+                $Attributes.compound = 'true'
+                $script:SubGraphList = @{}
             }
 
-            "" # Blank line
             "{0}{1} {2} {{" -f (Get-Indent), $Type, $name
             $script:indent++
 
@@ -102,8 +102,6 @@ function Graph
             {
                 ConvertTo-GraphVizAttribute -Attributes $Attributes -UseGraphStyle
             }
-
-            "" # Blank line
         }
         catch
         {
@@ -116,7 +114,15 @@ function Graph
         try
         {
             Write-Verbose "Process Graph $type $name"
-            & $ScriptBlock
+
+            if ( $type -eq 'subgraph' )
+            {
+                $nodeName = $name.Replace('cluster', '')
+                $script:SubGraphList[$nodeName] = $name
+                Node $nodeName @{ shape = 'point'; style = 'invis'; label = '' }
+            }
+
+            & $ScriptBlock            
         }
         catch
         {

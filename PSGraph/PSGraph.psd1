@@ -12,7 +12,7 @@
     RootModule        = 'PSGraph.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.1.5'
+    ModuleVersion     = '1.2.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -108,9 +108,10 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
-1.1.5 20171022
+1.2.0 20171022
+* #53 add support for edges to and from a subgraph
 * #55 subgraph name is now optional
-
+* 56 remove extra blank lines in graph output
 1.1.4 20171021
 * #51 Updated build script 
 

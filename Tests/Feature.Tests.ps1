@@ -4,68 +4,11 @@ $moduleName = Split-Path $moduleRoot -Leaf
 
 Describe "Basic function feature tests" -Tags Build {
 
-    Context "Graph" {
-
-        It "Graph support attributes" {
-
-            {graph g {} -Attributes @{label = "testcase"; style = 'filled'}} | Should Not Throw
-
-            $resutls = (graph g {} -Attributes @{label = "testcase"; style = 'filled'}) -join ''
-
-            $resutls | Should Match 'label="testcase";'
-            $resutls | Should Match 'style="filled";'
-        }
-
-        It "Items can be placed in a graph" {
-            {
-                graph test {
-                    node helo
-                    edge hello world
-                    rank same level
-                    subgraph 0 {
-
-                    }
-                }
-            } | Should Not Throw
-        }
-    }
-
-    Context "SubGraph" {
-        It "Items can be placed in a subgraph" {
-            {
-                graph test {
-                    subgraph 0 {
-                        node helo
-                        edge hello world
-                        rank same level
-                        subgraph 1 {
-
-                        }
-                    }
-                }
-            } | Should Not Throw
-        }
-        It "#55 Supports un-named subgraphs" {
-            {
-                graph {
-                    subgraph {
-                        node helo
-                        edge hello world
-                        rank same level
-                        subgraph {
-
-                        }
-                    }
-                }
-            } | Should Not Throw
-        }
-    }
-
     Context "Node" {
 
         It "Can define multiple nodes at once" {
 
-            {node (1..5)} | Should Not Throw
+            {Node (1..5)} | Should Not Throw
 
             $result = Node (1..5)
             $result | Should not Be NullOrEmpty
@@ -160,6 +103,86 @@ Describe "Basic function feature tests" -Tags Build {
         }
     }
 
+    Context "Graph" {
+
+        It "Graph support attributes" {
+
+            {graph g {} -Attributes @{label = "testcase"; style = 'filled'}} | Should Not Throw
+
+            $resutls = (graph g {} -Attributes @{label = "testcase"; style = 'filled'}) -join ''
+
+            $resutls | Should Match 'label="testcase";'
+            $resutls | Should Match 'style="filled";'
+        }
+
+        It "Items can be placed in a graph" {
+            {
+                graph test {
+                    node helo
+                    edge hello world
+                    rank same level
+                    subgraph 0 {
+
+                    }
+                }
+            } | Should Not Throw
+        }
+    }
+
+    Context "SubGraph" {
+        It "Items can be placed in a subgraph" {
+            {
+                graph test {
+                    subgraph 0 {
+                        node helo
+                        edge hello world
+                        rank same level
+                        subgraph 1 {
+
+                        }
+                    }
+                }
+            } | Should Not Throw
+        }
+        It "#55 Supports un-named subgraphs" {
+            {
+                graph {
+                    subgraph {
+                        node helo
+                        edge hello world
+                        rank same level
+                        subgraph {
+
+                        }
+                    }
+                }
+            } | Should Not Throw
+        }
+        It "#53 Supports edges to subgraphs" {
+
+            $graph = graph g {
+                subgraph source {
+                    node a
+                }
+                edge b -to source
+            } | Out-String
+
+            $graph | Should match 'compound'
+            $graph | Should match 'invis'
+            $graph | Should match 'point'
+            $graph | Should match 'lhead="clustersource"'
+
+            $graph = graph g {
+                subgraph source {
+                    node a
+                }
+                edge source -to b
+            } | Out-String
+            
+            $graph | Should match 'ltail="clustersource"'
+        }
+    }
+        
     Context "Indentation" {
 
         It "Has no indention for first graph element" {
