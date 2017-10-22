@@ -43,7 +43,6 @@ Describe "Regression tests for Github issues" -Tag Build {
             'edge'
             'subgraph'
             'rank'
-            'digraph'
         )
 
         It "#30 #44 graph (and other keywords) for node name should be in quotes" {
