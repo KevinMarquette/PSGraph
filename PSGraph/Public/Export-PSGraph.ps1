@@ -110,7 +110,6 @@ function Export-PSGraph
     {
         try
         {
-
             if ( $null -ne $Source -and $Source.Count -gt 0 )
             {
                 # if $Source is a list of files, process each one
@@ -129,7 +128,11 @@ function Export-PSGraph
                     {
                         Write-Verbose "Generating graph from '$($file.path)'"
                         $arguments = Get-GraphVizArgument -InputObject $PSBoundParameters
-                        & $graphViz @($arguments + $file.path)
+                        $output = & $graphViz @($arguments + $file.path)
+                        if ($LastExitCode)
+                        {
+                            Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())
+                        }
                     }
                 }
                 else
@@ -157,22 +160,26 @@ function Export-PSGraph
                 if ( -Not $PSBoundParameters.ContainsKey( 'DestinationPath' ) )
                 {
                     Write-Verbose '  Creating temporary path to save graph'
-                    
+
                     if ( $standardInput[0] -match 'graph\s+(?<filename>.+)\s+{' )
                     {
-                        $file = $Matches.filename                        
+                        $file = $Matches.filename
                     }
-                    else 
+                    else
                     {
                         $file = [System.IO.Path]::GetRandomFileName()
                     }
                     $PSBoundParameters["DestinationPath"] = Join-Path ([system.io.path]::GetTempPath()) "$file.$OutputFormat"
                 }
-                
+
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
 
-                $standardInput.ToString() | & $graphViz @($arguments)
+                $output = $standardInput.ToString() | & $graphViz @($arguments)
+                if ($LastExitCode)
+                {
+                    Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())
+                }
 
                 if ( $ShowGraph )
                 {
