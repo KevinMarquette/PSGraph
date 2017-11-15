@@ -10,32 +10,7 @@ $script:Imports = ( 'private', 'public', 'classes' )
 $script:TestFile = "$PSScriptRoot\output\TestResults_PS$PSVersion`_$TimeStamp.xml"
 $script:HelpRoot = Join-Path $Output 'help'
 
-function ComplexTask
-{
-    [CmdletBinding()]
-    param(
-        [Parameter(Position = 0, Mandatory = 1)]
-        [string]
-        $Name,
-        [Parameter(Position = 1, Mandatory = 1)]
-        [hashtable]
-        $Options
-    )
-    try     
-    {
-        if ( $null -ne $Options.Action )
-        {
-            $Options.Jobs = $Options.Action
-            $Options.Remove('Action')
-        }
-        Task $Name @Options
-    }
-    catch 
-    {
-        Write-Error "Failed to execute taks [$Name]"
-        throw
-    }    
-}
+function TaskX($Name, $Parameters) {task $Name @Parameters -Source $MyInvocation}
 
 Task Default Clean, Build, Pester, UpdateSource, Publish
 Task Build CopyToOutput, BuildPSM1, BuildPSD1
@@ -92,10 +67,10 @@ Task CopyToOutput {
         ForEach-Object { "  Create [.{0}]" -f $_.fullname.replace($PSScriptRoot, '')}
 }
 
-ComplexTask BuildPSM1 @{
+TaskX BuildPSM1 @{
     Inputs  = (Get-Item "$source\*\*.ps1") 
     Outputs = $ModulePath 
-    Action  = {
+    Jobs    = {
         [System.Text.StringBuilder]$stringbuilder = [System.Text.StringBuilder]::new()    
         foreach ($folder in $imports )
         {
@@ -118,19 +93,19 @@ ComplexTask BuildPSM1 @{
     }
 }
 
-ComplexTask NextPSGalleryVersion @{
+TaskX NextPSGalleryVersion @{
     If     = (-Not ( Test-Path "$output\version.xml" ) ) 
     Before = 'BuildPSD1'
-    Action = {
+    Jobs   = {
         $galleryVersion = Get-NextPSGalleryVersion -Name $ModuleName
         $galleryVersion | Export-Clixml -Path "$output\version.xml"
     }
 }
 
-ComplexTask BuildPSD1 @{
+TaskX BuildPSD1 @{
     Inputs  = (Get-ChildItem $Source -Recurse -File) 
     Outputs = $ManifestPath 
-    Action  = {
+    Jobs    = {
     
         Write-Output "  Update [$ManifestPath]"
         Copy-Item "$source\$ModuleName.psd1" -Destination $ManifestPath
@@ -243,16 +218,16 @@ Task Publish {
     }
 }
 
-ComplexTask CreateHelp @{
+TaskX CreateHelp @{
+    Partial = $true
     Inputs  = {Get-ChildItem "$ModuleName\Public\*.ps1"}
     Outputs = {
         process
         {
             Get-ChildItem $_ | % {'{0}\{1}.md' -f $HelpRoot, $_.basename}
         }
-    }
-    Partial = $true
-    Action  = 'ImportModule', {    
+    }    
+    Jobs    = 'ImportModule', {    
         process
         {
             $null = New-Item -Path $HelpRoot -ItemType Directory -ErrorAction SilentlyContinue        
@@ -269,10 +244,10 @@ ComplexTask CreateHelp @{
     }
 }
 
-ComplexTask PackageHelp  @{
+TaskX PackageHelp  @{
     Inputs  = {Get-ChildItem $HelpRoot -Recurse -File}
     Outputs = "$Destination\en-us\$ModuleName-help.xml"
-    Action  = 'CreateHelp', {
+    Jobs    = 'CreateHelp', {
         New-ExternalHelp -Path $HelpRoot -OutputPath "$Destination\en-us" -force | % fullname
     }
 }
