@@ -10,12 +10,22 @@ Describe "PSScriptAnalyzer rule-sets" -Tag Build {
     foreach ( $Script in $scripts )
     {
         Context "Script '$($script.FullName)'" {
-
-            foreach ( $rule in $rules )
+            $results = Invoke-ScriptAnalyzer -Path $script.FullName -includeRule $Rules
+            if ($results)
             {
-                It "Rule [$rule]" {
+                foreach ($rule in $results)
+                {
+                    It $rule.RuleName {
+                        $message = "{0} Line {1}: {2}" -f $rule.Severity, $rule.Line, $rule.message
+                        $message | Should Be ""
+                    }
 
-                    (Invoke-ScriptAnalyzer -Path $script.FullName -IncludeRule $rule.RuleName ).Count | Should Be 0
+                }
+            }
+            else
+            {
+                It "Should not fail any rules" {
+                    $results | Should BeNullOrEmpty
                 }
             }
         }
