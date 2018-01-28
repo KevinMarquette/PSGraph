@@ -237,14 +237,15 @@ Record:infa
 Record:InformationAction
 Record:InformationVariable
 Record:iv
-Record:List
-Record:Name
+Record:Label
+Record:Node
 Record:ob
 Record:OutBuffer
 Record:OutVariable
 Record:ov
 Record:PipelineVariable
 Record:pv
+Record:Row
 Record:ScriptBlock
 Record:vb
 Record:Verbose

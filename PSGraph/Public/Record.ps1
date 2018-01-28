@@ -11,7 +11,10 @@ function Record
     .PARAMETER Name
     The node name for this record
     
-    .PARAMETER List
+    .PARAMETER Label
+    The label to use for the headder of the record.
+    
+    .PARAMETER Row
     An array of strings to place in this record
     
     .PARAMETER ScriptBlock
@@ -62,7 +65,7 @@ function Record
             ParameterSetName = 'Strings'
         )]
         [string[]]
-        $List,
+        $Row,
 
         [Parameter(
             Mandatory,
@@ -70,33 +73,40 @@ function Record
             ParameterSetName = 'Script'
         )]
         [ScriptBlock]
-        $ScriptBlock
+        $ScriptBlock,
+
+        [string]
+        $Label
     )
     begin
     {
-        $td = [System.Collections.ArrayList]::new()
+        $tableDate = [System.Collections.ArrayList]::new()
+        if ($null -eq $Label)
+        {
+            $Label = $Name
+        }
     }
     process
     {
         if ( $null -ne $ScriptBlock )
         {
-            $List = $ScriptBlock.Invoke()
+            $Row = $ScriptBlock.Invoke()
         }
 
-        $results = foreach ($node in $List)
+        $results = foreach ($node in $Row)
         {
             Row -Label $node
         }
 
         foreach ($node in $results)
         {
-            [void]$td.Add($node)
+            [void]$tableDate.Add($node)
         }
     }
     end
     {
-        $label = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center"><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Name, ($td -join '')
-        Node $Name @{label = $label; shape = 'none'; fontname = "Courier New"; style = "filled"; penwidth = 1; fillcolor = "white"}
+        $html = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center"><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Label, ($tableDate -join '')
+        Node $Name @{label = $html; shape = 'none'; fontname = "Courier New"; style = "filled"; penwidth = 1; fillcolor = "white"}
     }
 }
 
