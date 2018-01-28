@@ -108,10 +108,16 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
+vNext
+* add Record command
+* add Row command
+
+* throws error when there are graphviz parse errors
 1.2.0 20171022
 * #53 add support for edges to and from a subgraph
 * #55 subgraph name is now optional
 * 56 remove extra blank lines in graph output
+
 1.1.4 20171021
 * #51 Updated build script 
 
