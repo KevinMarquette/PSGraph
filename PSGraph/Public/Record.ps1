@@ -81,7 +81,7 @@ function Record
     begin
     {
         $tableDate = [System.Collections.ArrayList]::new()
-        if ($null -eq $Label)
+        if ( [string]::IsNullOrEmpty($Label) )
         {
             $Label = $Name
         }
