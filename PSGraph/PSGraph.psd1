@@ -12,7 +12,7 @@
     RootModule        = 'PSGraph.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '2.1.3'
+    ModuleVersion     = '2.1.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Edge','EntityObject','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Record','Row','Set-NodeFormatScript','SubGraph')
+    FunctionsToExport = @('Edge','Entity','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Record','Row','Set-NodeFormatScript','SubGraph')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -108,11 +108,12 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
-vNext
+2.1.5 20180216
 * add Record command
 * add Row command
-
+* add Entity command
 * throws error when there are graphviz parse errors
+
 1.2.0 20171022
 * #53 add support for edges to and from a subgraph
 * #55 subgraph name is now optional
