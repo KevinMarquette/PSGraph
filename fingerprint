@@ -233,11 +233,13 @@ Record:ea
 Record:ErrorAction
 Record:ErrorVariable
 Record:ev
+Record:ID
 Record:infa
 Record:InformationAction
 Record:InformationVariable
 Record:iv
 Record:Label
+Record:Name
 Record:Node
 Record:ob
 Record:OutBuffer
@@ -246,6 +248,7 @@ Record:ov
 Record:PipelineVariable
 Record:pv
 Record:Row
+Record:Rows
 Record:ScriptBlock
 Record:vb
 Record:Verbose
@@ -265,6 +268,7 @@ Row:InformationAction
 Row:InformationVariable
 Row:iv
 Row:Label
+Row:Name
 Row:ob
 Row:OutBuffer
 Row:OutVariable

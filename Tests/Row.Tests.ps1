@@ -23,5 +23,6 @@ Describe "Function Row" {
 
     It 'should use specified ID as port' {
         Row Label -ID Test | Should -Match 'PORT="Test"'
+        Row Label -Name Test | Should -Match 'PORT="Test"'
     }
 }

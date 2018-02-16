@@ -10,8 +10,8 @@ function Row
     .PARAMETER Label
     This is the displayed data for the row
     
-    .PARAMETER ID
-    This is the target ID for this row to be used in edges. 
+    .PARAMETER Name
+    This is the target name of this row to be used in edges. 
     Will default to the label if the label has not special characters
     
     .EXAMPLE    
@@ -55,20 +55,21 @@ function Row
         [string]
         $Label,
 
+        [alias('ID')]
         [string]
-        $ID
+        $Name
     )
     process
     {
-        if ( [string]::IsNullOrEmpty($ID) )
+        if ( [string]::IsNullOrEmpty($Name) )
         {
             if ($Label -notmatch '[<,>\s]')
             {
-                $ID = $Label
+                $Name = $Label
             }
             else
             {
-                $ID = New-Guid
+                $Name = New-Guid
             }
         }
 
@@ -78,7 +79,7 @@ function Row
         }
         else
         {
-            '<TR><TD PORT="{0}" ALIGN="LEFT">{1}</TD></TR>' -f $ID, $Label                
+            '<TR><TD PORT="{0}" ALIGN="LEFT">{1}</TD></TR>' -f $Name, $Label                
         }
     }
 }

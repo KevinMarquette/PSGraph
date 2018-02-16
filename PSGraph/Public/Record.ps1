@@ -55,6 +55,7 @@ function Record
             Mandatory,
             Position = 0
         )]
+        [alias('ID', 'Node')]
         [string]
         $Name,
 
@@ -64,6 +65,7 @@ function Record
             ValueFromPipeline,
             ParameterSetName = 'Strings'
         )]
+        [alias('Rows')]
         [string[]]
         $Row,
 

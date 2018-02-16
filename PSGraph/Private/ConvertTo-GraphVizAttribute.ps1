@@ -84,7 +84,7 @@ function ConvertTo-GraphVizAttribute
             {
                 $value = $key.value
             }
-            '{0}={1};' -f $key.name, ( Format-Value $value )
+            '{0}={1};' -f ( Format-KeyName $key.name ), ( Format-Value $value )
         }
 
         if ( $UseGraphStyle )
