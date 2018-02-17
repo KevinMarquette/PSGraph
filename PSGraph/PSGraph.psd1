@@ -113,6 +113,7 @@
 * add Row command
 * add Entity command
 * add Show-PSGraph command
+* add key name case correction
 * throws error when there are graphviz parse errors
 
 1.2.0 20171022
