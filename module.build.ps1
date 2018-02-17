@@ -130,6 +130,8 @@ TaskX BuildPSD1 @{
             }
         }
         
+        $fingerprint = $fingerprint | Sort-Object
+
         if (Test-Path .\fingerprint)
         {
             $oldFingerprint = Get-Content .\fingerprint

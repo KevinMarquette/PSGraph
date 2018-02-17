@@ -92,7 +92,10 @@ Describe "Basic function unit tests" -Tags Build {
 
         It "Creates a node with attributes" {
             Node TestNode @{shape = 'rectangle'} | Should Match '"TestNode" \[shape="rectangle";\]'
-            Node TestNode @{shape = 'rectangle'; label = "myTest"} | Should Match '"TestNode" \[shape="rectangle";label="myTest";\]'
+            $result = Node TestNode @{shape = 'rectangle'; label = "myTest"} 
+            $result | Should Match '"TestNode" \[.*=".*";.*=".*";\]'
+            $result | Should Match 'shape="rectangle";'
+            $result | Should Match 'label="myTest";'
         }
     }
 
