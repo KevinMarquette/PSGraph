@@ -89,7 +89,8 @@ Function Entity
                     continue
                 }
             }
-            
+
+            $value = $inputobject.($propertyName)
             switch ($Show)
             {
                 Name
@@ -98,11 +99,27 @@ Function Entity
                 }
                 TypeName
                 {
-                    Row ('<B>{0}</B> <I>[{1}]</I>' -f $propertyName, $property.TypeNameOfValue) -Name $propertyName
+                    if($null -ne $value)
+                    {
+                        $type = $value.GetType().Name
+                    }
+                    else 
+                    {
+                        $type = 'null'    
+                    }
+                    Row ('<B>{0}</B> <I>[{1}]</I>' -f $propertyName, $type) -Name $propertyName
                 }
                 Value
                 {
-                    Row ('<B>{0}</B> : <I>{1}</I>' -f $propertyName, $inputobject.($propertyName)) -Name $propertyName
+                    if([string]::IsNullOrEmpty($value))
+                    {
+                        $value = ' '
+                    }
+                    elseif ($value.count -gt 1)
+                    {
+                        $value = '[object[]]'
+                    }
+                    Row ('<B>{0}</B> : <I>{1}</I>' -f $propertyName, ([System.Net.WebUtility]::HtmlEncode($value))) -Name $propertyName
                 }
             }
         }
