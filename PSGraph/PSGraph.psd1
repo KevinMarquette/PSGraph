@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Edge','Entity','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Record','Row','Set-NodeFormatScript','Show-PSGraph','SubGraph')
+    FunctionsToExport = @('Edge', 'Entity', 'Export-PSGraph', 'Graph', 'Inline', 'Install-GraphViz', 'Node', 'Rank', 'Record', 'Row', 'Set-NodeFormatScript', 'Show-PSGraph', 'SubGraph')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -108,10 +108,11 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
-2.1.5 20180216
+2.1.16 20180217
 * add Record command
 * add Row command
 * add Entity command
+* add Show-PSGraph command
 * throws error when there are graphviz parse errors
 
 1.2.0 20171022
