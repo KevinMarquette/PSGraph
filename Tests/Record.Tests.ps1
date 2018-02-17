@@ -5,6 +5,10 @@ Describe "Function Record" -Tag Build {
         Record Test {} | Should -Not -BeNullOrEmpty
     }
 
+    It 'name only' {
+        $result = Record -Name test
+        $result | Should -match test
+    }
     It 'simple script example' {
         $result = Record test {
             'first'

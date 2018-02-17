@@ -63,7 +63,6 @@ function Record
         $Name,
 
         [Parameter(
-            Mandatory,
             Position = 1,
             ValueFromPipeline,
             ParameterSetName = 'Strings'
@@ -73,7 +72,6 @@ function Record
         $Row,
         
         [Parameter(
-            Mandatory,
             Position = 1,
             ParameterSetName = 'Script'
         )]
