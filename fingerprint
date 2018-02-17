@@ -251,6 +251,7 @@ Record:PipelineVariable
 Record:pv
 Record:Row
 Record:Rows
+Record:RowScript
 Record:ScriptBlock
 Record:vb
 Record:Verbose

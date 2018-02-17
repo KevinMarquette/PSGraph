@@ -1,8 +1,5 @@
-$projectRoot = Resolve-Path "$PSScriptRoot\.."
-$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
-$moduleName = Split-Path $moduleRoot -Leaf
 
-Describe "Function Record" {
+Describe "Function Record" -Tag Build {
 
     It 'does not throw' {
         Record Test {} | Should -Not -BeNullOrEmpty
