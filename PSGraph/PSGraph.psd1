@@ -12,7 +12,7 @@
     RootModule        = 'PSGraph.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '2.1.12'
+    ModuleVersion     = '2.1.16'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()

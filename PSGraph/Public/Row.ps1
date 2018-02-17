@@ -13,6 +13,10 @@ function Row
     .PARAMETER Name
     This is the target name of this row to be used in edges. 
     Will default to the label if the label has not special characters
+
+    .PARAMETER HtmlDecode
+    This will decode unintentional HTML. Characters like <>& would break html parsing if they are 
+    contained in the source data.
     
     .EXAMPLE    
     graph {
@@ -57,7 +61,10 @@ function Row
 
         [alias('ID')]
         [string]
-        $Name
+        $Name,
+
+        [switch]
+        $HtmlEncode
     )
     process
     {
@@ -79,6 +86,10 @@ function Row
         }
         else
         {
+            if ($HtmlEncode)
+            {
+                $Label = ([System.Net.WebUtility]::HtmlEncode($Label))
+            }
             '<TR><TD PORT="{0}" ALIGN="LEFT">{1}</TD></TR>' -f $Name, $Label                
         }
     }

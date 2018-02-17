@@ -13,6 +13,12 @@ Describe "Function Row" {
         Row $text | Should -Be $text
     }
 
+    It 'can encode html' {
+        $text = '<TR>stuff</TR>'
+        $encoded = ([System.Net.WebUtility]::HtmlEncode($text))
+        Row $text -HtmlEncode | Should -Be $encoded
+    }
+
     It 'uses simple label as port id' {
         Row Test | Should -Match 'PORT="Test"'
     }

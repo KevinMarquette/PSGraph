@@ -265,6 +265,7 @@ Row:ea
 Row:ErrorAction
 Row:ErrorVariable
 Row:ev
+Row:HtmlEncode
 Row:ID
 Row:infa
 Row:InformationAction
