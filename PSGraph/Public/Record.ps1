@@ -102,19 +102,20 @@ function Record
             $Row = $ScriptBlock.Invoke()
         }
 
-        $results = foreach ($node in $Row)
+        if ( $null -ne $RowScript )
         {
-            if ($RowScript)
-            {
+            $Row = foreach ( $node in $Row )
+            {   
                 @($node).ForEach($RowScript)
-            }
-            else
-            {
-                Row -Label $node
             }
         }
 
-        foreach ($node in $results)
+        $results = foreach ( $node in $Row )
+        {            
+            Row -Label $node            
+        }
+
+        foreach ( $node in $results )
         {
             [void]$tableData.Add($node)
         }
