@@ -14,8 +14,8 @@ function Row
     This is the target name of this row to be used in edges. 
     Will default to the label if the label has not special characters
 
-    .PARAMETER HtmlDecode
-    This will decode unintentional HTML. Characters like <>& would break html parsing if they are 
+    .PARAMETER HtmlEncode
+    This will encode unintentional HTML. Characters like <>& would break html parsing if they are 
     contained in the source data.
     
     .EXAMPLE    
