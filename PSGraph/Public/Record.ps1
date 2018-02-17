@@ -15,8 +15,11 @@ function Record
     The label to use for the headder of the record.
     
     .PARAMETER Row
-    An array of strings to place in this record
+    An array of strings/objects to place in this record
     
+    .PARAMETER RowScript
+    A script to run on each row    
+
     .PARAMETER ScriptBlock
     A sub expression that contains Row commands
     
@@ -66,9 +69,9 @@ function Record
             ParameterSetName = 'Strings'
         )]
         [alias('Rows')]
-        [string[]]
+        [Object[]]
         $Row,
-
+        
         [Parameter(
             Mandatory,
             Position = 1,
@@ -77,12 +80,18 @@ function Record
         [ScriptBlock]
         $ScriptBlock,
 
+        [Parameter(
+            Position = 2
+        )]
+        [ScriptBlock]
+        $RowScript,
+            
         [string]
         $Label
     )
     begin
     {
-        $tableDate = [System.Collections.ArrayList]::new()
+        $tableData = [System.Collections.ArrayList]::new()
         if ( [string]::IsNullOrEmpty($Label) )
         {
             $Label = $Name
@@ -97,17 +106,24 @@ function Record
 
         $results = foreach ($node in $Row)
         {
-            Row -Label $node
+            if ($RowScript)
+            {
+                @($node).ForEach($RowScript)
+            }
+            else
+            {
+                Row -Label $node
+            }
         }
 
         foreach ($node in $results)
         {
-            [void]$tableDate.Add($node)
+            [void]$tableData.Add($node)
         }
     }
     end
     {
-        $html = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center"><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Label, ($tableDate -join '')
+        $html = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center"><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Label, ($tableData -join '')
         Node $Name @{label = $html; shape = 'none'; fontname = "Courier New"; style = "filled"; penwidth = 1; fillcolor = "white"}
     }
 }
