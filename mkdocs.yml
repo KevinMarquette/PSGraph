@@ -6,17 +6,18 @@ pages:
   - PSGraph Basics:
     - What is PSGraph: about.md
     - Quick Start: Quick-Start-Installation-and-Example.md
-  - Basic Commands:
+  - Commands:
     - Graph: Command-Graph.md
     - Edge: Command-Edge.md
     - Node: Command-Node.md
     - Inline: Command-Inline.md
     - SubGraph: Command-SubGraph.md
+    - Record: Command-Record.md
+    - Row: Command-Row.md
+    - Entity: Command-Entity.md
     - Export-PSGraph: Command-Export-PSGraph.md
+    - Show-PSGraph: Command-Show-PSGraph.md
   - Advanced:
-    - Edge Advanced: Command-Edge-Advanced.md
-    - Node Advanced: Command-Node-Advanced.md
-    - Rank: Command-Rank-Advanced.md
     - GraphViz Documentation: graphviz.md
   - Examples:
     - Gallery: Example-Gallery.md

@@ -1,8 +1,8 @@
-# Rank Advanced
+# Rank
 
 The rank keyword groups object to the same level.
 
-# Rank [string[]]
+## Rank [string[]]
 
 nodes get placed wherever the engine things is best. The rank command allows you to give it some more layout guidance.
 
@@ -21,7 +21,7 @@ Here it is with the rank:
 
 [![Source](images/withRank.png)](images/withRank.png)
 
-# Scripted properties
+## Rank [object[]] -NodeScript [scriptblock]
 Just like with the node and edge commands, you can provide an object and script the properties.
 
 graph g {
