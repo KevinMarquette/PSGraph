@@ -1,4 +1,4 @@
-# Inline
+# Inline [string]
 This lets you insert native DOT commands into your graph and keep it indented corectly.
 
     graph g {

@@ -22,13 +22,13 @@ Instead of saving your graphs to files first, you can pipe them directly to the 
 Because there is no source file, you need to provide a destination path. If none is provided, it will save it ot the `$env:temp` folder under a random name.
 
 # Arguments
-## ShowGraph
+## -ShowGraph
 Specifying this will auto open the resulting file in the default viewer for that file type. I use this a lot when designing a graph to quickly see the result.
 
-## Source
+## -Source [string]
 This is the input source to be exported. It can either be a list of file paths to process or text representation of a graph to be processes by the GraphViz engine.
 
-## DestinationPath
+## -DestinationPath [string]
 The location to save the file. If not specified, it will either save next to the original file or to the `$env:temp` folder. 
 
 ## OutputFormat
@@ -47,7 +47,7 @@ These are the valid options for output formats:
 * plain
 * dot
 
-## LayoutEngine
+## -LayoutEngine [enum]
 GraphViz supports multiple layout engines. Each work better on different types of datasets.
 
 These are the available engines:
