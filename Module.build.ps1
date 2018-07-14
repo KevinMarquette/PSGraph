@@ -1,4 +1,4 @@
-$Script:ModuleName = 'LDTestFramework'
+$Script:ModuleName = Split-Path -Leaf $PSScriptRoot
 $Script:CodeCoveragePercent = 0.0 # 0 to 1
 . $psscriptroot\BuildTasks\InvokeBuildInit.ps1
 
