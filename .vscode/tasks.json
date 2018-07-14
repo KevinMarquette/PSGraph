@@ -1,0 +1,95 @@
+﻿// Available variables which can be used inside of strings:
+// ${workspaceRoot}: The root folder of the team
+// ${file}: The current opened file
+// ${relativeFile}: The current opened file relative to workspaceRoot
+// ${fileBasename}: The current opened file's basename
+// ${fileDirname}: The current opened file's dirname
+// ${fileExtname}: The current opened file's extension
+// ${cwd}: The current working directory of the spawned process
+{
+  "version": "2.0.0",
+  "windows": {
+    "options": {
+      "shell": {
+        "executable": "powershell.exe",
+        "args": [ "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command" ]
+      }
+    }
+  },
+  "linux": {
+    "options": {
+      "shell": {
+        "executable": "/usr/bin/pwsh",
+        "args": [ "-NoProfile", "-Command" ]
+      }
+    }
+  },
+  "osx": {
+    "options": {
+      "shell": {
+        "executable": "/usr/local/bin/pwsh",
+        "args": [ "-NoProfile", "-Command" ]
+      }
+    }
+  },
+  "tasks": [
+    {
+      "label": "Default",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "Invoke-Build -Task Default -File './Module.build.ps1'"
+    },
+    {
+      "label": "Analyze",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Analyze -File './Module.build.ps1'"
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Build -File './Module.build.ps1'"
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Clean -File './Module.build.ps1'"
+    },
+    {
+      "label": "Helpify",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Helpify -File './Module.build.ps1'"
+    },
+    {
+      "label": "Install",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Install -File './Module.build.ps1'"
+    },
+    {
+      "label": "Test",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Test -File './Module.build.ps1'"
+    },
+    {
+      "label": "Uninstall",
+      "type": "shell",
+      "problemMatcher": [ "$msCompile" ],
+      "command": "Invoke-Build -Task Uninstall -File './Module.build.ps1'"
+    },
+    {
+      "label": "?",
+      "type": "shell",
+      "problemMatcher": [],
+      "command": "Invoke-Build -Task ? -File './Module.build.ps1'"
+    }
+  ]
+}
