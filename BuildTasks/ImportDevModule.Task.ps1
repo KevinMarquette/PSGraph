@@ -8,10 +8,11 @@ task ImportDevModule {
     }
     else
     {
-        if (Get-Module -Name $ModuleName)
+        $loaded = Get-Module -Name $ModuleName -All
+        if ($loaded)
         {
             "Unloading Module [$ModuleName] from a previous import..."
-            Remove-Module -Name $ModuleName
+            $loaded | Remove-Module -Force
         }
 
         "Importing Module [$ModuleName] from [$Source\$ModuleName.psd1]..."
