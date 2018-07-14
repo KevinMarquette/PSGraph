@@ -16,7 +16,7 @@ task FullTests {
         Write-Error -Message "Failed [$($results.FailedCount)] Pester tests."
     }
 
-    $requiredPercent = 0.70
+    $requiredPercent = $Script:CodeCoveragePercent
     $codeCoverage = $results.codecoverage.NumberOfCommandsExecuted / $results.codecoverage.NumberOfCommandsAnalyzed
     if($codeCoverage -lt $requiredPercent)
     {
