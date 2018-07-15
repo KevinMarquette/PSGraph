@@ -10,11 +10,11 @@ Describe "Public commands have comment-based or external help" -Tags 'Build' {
     foreach ($node in $help)
     {
         Context $node.Name {
-            It "Should have a Description or Synopsis" -Pending {
+            It "Should have a Description or Synopsis" {
                 ($node.Description + $node.Synopsis) | Should Not BeNullOrEmpty
             }
 
-            It "Should have an Example" -Pending {
+            It "Should have an Example"  {
                 $node.Examples | Should Not BeNullOrEmpty
             }
 
@@ -22,7 +22,7 @@ Describe "Public commands have comment-based or external help" -Tags 'Build' {
             {
                 if ($parameter -notmatch 'WhatIf|Confirm')
                 {
-                    It "Should have a Description for Parameter [$($parameter.Name)]" -Pending {
+                    It "Should have a Description for Parameter [$($parameter.Name)]" {
                         $parameter.Description.Text | Should Not BeNullOrEmpty
                     }
                 }
