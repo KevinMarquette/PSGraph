@@ -1,5 +1,5 @@
-$Script:ModuleName = 'LDTestFramework'
-$Script:ModuleRoot = Split-Path -Path $PSScriptRoot -Parent
+$Script:ModuleRoot = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
+$Script:ModuleName = Split-Path -Path $ModuleRoot -Leaf
 
 Describe "Public commands have comment-based or external help" -Tags 'Build' {
     $functions = Get-Command -Module $ModuleName
