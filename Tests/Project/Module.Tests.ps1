@@ -1,5 +1,5 @@
-$Script:ModuleName = 'LDTestFramework'
 $Script:ModuleRoot = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
+$Script:ModuleName = Split-Path -Path $ModuleRoot -Leaf
 $Script:SourceRoot = Join-Path -Path $ModuleRoot -ChildPath $ModuleName
 
 Describe "All commands pass PSScriptAnalyzer rules" -Tag 'Build' {
