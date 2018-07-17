@@ -1,5 +1,5 @@
 $Script:ModuleRoot = Split-Path -Path (Split-Path -Path $PSScriptRoot -Parent) -Parent
-$Script:ModuleName = Split-Path -Path $ModuleRoot -Leaf
+$Script:ModuleName = $Script:ModuleName = Get-ChildItem $ModuleRoot\*\*.psm1 | Select-object -ExpandProperty BaseName
 
 Describe "Public commands have comment-based or external help" -Tags 'Build' {
     $functions = Get-Command -Module $ModuleName
