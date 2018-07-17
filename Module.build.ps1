@@ -1,4 +1,4 @@
-$Script:ModuleName = Split-Path -Leaf $PSScriptRoot
+$Script:ModuleName = Get-ChildItem .\*\*.psm1 | Select-object -ExpandProperty BaseName
 $Script:CodeCoveragePercent = 0.0 # 0 to 1
 . $psscriptroot\BuildTasks\InvokeBuildInit.ps1
 
