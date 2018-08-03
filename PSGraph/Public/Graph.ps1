@@ -45,7 +45,7 @@ function Graph
             Mandatory = $true,
             Position = 0,
             ParameterSetName = 'Default'
-        )]        
+        )]
         [Parameter(
             Mandatory = $true,
             Position = 1,
@@ -122,7 +122,7 @@ function Graph
                 Node $nodeName @{ shape = 'point'; style = 'invis'; label = '' }
             }
 
-            & $ScriptBlock            
+            & $ScriptBlock
         }
         catch
         {

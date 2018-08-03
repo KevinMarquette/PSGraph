@@ -6,29 +6,29 @@ function Row
 
     .Description
     Adds a row to a record inside a PSGraph Graph
-    
+
     .PARAMETER Label
     This is the displayed data for the row
-    
+
     .PARAMETER Name
-    This is the target name of this row to be used in edges. 
+    This is the target name of this row to be used in edges.
     Will default to the label if the label has not special characters
 
     .PARAMETER HtmlEncode
-    This will encode unintentional HTML. Characters like <>& would break html parsing if they are 
+    This will encode unintentional HTML. Characters like <>& would break html parsing if they are
     contained in the source data.
-    
-    .EXAMPLE    
+
+    .EXAMPLE
     graph {
 
         Record Components1 @(
             'Name'
-            'Environment'        
+            'Environment'
             'Test <I>[string]</I>'
         )
 
         Record Components2 {
-            Row Name 
+            Row Name
             Row 'Environment <B>test</B>'
             'Test'
         }
@@ -37,7 +37,7 @@ function Row
         Edge Components1:Name -to Components2:Name
 
     } | Export-PSGraph -ShowGraph
-    
+
     .NOTES
     Need to add attribute support
 
@@ -54,7 +54,7 @@ function Row
         [Parameter(
             Mandatory,
             Position = 0,
-            ValueFromPipeline            
+            ValueFromPipeline
         )]
         [string]
         $Label,
@@ -90,7 +90,7 @@ function Row
             {
                 $Label = ([System.Net.WebUtility]::HtmlEncode($Label))
             }
-            '<TR><TD PORT="{0}" ALIGN="LEFT">{1}</TD></TR>' -f $Name, $Label                
+            '<TR><TD PORT="{0}" ALIGN="LEFT">{1}</TD></TR>' -f $Name, $Label
         }
     }
 }

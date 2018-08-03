@@ -89,7 +89,7 @@ function Node
                     {
                         $nodeName = $node
                     }
-                    
+
 
                     $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -InputObject $node
                     '{0}{1} {2}' -f (Get-Indent), (Format-Value $nodeName -Node), $GraphVizAttribute

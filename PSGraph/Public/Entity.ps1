@@ -11,29 +11,29 @@ Function Entity
     <#
     .SYNOPSIS
     Convert an object into a PSGraph Record
-    
+
     .DESCRIPTION
     Convert an object into a PSGraph Record
-    
+
     .PARAMETER InputObject
     The object to convert into a record
 
     .PARAMETER Name
     The name of the node
-    
+
     .PARAMETER Show
     The different details to show in the record.
 
     Name : The property name
     Value : The property name and value
     TypeName : The property name and the value type
-    
+
     .PARAMETER Property
     The list of properties to display. Default is to list them all.
     Supports wildcards.
 
     .EXAMPLE
-    
+
     $sample = [pscustomobject]@{
         first = 1
         second = 'two'
@@ -41,7 +41,7 @@ Function Entity
     graph {
         $sample |  Entity -Show TypeName
     } | export-PSGraph -ShowGraph
-    
+
     .NOTES
     General notes
     #>
@@ -65,26 +65,26 @@ Function Entity
 
     end
     {
-        if([string]::isnullorempty($Name) )
+        if ([string]::isnullorempty($Name) )
         {
             $Name = $InputObject.GetType().Name
         }
 
-        if($InputObject -is [System.Collections.IDictionary])
+        if ($InputObject -is [System.Collections.IDictionary])
         {
             $members = $InputObject.keys
         }
-        else 
+        else
         {
             $Members = $InputObject.PSObject.Properties.Name
         }
-        
+
         $rows = foreach ($propertyName in $members)
         {
-            if($null -ne $Property)
+            if ($null -ne $Property)
             {
                 $matches = $property | Where-Object {$propertyName -like $_}
-                if($null -eq $matches)
+                if ($null -eq $matches)
                 {
                     continue
                 }
@@ -99,19 +99,19 @@ Function Entity
                 }
                 TypeName
                 {
-                    if($null -ne $value)
+                    if ($null -ne $value)
                     {
                         $type = $value.GetType().Name
                     }
-                    else 
+                    else
                     {
-                        $type = 'null'    
+                        $type = 'null'
                     }
                     Row ('<B>{0}</B> <I>[{1}]</I>' -f $propertyName, $type) -Name $propertyName
                 }
                 Value
                 {
-                    if([string]::IsNullOrEmpty($value))
+                    if ([string]::IsNullOrEmpty($value))
                     {
                         $value = ' '
                     }

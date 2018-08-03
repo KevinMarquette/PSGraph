@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Edge','Entity','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Record','Row','Set-NodeFormatScript','Show-PSGraph','SubGraph')
+    FunctionsToExport = @('Edge', 'Entity', 'Export-PSGraph', 'Graph', 'Inline', 'Install-GraphViz', 'Node', 'Rank', 'Record', 'Row', 'Set-NodeFormatScript', 'Show-PSGraph', 'SubGraph')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -122,7 +122,7 @@
 * 56 remove extra blank lines in graph output
 
 1.1.4 20171021
-* #51 Updated build script 
+* #51 Updated build script
 
 1.1.3 20171021
 * #40 fixed positional attributes with Edge

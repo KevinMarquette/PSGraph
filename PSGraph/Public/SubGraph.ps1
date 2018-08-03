@@ -40,7 +40,7 @@ function SubGraph
             Mandatory = $true,
             Position = 0,
             ParameterSetName = 'Default'
-        )]        
+        )]
         [Parameter(
             Mandatory = $true,
             Position = 1,

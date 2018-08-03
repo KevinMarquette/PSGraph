@@ -5,14 +5,14 @@ function Format-KeyName
     param(
         [Parameter(Position = 0)]
         [string]
-        $InputObject 
+        $InputObject
     )
     begin
     {
         $translate = @{
             Damping = 'Damping'
             K       = 'K'
-            URL     = 'URL'        
+            URL     = 'URL'
         }
     }
     process

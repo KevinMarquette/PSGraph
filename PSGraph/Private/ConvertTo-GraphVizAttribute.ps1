@@ -63,14 +63,14 @@ function ConvertTo-GraphVizAttribute
         $script:SubGraphList = @{}
     }
     if ( $From -and $script:SubGraphList.contains($From) )
-    {        
-        $Attributes.ltail = $script:SubGraphList[$From]        
+    {
+        $Attributes.ltail = $script:SubGraphList[$From]
     }
     if ( $To -and $script:SubGraphList.contains($To) )
-    {        
-        $Attributes.lhead = $script:SubGraphList[$To]        
+    {
+        $Attributes.lhead = $script:SubGraphList[$To]
     }
-    
+
     if ($Attributes -ne $null -and $Attributes.Keys.Count -gt 0)
     {
         $values = foreach ( $key in $Attributes.GetEnumerator() )
