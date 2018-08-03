@@ -6,7 +6,7 @@ function Show-PSGraph
     .ForwardHelpCategory Function
     .Notes
     To regenerate most of this proxy function
-    $MetaData = New-Object System.Management.Automation.CommandMetaData (Get-Command  Export-PSGraph) 
+    $MetaData = New-Object System.Management.Automation.CommandMetaData (Get-Command  Export-PSGraph)
     $proxy = [System.Management.Automation.ProxyCommand]::Create($MetaData)
 
     #>

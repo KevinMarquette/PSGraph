@@ -157,7 +157,7 @@ function Edge
                 }
             }
             else
-            {           
+            {
                 if ( $null -ne $To )
                 {
                     # If we have a target array, cross multiply results

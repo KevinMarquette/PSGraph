@@ -119,11 +119,11 @@ function Export-PSGraph
                 # Resolve-path spits out an error with empty string paths, even with SilentlyContinue
                 if ( @( $Source | Where-Object { [String]::IsNullOrEmpty($_) } ).Count -eq 0 )
                 {
-                    try 
+                    try
                     {
                         $fileList = Resolve-Path -Path $Source -ErrorAction Stop
                     }
-                    catch 
+                    catch
                     {
                         # I don't care that it isn't a file, I'll do something else with the data
                         $fileList = $null
@@ -136,7 +136,7 @@ function Export-PSGraph
                     {
                         Write-Verbose "Generating graph from '$($file.path)'"
                         $arguments = Get-GraphVizArgument -InputObject $PSBoundParameters
-                        $output = & $graphViz @($arguments + $file.path)
+                        $null = & $graphViz @($arguments + $file.path)
                         if ($LastExitCode)
                         {
                             Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())
@@ -183,7 +183,7 @@ function Export-PSGraph
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
 
-                $output = $standardInput.ToString() | & $graphViz @($arguments)
+                $null = $standardInput.ToString() | & $graphViz @($arguments)
                 if ($LastExitCode)
                 {
                     Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())

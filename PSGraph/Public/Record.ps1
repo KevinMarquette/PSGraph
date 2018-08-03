@@ -4,52 +4,52 @@ function Record
     <#
     .SYNOPSIS
     Creates a record object
-    
+
     .DESCRIPTION
     Creates a record object that contains rows of data.
-    
+
     .PARAMETER Name
     The node name for this record
-    
+
     .PARAMETER Label
     The label to use for the headder of the record.
-    
+
     .PARAMETER Row
     An array of strings/objects to place in this record
-    
+
     .PARAMETER RowScript
-    A script to run on each row    
+    A script to run on each row
 
     .PARAMETER ScriptBlock
     A sub expression that contains Row commands
-    
+
     .EXAMPLE
     graph {
 
         Record Components1 @(
             'Name'
-            'Environment'        
+            'Environment'
             'Test <I>[string]</I>'
         )
 
         Record Components2 {
-            Row Name 
+            Row Name
             Row 'Environment <B>test</B>'
             'Test'
         }
 
         Edge Components1:Name -to Components2:Name
 
-        
+
         Echo one two three | Record Fish
         Record Cow red,blue,green
 
     } | Export-PSGraph -ShowGraph
-    
+
     .NOTES
-    Early release version of this command. 
+    Early release version of this command.
     A lot of stuff is hard coded that should be exposed as attributes
-    
+
     #>
     [OutputType('System.String')]
     [cmdletbinding(DefaultParameterSetName = 'Script')]
@@ -70,7 +70,7 @@ function Record
         [alias('Rows')]
         [Object[]]
         $Row,
-        
+
         [Parameter(
             Position = 1,
             ParameterSetName = 'Script'
@@ -83,7 +83,7 @@ function Record
         )]
         [ScriptBlock]
         $RowScript,
-            
+
         [string]
         $Label
     )
@@ -105,14 +105,14 @@ function Record
         if ( $null -ne $RowScript )
         {
             $Row = foreach ( $node in $Row )
-            {   
+            {
                 @($node).ForEach($RowScript)
             }
         }
 
         $results = foreach ( $node in $Row )
-        {            
-            Row -Label $node            
+        {
+            Row -Label $node
         }
 
         foreach ( $node in $results )
