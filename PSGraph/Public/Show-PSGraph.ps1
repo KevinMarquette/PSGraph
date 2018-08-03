@@ -21,7 +21,7 @@ function Show-PSGraph
         [string]
         ${DestinationPath},
 
-        [ValidateSet('jpg', 'png', 'gif', 'imap', 'cmapx', 'jp2', 'json', 'pdf', 'plain', 'dot')]
+        [ValidateSet('jpg', 'png', 'gif', 'imap', 'cmapx', 'jp2', 'json', 'pdf', 'plain', 'dot', 'svg')]
         [string]
         ${OutputFormat},
 
