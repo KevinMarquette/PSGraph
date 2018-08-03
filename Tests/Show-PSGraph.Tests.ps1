@@ -5,7 +5,7 @@ $moduleName = Split-Path $moduleRoot -Leaf
 #Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force
 
 # This one is not tagged with Build because it requires GraphViz
-Describe "$ModuleName Show-PSGraph" {
+Describe "$ModuleName Show-PSGraph" -Tag graphviz {
 
     $dot = graph g {
         node 2 @{shape = 'house'}
