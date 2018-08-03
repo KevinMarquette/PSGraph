@@ -136,7 +136,7 @@ function Export-PSGraph
                     {
                         Write-Verbose "Generating graph from '$($file.path)'"
                         $arguments = Get-GraphVizArgument -InputObject $PSBoundParameters
-                        $output = & $graphViz @($arguments + $file.path)
+                        $null = & $graphViz @($arguments + $file.path)
                         if ($LastExitCode)
                         {
                             Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())
@@ -183,7 +183,7 @@ function Export-PSGraph
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
 
-                $output = $standardInput.ToString() | & $graphViz @($arguments)
+                $null = $standardInput.ToString() | & $graphViz @($arguments)
                 if ($LastExitCode)
                 {
                     Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())
