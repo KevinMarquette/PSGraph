@@ -14,9 +14,9 @@ Describe "Function Row" {
     }
 
     It 'can encode html' {
-        $text = '<TR>stuff</TR>'
+        $text = '<B>stuff</B>'
         $encoded = ([System.Net.WebUtility]::HtmlEncode($text))
-        Row $text -HtmlEncode | Should -Be $encoded
+        Row $text -HtmlEncode | Should -match ([regex]::Escape( $encoded))
     }
 
     It 'uses simple label as port id' {
