@@ -1,6 +1,6 @@
 /output/
-debug*.ps1
-temp*.ps1
+/debug*.ps1
+/temp*.ps1
 
 # Most of these heavily cannibalized by Travis Drake from https://gist.github.com/kmorcinek/2710267
 
