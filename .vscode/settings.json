@@ -11,6 +11,7 @@
   "search.exclude": {
     "**/Tests/Data*": true
   },
+
   //-------- PowerShell configuration --------
   "powershell.codeFormatting.alignPropertyValuePairs": true,
   "powershell.codeFormatting.preset": "Allman",
