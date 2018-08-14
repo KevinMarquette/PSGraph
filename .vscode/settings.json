@@ -8,7 +8,9 @@
   "files.autoGuessEncoding": false,
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-
+  "search.exclude": {
+    "**/Tests/Data*": true
+  },
   //-------- PowerShell configuration --------
   "powershell.codeFormatting.alignPropertyValuePairs": true,
   "powershell.codeFormatting.preset": "Allman",
