@@ -32,7 +32,7 @@ taskx BuildManifest @{
             {
                 if($false -eq $command.Parameters[$parameter].IsDynamic)
                 {
-                '{0}:{1}' -f $command.Name, $command.Parameters[$parameter].Name
+                    '{0}:{1}' -f $command.Name, $command.Parameters[$parameter].Name
                     foreach ($alias in $command.Parameters[$parameter].Aliases)
                     {
                         '{0}:{1}' -f $command.Name, $alias
