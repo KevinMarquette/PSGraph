@@ -16,6 +16,7 @@ Describe "Public commands have comment-based or external help" -Tags 'Build' {
 
             It "Should have an Example"  {
                 $node.Examples | Should Not BeNullOrEmpty
+                $node.Examples | Out-String | Should -Match ($node.Name)
             }
 
             foreach ($parameter in $node.Parameters.Parameter)
