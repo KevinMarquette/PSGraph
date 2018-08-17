@@ -12,8 +12,10 @@ image: Visual Studio 2017
 skip_commits:
   message: /updated (readme|doc).*|update (readme|doc).*s/
 
+skip_branch_with_pr: true
+
 build: false
 
-#Kick off the CI/CD pipeline
-test_script:
-  - ps: . .\build.ps1
+# Kick off the CI/CD pipeline
+build_script:
+  - ps: . .\build.ps1 Publish

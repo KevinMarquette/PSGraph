@@ -6,6 +6,7 @@ task Default Build, Test, UpdateSource
 task Build Copy, Compile, BuildModule, BuildManifest, Helpify
 task Helpify GenerateMarkdown, GenerateHelp
 task Test Build, ImportModule, FullTests
+task Publish Build, Test, PublishModule
 
 Write-Host 'Import common tasks'
 Get-ChildItem -Path $buildroot\BuildTasks\*.Task.ps1 |

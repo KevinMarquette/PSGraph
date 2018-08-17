@@ -24,4 +24,7 @@ Write-Verbose "  Folders [$Folders]"
 $Script:TestFile = "$BuildRoot\Output\TestResults_PS$PSVersion`_$TimeStamp.xml"
 Write-Verbose "  TestFile [$TestFile]"
 
+$Script:PSRepository = 'PSGallery'
+Write-Verbose "  PSRepository [$TestFile]"
+
 function taskx($Name, $Parameters) { task $Name @Parameters -Source $MyInvocation }
