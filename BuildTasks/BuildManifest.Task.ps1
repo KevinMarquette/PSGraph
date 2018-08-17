@@ -91,7 +91,7 @@ taskx BuildManifest @{
         "Stepping [$bumpVersionType] version [$version]..."
         $version = [version] (Step-Version -Version $version -Type $bumpVersionType)
 
-        $build = 0
+        $build = 1
         if ($null -ne $env:Build_BuildID)
         {
             $build = $env:Build_BuildID
