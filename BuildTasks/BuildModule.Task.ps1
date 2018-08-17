@@ -43,7 +43,7 @@ taskx BuildModule @{
             $data = Get-Content $file.fullname
             foreach($line in $data)
             {
-                if($line -match "class\s+($Name)\s*:\s*(?<baseclass>\w*)")
+                if($line -match "\s+($Name)\s*(:|requires)\s*(?<baseclass>\w*)")
                 {
                     $classes[$name].Base = $Matches.baseclass
                 }
