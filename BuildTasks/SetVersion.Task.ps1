@@ -108,6 +108,10 @@ task SetVersion {
     "  Setting version [$version]"
     Update-Metadata -Path $ManifestPath -PropertyName 'ModuleVersion' -Value $version
 
+    (Get-Content -Path $ManifestPath -Raw -Encoding UTF8) |
+        % trimend |
+        Set-Content -Path $ManifestPath -Encoding UTF8
+
     Set-Content -Path $versionFile -Value $versionStamp -NoNewline -Encoding UTF8
 
     if(Test-Path $BuildRoot\fingerprint)
