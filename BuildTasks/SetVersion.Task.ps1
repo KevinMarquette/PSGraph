@@ -93,6 +93,11 @@ task SetVersion {
         $build = $env:Build_BuildID
         $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
     }
+    elseif ($null -ne $env:APPVEYOR_BUILD_ID)
+    {
+        $build = $env:APPVEYOR_BUILD_ID
+        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
+    }
 
     "  Comparing to source version [$sourceVersion]"
     if($sourceVersion -gt $version)
