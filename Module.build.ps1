@@ -8,7 +8,7 @@ task Helpify GenerateMarkdown, GenerateHelp
 task Test Build, ImportModule, Pester
 task Publish Build, PublishVersion, Helpify, Test, PublishModule
 task TFS Clean, Build, PublishVersion, Helpify, Test
-task DevTest, ImportDevModule, Pester
+task DevTest ImportDevModule, Pester
 
 Write-Host 'Import common tasks'
 Get-ChildItem -Path $buildroot\BuildTasks\*.Task.ps1 |
