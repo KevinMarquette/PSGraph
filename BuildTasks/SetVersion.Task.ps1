@@ -30,7 +30,7 @@ task SetVersion {
     $versionStamp = (git rev-parse origin/master) + (git rev-parse head)
 
     "Load current version"
-    [version] $sourceVersion =  (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
+    [version] $sourceVersion = (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
     "  Source version [$sourceVersion]"
 
     $downloadFolder = Join-Path -Path $output downloads
