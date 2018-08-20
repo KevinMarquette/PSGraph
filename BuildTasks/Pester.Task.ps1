@@ -1,7 +1,7 @@
-task FullTests {
+task Pester {
+    $requiredPercent = $Script:CodeCoveragePercent
+
     $params = @{
-        CodeCoverage           = 'Output\*\*.psm1'
-        CodeCoverageOutputFile = 'Output\codecoverage.xml'
         OutputFile             = $testFile
         OutputFormat           = 'NUnitXml'
         PassThru               = $true
@@ -10,13 +10,18 @@ task FullTests {
         Tag                    = 'Build'
     }
 
+    if($requiredPercent -gt 0.00)
+    {
+        $params['CodeCoverage'] = 'Output\*\*.psm1'
+        $params['CodeCoverageOutputFile'] = 'Output\codecoverage.xml'
+    }
+
     $results = Invoke-Pester @params
     if ($results.FailedCount -gt 0)
     {
         Write-Error -Message "Failed [$($results.FailedCount)] Pester tests."
     }
 
-    $requiredPercent = $Script:CodeCoveragePercent
     $codeCoverage = $results.codecoverage.NumberOfCommandsExecuted / $results.codecoverage.NumberOfCommandsAnalyzed
     if($codeCoverage -lt $requiredPercent)
     {

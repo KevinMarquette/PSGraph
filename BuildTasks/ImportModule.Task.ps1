@@ -1,20 +1,33 @@
+function ImportModule
+{
+    param(
+        [string]$path,
+        [switch]$PassThru
+    )
 
-task ImportModule {
-    if (-not(Test-Path -Path $ManifestPath))
+
+    if (-not(Test-Path -Path $path))
     {
-        "Module [$ModuleName] is not built; cannot find [$ManifestPath]."
-        Write-Error -Message "Could not find module manifest [$ManifestPath]. You may need to build the module first."
+        "Cannot find [$path]."
+        Write-Error -Message "Could not find module manifest [$path]"
     }
     else
     {
-        $loaded = Get-Module -Name $ModuleName -All
+        $file = Get-Item $path
+        $name = $file.BaseName
+
+        $loaded = Get-Module -Name $name -All -ErrorAction Ignore
         if ($loaded)
         {
-            "Unloading Module [$ModuleName] from a previous import..."
+            "Unloading Module [$name] from a previous import..."
             $loaded | Remove-Module -Force
         }
 
-        "Importing Module [$ModuleName] from [$ManifestPath]..."
-        Import-Module -FullyQualifiedName $ManifestPath -Force
+        "Importing Module [$name] from [$($file.fullname)]..."
+        Import-Module -Name $file.fullname -Force -PassThru:$PassThru
     }
+}
+
+task ImportModule {
+    ImportModule -Path $ManifestPath
 }
