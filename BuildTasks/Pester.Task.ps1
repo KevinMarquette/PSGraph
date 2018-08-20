@@ -1,4 +1,4 @@
-task FullTests {
+task Pester {
     $requiredPercent = $Script:CodeCoveragePercent
 
     $params = @{
