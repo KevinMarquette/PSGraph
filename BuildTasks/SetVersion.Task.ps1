@@ -1,4 +1,4 @@
-funciton GetModulePublicInterfaceMap
+function GetModulePublicInterfaceMap
 {
     param($Path)
     $module = ImportModule -Path $Path -PassThru
@@ -8,7 +8,7 @@ funciton GetModulePublicInterfaceMap
         $module.ExportedAliases.values
     )
 
-    $data = foreach($command in $exportedCommands)
+    foreach($command in $exportedCommands)
     {
         foreach ($parameter in $command.Parameters.Keys)
         {
@@ -22,68 +22,88 @@ funciton GetModulePublicInterfaceMap
             }
         }
     }
-    [System.Collections.Generic.HashSet[string]]$data
 }
 
-task SetVersion
-{
+task SetVersion {
+    $version = $null
+
+    $versionStamp = (git rev-parse origin/master) + (git rev-parse head)
+
+    "Load current version"
+    [version] $sourceVersion =  (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
+    "  Source version [$sourceVersion]"
+
+    $downloadFolder = Join-Path -Path $output downloads
+    $null = New-Item -ItemType Directory -Path $downloadFolder -Force -ErrorAction Ignore
+
+    $versionFile = Join-Path $downloadFolder versionfile
+    if(Test-Path $versionFile)
+    {
+        $versionFileData = Get-Content $versionFile -raw
+        if($versionFileData -eq $versionStamp)
+        {
+            continue
+        }
+    }
+
+    "Checking for published version"
     $publishedModule = Find-Module -Name $ModuleName |
         Sort-Object -Property {[version]$_.Version} -Descending |
         Select -First 1
 
     [version] $publishedVersion = $publishedModule.Version
-    [version] $sourceVersion =  (Get-Metadata -Path $manifestPath -PropertyName 'ModuleVersion')
+    "  Published version [$publishedVersion]"
 
-    if($sourceVersion -gt $publishedVersion)
+    $version = $publishedVersion
+
+    "Downloading published module to check for breaking changes"
+    $publishedModule | Save-Module -Path $downloadFolder
+
+    [System.Collections.Generic.HashSet[string]] $publishedInterface = GetModulePublicInterfaceMap -Path (Join-Path $downloadFolder $ModuleName)
+    [System.Collections.Generic.HashSet[string]] $buildInterface = GetModulePublicInterfaceMap -Path $ManifestPath
+
+    $bumpVersionType = 'Patch'
+    if( -not $publishedInterface.IsSubsetOf($buildInterface))
     {
-        Write-Verbose "Using existing version as base [$sourceVersion]"
-        $version = $sourceVersion
+        $bumpVersionType = 'Major'
     }
-    else
+    elseif ($publishedInterface.count -ne $buildInterface.count)
     {
-        "Downloading published module to check for breaking changes"
-        $downloadFolder = Join-Path -Path $output downloads
-        $null = New-Item -ItemType Directory -Path $downloadFolder -Force -ErrorAction Ignore
-        $publishedModule | Save-Module -Path $downloadFolder
+        $bumpVersionType = 'Minor'
+    }
 
-        $publishedInterface = GetModulePublicInterfaceMap -Path (Join-Path $downloadFolder $ModuleName)
-        $buildInterface = GetModulePublicInterfaceMap -Path $ManifestPath
-
-        $bumpVersionType = 'Patch'
-        if($publishedInterface.IsSubsetOf($buildInterface))
-        {
-            $bumpVersionType = 'Major'
-        }
-        elseif ($publishedInterface.count -ne $buildInterface.count)
+    if ($version -lt ([version] '1.0.0'))
+    {
+        "Module is still in beta; don't bump major version."
+        if ($bumpVersionType -eq 'Major')
         {
             $bumpVersionType = 'Minor'
         }
-
-        if ($version -lt ([version] '1.0.0'))
+        else
         {
-            "Module is still in beta; don't bump major version."
-            if ($bumpVersionType -eq 'Major')
-            {
-                $bumpVersionType = 'Minor'
-            }
-            else
-            {
-                $bumpVersionType = 'Patch'
-            }
+            $bumpVersionType = 'Patch'
         }
-
-        $version = [version] (Step-Version -Version $version -Type $bumpVersionType)
     }
 
-    $build = -1
+    "  Steping version [$bumpVersionType]"
+    $version = [version] (Step-Version -Version $version -Type $bumpVersionType)
+
     if ($null -ne $env:Build_BuildID)
     {
         $build = $env:Build_BuildID
+        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
     }
 
-    $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
-    "Using version [$version]"
+    "  Comparing to source version [$sourceVersion]"
+    if($sourceVersion -gt $version)
+    {
+        "    Using existing version"
+        $version = $sourceVersion
+    }
+    "  Setting version [$version]"
     Update-Metadata -Path $ManifestPath -PropertyName 'ModuleVersion' -Value $version
+
+    Set-Content -Path $versionFile -Value $versionStamp -NoNewline -Encoding UTF8
 
     if(Test-Path $BuildRoot\fingerprint)
     {
