@@ -25,8 +25,9 @@ function GetModulePublicInterfaceMap
 }
 
 task SetVersion {
-    $version = $null
-
+    $version = [version]"0.1.0"
+    $publishedModule = $null
+    $bumpVersionType = 'Patch'
     $versionStamp = (git rev-parse origin/master) + (git rev-parse head)
 
     "Load current version"
@@ -51,25 +52,28 @@ task SetVersion {
         Sort-Object -Property {[version]$_.Version} -Descending |
         Select -First 1
 
-    [version] $publishedVersion = $publishedModule.Version
-    "  Published version [$publishedVersion]"
-
-    $version = $publishedVersion
-
-    "Downloading published module to check for breaking changes"
-    $publishedModule | Save-Module -Path $downloadFolder
-
-    [System.Collections.Generic.HashSet[string]] $publishedInterface = GetModulePublicInterfaceMap -Path (Join-Path $downloadFolder $ModuleName)
-    [System.Collections.Generic.HashSet[string]] $buildInterface = GetModulePublicInterfaceMap -Path $ManifestPath
-
-    $bumpVersionType = 'Patch'
-    if( -not $publishedInterface.IsSubsetOf($buildInterface))
+    if($null -ne $publishedModule)
     {
-        $bumpVersionType = 'Major'
-    }
-    elseif ($publishedInterface.count -ne $buildInterface.count)
-    {
-        $bumpVersionType = 'Minor'
+        [version] $publishedVersion = $publishedModule.Version
+        "  Published version [$publishedVersion]"
+
+        $version = $publishedVersion
+
+        "Downloading published module to check for breaking changes"
+        $publishedModule | Save-Module -Path $downloadFolder
+
+        [System.Collections.Generic.HashSet[string]] $publishedInterface = GetModulePublicInterfaceMap -Path (Join-Path $downloadFolder $ModuleName)
+        [System.Collections.Generic.HashSet[string]] $buildInterface = GetModulePublicInterfaceMap -Path $ManifestPath
+
+
+        if( -not $publishedInterface.IsSubsetOf($buildInterface))
+        {
+            $bumpVersionType = 'Major'
+        }
+        elseif ($publishedInterface.count -ne $buildInterface.count)
+        {
+            $bumpVersionType = 'Minor'
+        }
     }
 
     if ($version -lt ([version] '1.0.0'))
@@ -109,7 +113,7 @@ task SetVersion {
     Update-Metadata -Path $ManifestPath -PropertyName 'ModuleVersion' -Value $version
 
     (Get-Content -Path $ManifestPath -Raw -Encoding UTF8) |
-        % trimend |
+        ForEach-Object {$_.TrimEnd()} |
         Set-Content -Path $ManifestPath -Encoding UTF8
 
     Set-Content -Path $versionFile -Value $versionStamp -NoNewline -Encoding UTF8
