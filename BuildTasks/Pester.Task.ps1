@@ -22,9 +22,13 @@ task Pester {
         Write-Error -Message "Failed [$($results.FailedCount)] Pester tests."
     }
 
-    $codeCoverage = $results.codecoverage.NumberOfCommandsExecuted / $results.codecoverage.NumberOfCommandsAnalyzed
-    if($codeCoverage -lt $requiredPercent)
+    if($results.codecoverage.NumberOfCommandsAnalyzed -gt 0)
     {
-        Write-Error ("Failed Code Coverage [{0:P}] below {1:P}" -f $codeCoverage,$requiredPercent)
+        $codeCoverage = $results.codecoverage.NumberOfCommandsExecuted / $results.codecoverage.NumberOfCommandsAnalyzed
+
+        if($codeCoverage -lt $requiredPercent)
+        {
+            Write-Error ("Failed Code Coverage [{0:P}] below {1:P}" -f $codeCoverage,$requiredPercent)
+        }
     }
 }
