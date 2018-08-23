@@ -1,7 +1,7 @@
 
 task Uninstall {
     'Unloading Modules...'
-    Get-Module -Name $ModuleName -ErrorAction 'Ignore' | Remove-Module
+    Get-Module -Name $ModuleName -ErrorAction 'Ignore' | Remove-Module -Force
 
     'Uninstalling Module packages...'
     $modules = Get-Module $ModuleName -ErrorAction 'Ignore' -ListAvailable

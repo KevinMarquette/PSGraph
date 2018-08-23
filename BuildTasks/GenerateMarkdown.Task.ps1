@@ -36,6 +36,6 @@ task GenerateMarkdown {
     }
     finally
     {
-        Remove-Module -Name $ModuleName
+        Remove-Module -Name $ModuleName -Force
     }
 }
