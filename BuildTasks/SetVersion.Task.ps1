@@ -48,7 +48,7 @@ task SetVersion {
     }
 
     "Checking for published version"
-    $publishedModule = Find-Module -Name $ModuleName |
+    $publishedModule = Find-Module -Name $ModuleName -ErrorAction 'SilentlyContinue' |
         Sort-Object -Property {[version]$_.Version} -Descending |
         Select -First 1
 
