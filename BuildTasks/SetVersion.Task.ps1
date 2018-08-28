@@ -48,7 +48,7 @@ task SetVersion {
     }
 
     "Checking for published version"
-    $publishedModule = Find-Module -Name $ModuleName -ErrorAction 'SilentlyContinue' |
+    $publishedModule = Find-Module -Name $ModuleName -ErrorAction 'Ignore' |
         Sort-Object -Property {[version]$_.Version} -Descending |
         Select -First 1
 
@@ -64,7 +64,10 @@ task SetVersion {
 
         [System.Collections.Generic.HashSet[string]] $publishedInterface = GetModulePublicInterfaceMap -Path (Join-Path $downloadFolder $ModuleName)
         [System.Collections.Generic.HashSet[string]] $buildInterface = GetModulePublicInterfaceMap -Path $ManifestPath
-
+        if ($null -eq $publishedInterface)
+        {
+            $publishedInterface = [System.Collections.Generic.HashSet[string]]::new()
+        }
 
         if( -not $publishedInterface.IsSubsetOf($buildInterface))
         {
