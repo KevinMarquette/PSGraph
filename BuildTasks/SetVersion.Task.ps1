@@ -95,23 +95,24 @@ task SetVersion {
     "  Steping version [$bumpVersionType]"
     $version = [version] (Step-Version -Version $version -Type $bumpVersionType)
 
-    if ($null -ne $env:Build_BuildID)
-    {
-        $build = $env:Build_BuildID
-        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
-    }
-    elseif ($null -ne $env:APPVEYOR_BUILD_ID)
-    {
-        $build = $env:APPVEYOR_BUILD_ID
-        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
-    }
-
     "  Comparing to source version [$sourceVersion]"
     if($sourceVersion -gt $version)
     {
         "    Using existing version"
         $version = $sourceVersion
     }
+
+    if ( -not [string]::IsNullOrEmpty( $env:Build_BuildID ) )
+    {
+        $build = $env:Build_BuildID
+        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
+    }
+    elseif ( -not [string]::IsNullOrEmpty( $env:APPVEYOR_BUILD_ID ) )
+    {
+        $build = $env:APPVEYOR_BUILD_ID
+        $version = [version]::new($version.Major, $version.Minor, $version.Build, $build)
+    }
+
     "  Setting version [$version]"
     Update-Metadata -Path $ManifestPath -PropertyName 'ModuleVersion' -Value $version
 
