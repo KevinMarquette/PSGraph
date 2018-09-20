@@ -12,7 +12,7 @@ param ($Task = 'Default')
 "  Install Dependent Modules"
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 Install-Module InvokeBuild, PSDeploy, BuildHelpers, PSScriptAnalyzer, PlatyPS -force -Scope CurrentUser
-Install-Module Pester -Force -SkipPublisherCheck -Scope CurrentUser
+Install-Module Pester, PowerShellGet -Force -SkipPublisherCheck -Scope CurrentUser -AllowClobber
 
 "  Import Dependent Modules"
 Import-Module InvokeBuild, BuildHelpers, PSScriptAnalyzer
