@@ -76,7 +76,8 @@ function Export-PSGraph
         $GraphVizPath = (
             'C:\Program Files\NuGet\Packages\Graphviz*\dot.exe',
             'C:\program files*\GraphViz*\bin\dot.exe',
-            '/usr/local/bin/dot'
+            '/usr/local/bin/dot',
+            '/usr/bin/dot'
         ),
 
         # launches the graph when done
