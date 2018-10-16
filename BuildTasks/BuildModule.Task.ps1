@@ -86,6 +86,6 @@ taskx BuildModule @{
         Set-Content -Path  $ModulePath -Value $sb.ToString() -Encoding 'UTF8'
 
         'Moving "#Requires" statements and "using" directives...'
-        Move-Statement -Path $ModulePath -Type 'Comment', 'Keyword' -Token '#Requires', 'using' -Index 0
+        #Move-Statement -Path $ModulePath -Type 'Comment', 'Keyword' -Token '#Requires', 'using' -Index 0
     }
 }
