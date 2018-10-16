@@ -20,4 +20,10 @@ task Copy {
         'Creating [.{0}]...' -f $directory.FullName.Replace($buildroot, '')
         Copy-Item -Path $directory.FullName -Destination $Destination -Recurse -Force
     }
+
+    $license = Join-Path -Path $buildroot -ChildPath 'LICENSE'
+    if ( Test-Path -Path $license -PathType Leaf )
+    {
+        Copy-Item -Path $license -Destination $Destination
+    }
 }
