@@ -190,7 +190,7 @@ taskx BuildModule @{
             if (Test-Path -Path "$Source\$folder")
             {
                 $null = $sb.AppendLine("# Importing from [$Source\$folder]")
-                $files = Get-ChildItem -Path "$Source\$folder\*.ps1" |
+                $files = Get-ChildItem -Path "$Source\$folder" -Recurse -Filter *.ps1 |
                     Where-Object 'Name' -notlike '*.Tests.ps1'
 
                 foreach ($file in $files)

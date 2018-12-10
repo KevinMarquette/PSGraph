@@ -6,7 +6,7 @@ taskx BuildManifest @{
         "Updating [$ManifestPath]..."
         Copy-Item -Path "$Source\$ModuleName.psd1" -Destination $ManifestPath
 
-        $functions = Get-ChildItem -Path "$ModuleName\Public\*.ps1" -ErrorAction 'Ignore' |
+        $functions = Get-ChildItem -Path "$ModuleName\Public" -Recurse -Filter *.ps1 -ErrorAction 'Ignore' |
             Where-Object 'Name' -notmatch 'Tests'
 
         if ($functions)
