@@ -8,7 +8,8 @@ $Script:Modules = @(
     'LDModuleBuilder',
     'Pester',
     'platyPS',
-    'PSScriptAnalyzer'
+    'PSScriptAnalyzer',
+    'DependsOn'
 )
 
 $Script:ModuleInstallScope = 'CurrentUser'
