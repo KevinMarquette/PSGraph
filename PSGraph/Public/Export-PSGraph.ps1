@@ -95,7 +95,8 @@ function Export-PSGraph
 
             if ( $null -eq $graphViz )
             {
-                throw "Could not find GraphViz installed on this system. Please run 'Install-GraphViz' to install the needed binaries and libraries. This module just a wrapper around GraphViz and is looking for it in your program files folder. Optionally pass a path to your dot.exe file with the GraphVizPath parameter"
+                $GraphvizPathString = $GraphVizPath -Join " or "
+                throw "Could not find GraphViz installed on this system. Please run 'Install-GraphViz' to install the needed binaries and libraries. This module just a wrapper around GraphViz and is looking for it in the following paths: $($GraphvizPathString). Optionally pass a path to your dot.exe file with the GraphVizPath parameter"
             }
 
             $useStandardInput = $false
