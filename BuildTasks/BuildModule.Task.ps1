@@ -153,7 +153,7 @@ taskx BuildModule @{
             }
         }
 
-        $importOrder = $classes.GetEnumerator() | DependsOn  -Key {$_.Name} -DependsOn {$_.Value.Base}
+        $importOrder = $classes.GetEnumerator() | Resolve-DependencyOrder  -Key {$_.Name} -DependsOn {$_.Value.Base}
 
         foreach($class in $importOrder)
         {
