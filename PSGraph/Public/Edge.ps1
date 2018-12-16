@@ -165,16 +165,22 @@ function Edge
                     {
                         foreach ( $tNode in $To )
                         {
-                            if ([string]::IsNullOrEmpty( $LiteralAttribute ) )
+                            if ( [string]::IsNullOrEmpty( $LiteralAttribute ) )
                             {
                                 $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $sNode -To $tNode
                             }
 
-                            ( '{0}{1}->{2} {3}' -f (Get-Indent),
+                            if ($GraphVizAttribute -match 'ltail=' -or $GraphVizAttribute -match 'lhead=')
+                            {
+                                # our subgraph to subgraph edges can crash the layout engine
+                                # adding invisible edge for layout hints helps resolve this
+                                Edge -From $sNode -To $tNode -LiteralAttribute '[style=invis]'
+                            }
+
+                            '{0}{1}->{2} {3}' -f (Get-Indent),
                                 (Format-Value $sNode -Edge),
                                 (Format-Value $tNode -Edge),
                                 $GraphVizAttribute
-                            )
                         }
                     }
                 }
