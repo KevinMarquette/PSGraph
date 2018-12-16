@@ -180,7 +180,7 @@ function Edge
                             '{0}{1}->{2} {3}' -f (Get-Indent),
                                 (Format-Value $sNode -Edge),
                                 (Format-Value $tNode -Edge),
-                                $GraphVizAttribute                            
+                                $GraphVizAttribute
                         }
                     }
                 }
