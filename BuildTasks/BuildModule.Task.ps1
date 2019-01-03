@@ -4,28 +4,8 @@ using namespace System.Collections.Generic
 using namespace System.IO
 using namespace System.Management.Automation
 
-function Import-ClassOrder
-{
-    [cmdletbinding()]
-    param($cName,$Map)
-    Write-Verbose "Checking on [$cName]"
-    if($Map.ContainsKey($cName) -and $Map[$cName].Imported -ne $true)
-    {
-        if($Map[$cName].Base)
-        {
-            Write-Verbose " Base class [$($Map[$cName].Base)]"
-            Import-ClassOrder $Map[$cName].Base $Map
-        }
-        $cPath = $Map[$cName].Path
-        Write-Verbose "Dot Sourcing [$cPath]"
-        $cPath
-        $Map[$cName].Imported = $true
-    }
-}
 
 # Temporarily added this here to be refactored/replaced by LDModuleBuilder Module
-
-
 function Move-Statement
 {
 <#
@@ -166,23 +146,21 @@ taskx BuildModule @{
             $data = Get-Content $file.fullname
             foreach($line in $data)
             {
-                if($line -match "\s+($Name)\s*(:|requires)\s*(?<baseclass>\w*)")
+                if($line -match "\s+($Name)\s*(:|requires)\s*(?<baseclass>\w*)|\[(?<baseclass>\w+)\]")
                 {
-                    $classes[$name].Base = $Matches.baseclass
+                    $classes[$name].Base += @($Matches.baseclass)
                 }
             }
         }
 
-        $importOrder = foreach($className in $classes.Keys)
-        {
-            Import-ClassOrder $className $classes
-        }
+        $importOrder = $classes.GetEnumerator() | Resolve-DependencyOrder  -Key {$_.Name} -DependsOn {$_.Value.Base}
 
         foreach($class in $importOrder)
         {
-            "Importing [$class]..."
-            $null = $sb.AppendLine("# .$class")
-            $null = $sb.AppendLine([IO.File]::ReadAllText($class))
+            $classPath = $class.Value.Path
+            "Importing [$classPath]..."
+            $null = $sb.AppendLine("# .$classPath")
+            $null = $sb.AppendLine([IO.File]::ReadAllText($classPath))
         }
 
         foreach ($folder in ($Folders -ne 'Classes'))
