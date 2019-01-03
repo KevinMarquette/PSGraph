@@ -12,7 +12,7 @@ function Export-PSGraph
         .PARAMETER LayoutEngine
         The layout engine used to generate the image
         .PARAMETER GraphVizPath
-        Path or paths to the 'dot' graphviz executable. Some sensible defaults are used if nothing is passed.
+        Path or paths to the dot graphviz executable. Some sensible defaults are used if nothing is passed.
         .PARAMETER ShowGraph
         Launches the graph when done
         .Example
@@ -27,7 +27,7 @@ function Export-PSGraph
         .Notes
         The source can either be files or piped graph data.
 
-        It checks the piped data for file paths. If it can't find a file, it assumes it is graph data.
+        It checks the piped data for file paths. If it cannot find a file, it assumes it is graph data.
         This may give unexpected errors when the file does not exist.
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", "")]
