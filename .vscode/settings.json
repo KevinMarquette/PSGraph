@@ -1,12 +1,28 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-  "powershell.codeFormatting.openBraceOnSameLine": false,
-  "powershell.codeFormatting.newLineAfterOpenBrace": true,
-  "powershell.codeFormatting.preset": "Allman",
+  //-------- Editor configuration --------
   "editor.insertSpaces": true,
   "editor.tabSize": 4,
-  "files.defaultLanguage": "powershell",
+
+  //-------- Files configuration --------
+  "files.autoGuessEncoding": false,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "search.exclude": {
+    "**/Tests/Data*": true
+  },
+
+  //-------- PowerShell configuration --------
+  "powershell.codeFormatting.alignPropertyValuePairs": true,
+  "powershell.codeFormatting.preset": "Allman",
+  "powershell.scriptAnalysis.settingsPath": "./ScriptAnalyzerSettings.psd1",
+
+  //-------- Language configuration --------
   "[json]": {
+    "editor.tabSize": 2
+  },
+
+  "[xml]": {
     "editor.tabSize": 2
   }
 }

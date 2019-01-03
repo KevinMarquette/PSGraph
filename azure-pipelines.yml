@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+#resources:
+#- repo: self
+#  clean: true
+#  fetchDepth: 1
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+steps:
+- script: pwsh -File build.ps1 Publish
+  displayName: 'Build and Publish Module'
+  env:
+    nugetapikey: $(nugetapikey)
+

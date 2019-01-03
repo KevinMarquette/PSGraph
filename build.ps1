@@ -1,31 +1,37 @@
-<#
-.Description
-Installs and loads all the required modules for the build.
-Derived from scripts written by Warren F. (RamblingCookieMonster)
-#>
+[CmdletBinding()]
 
-[cmdletbinding()]
-param ($Task = 'Default')
-"Starting build"
+param($Task = 'Default')
 
-# Grab nuget bits, install modules, set build variables, start build.
-"  Install Dependent Modules"
-Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
-Install-Module InvokeBuild, PSDeploy, BuildHelpers, PSScriptAnalyzer, PlatyPS -force -Scope CurrentUser
-Install-Module Pester, PowerShellGet -Force -SkipPublisherCheck -Scope CurrentUser -AllowClobber
+$Script:Modules = @(
+    'BuildHelpers',
+    'InvokeBuild',
+    'Pester',
+    'platyPS',
+    'PSScriptAnalyzer'
+)
 
-"  Import Dependent Modules"
-Import-Module InvokeBuild, BuildHelpers, PSScriptAnalyzer
+$Script:ModuleInstallScope = 'CurrentUser'
+
+'Starting build...'
+'Installing module dependencies...'
+
+Get-PackageProvider -Name 'NuGet' -ForceBootstrap | Out-Null
+
+Install-Module -Name $Script:Modules -Scope $Script:ModuleInstallScope -Force -SkipPublisherCheck
 
 Set-BuildEnvironment
+Get-ChildItem Env:BH*
+Get-ChildItem Env:APPVEYOR*
 
-"  InvokeBuild"
-Invoke-Build $Task -Result result
+$Error.Clear()
+
+'Invoking build...'
+
+Invoke-Build $Task -Result 'Result'
 if ($Result.Error)
 {
+    $Error[-1].ScriptStackTrace | Out-String
     exit 1
 }
-else
-{
-    exit 0
-}
+
+exit 0
