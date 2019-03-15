@@ -65,6 +65,10 @@ Describe 'Function Node' -Tag Build {
             $result | Out-String | Should not match 'rank'
             ($result -match $testNode).count | Should Be 1
         }
+
+        It "should handle URLs for nodes" {
+            Node "http://data.com" | Should -Match ([regex]::escape('"http://data.com"'))
+        }
     }
 
 }

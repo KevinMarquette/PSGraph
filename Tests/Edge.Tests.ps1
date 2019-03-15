@@ -53,6 +53,18 @@ Describe 'Function Edge' {
             $result[0] | Should Match '"here"->"there" \[label="to";\]'
             $result[1] | Should Match '"LA"->"NY" \[label="roadtrip";\]'
         }
+
+        It "should handle record labels in edges" {
+            Edge "Data1:R1" -To "Data2:R2"  | Should -Match ([regex]::escape('"Data1":R1->"Data2":R2'))
+        }
+
+        It "should handle URLs for edges" {
+            Edge "http://data1.com" -To "http://data2.com" | Should -Match ([regex]::escape('"http://data1.com"->"http://data2.com"'))
+        }
+
+        It "should handle URLs for edges with record edges" {
+            Edge "http://data1.com:r1" -To "http://data2.com:r2" | Should -Match ([regex]::escape('"http://data1.com":r1->"http://data2.com":r2'))
+        }
     }
 
     Context "Feature" {
