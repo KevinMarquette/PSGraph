@@ -2,8 +2,10 @@ function Format-Value
 {
     param(
         $value,
+
         [switch]
         $Edge,
+
         [switch]
         $Node
     )
@@ -18,7 +20,12 @@ function Format-Value
     process
     {
         # edges can point to record cells
-        if ($Edge -and $value -match '(?<node>.*):(?<Record>\w*)' )
+        if ($Edge -and
+            # is not surounded by explicit quotes
+            $value -notmatch '^".*"$' -and
+            # has record notation with a word as a target
+            $value -match '^(?<node>.+):(?<Record>(\w+))$'
+        )
         {
             # Recursive call to this function to format just the node
             "{0}:{1}" -f (Format-Value $matches.node -Node), $matches.record
@@ -36,12 +43,16 @@ function Format-Value
                 # HTML label, special designation
                 '^<\s*table.*>.*'
                 {
-                    "<$value>"
+                    "<$PSItem>"
+                }
+                '^".*"$'
+                {
+                    [string]$PSItem
                 }
                 # Anything else, use quotes
                 default
                 {
-                    '"{0}"' -f ( [string]$value ).Replace("`"", '\"') # Escape quotes in the string value
+                    '"{0}"' -f ( [string]$PSItem ).Replace("`"", '\"') # Escape quotes in the string value
                 }
             }
         }

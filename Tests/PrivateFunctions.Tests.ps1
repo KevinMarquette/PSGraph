@@ -95,6 +95,7 @@ InModuleScope -ModuleName PSGraph {
             BeforeEach {
                 Set-NodeFormatScript -ScriptBlock {$_}
             }
+
             It "not throw an error" {
                 {Format-Value test} | Should Not Throw
             }

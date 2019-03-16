@@ -1,1 +1,43 @@
 /output/
+/debug*.ps1
+/temp*.ps1
+
+# Most of these heavily cannibalized by Travis Drake from https://gist.github.com/kmorcinek/2710267
+
+# C# VS build detritus
+/.vs/
+/*/[Bb]in/
+/*/[Oo]bj/
+**/packages/*
+
+# Except this, this needs to be checked in when present
+!**/packages/build/
+
+# More C# / Visual Studio detritus
+*.suo
+*.user
+*.sln.docstates
+*.psess
+*.vsp
+*.vspx
+project.lock.json
+_UpgradeReport_Files/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# SASS Compiler cache
+.sass-cache
+
+# Mac OS stuff
+.DS_Store*
+Icon?
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
