@@ -1,6 +1,8 @@
 [CmdletBinding()]
-
-param($Task = 'Default')
+param(
+    [parameter(Position=0)]
+    $Task = 'Default'
+)
 
 $Script:Modules = @(
     'BuildHelpers',
@@ -26,9 +28,9 @@ Get-ChildItem Env:APPVEYOR*
 
 $Error.Clear()
 
-'Invoking build...'
+"Invoking build action [$Task]"
 
-Invoke-Build $Task -Result 'Result'
+Invoke-Build -Task $Task -Result 'Result'
 if ($Result.Error)
 {
     $Error[-1].ScriptStackTrace | Out-String
