@@ -69,6 +69,10 @@ Describe 'Function Node' -Tag Build {
         It "should handle URLs for nodes" {
             Node "http://data.com" | Should -Match ([regex]::escape('"http://data.com"'))
         }
+
+        It "should handle quotes around values" {
+            Node '"http://data.com"' | Should -Match ([regex]::escape('"http://data.com"'))
+        }
     }
 
 }

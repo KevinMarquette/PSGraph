@@ -58,6 +58,10 @@ Describe 'Function Edge' {
             Edge "Data1:R1" -To "Data2:R2"  | Should -Match ([regex]::escape('"Data1":R1->"Data2":R2'))
         }
 
+        It "should handle quoted record labels in edges" {
+            Edge '"Data1:R1"' -To '"Data2:R2"'  | Should -Match ([regex]::escape('"Data1:R1"->"Data2:R2"'))
+        }
+
         It "should handle URLs for edges" {
             Edge "http://data1.com" -To "http://data2.com" | Should -Match ([regex]::escape('"http://data1.com"->"http://data2.com"'))
         }

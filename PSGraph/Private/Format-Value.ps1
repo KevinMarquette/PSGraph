@@ -45,6 +45,10 @@ function Format-Value
                 {
                     "<$PSItem>"
                 }
+                '^".*"$'
+                {
+                    [string]$PSItem
+                }
                 # Anything else, use quotes
                 default
                 {
