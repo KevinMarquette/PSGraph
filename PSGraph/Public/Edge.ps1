@@ -103,8 +103,7 @@ function Edge
         $Node,
 
         # start node script or source of edge
-        [Parameter(
-            ParameterSetName = 'script')]
+        [Parameter(ParameterSetName = 'script')]
         [alias('FromScriptBlock', 'SourceScript')]
         [scriptblock]
         $FromScript = {$_},
@@ -119,6 +118,18 @@ function Edge
         [string]
         $LiteralAttribute = $null,
 
+        #Label for the edge, escaped or HTML Text
+        [Parameter()]
+        [AllowEmptyString()]
+        [String]
+        $Label,
+
+        #Style for the edge, dashed, solid etc.
+        [Parameter()]
+        [ValidateSet("dashed", "dotted", "solid", "invis", "bold" , "tapered")]
+        [String]
+        $Style,
+
         # Not used, but can be specified for verbosity
         [switch]
         $Default
@@ -126,10 +137,25 @@ function Edge
 
     begin
     {
-        if ( -Not [string]::IsNullOrEmpty($LiteralAttribute) )
+        #re-create any scriptblock passed as a parameter, otherwise variables in this function are out of its scope.
+        if ($ToScript)
         {
-            $GraphVizAttribute = $LiteralAttribute
+            $ToScript   = [scriptblock]::create( $ToScript )
         }
+        if ($FromScript)
+        {
+            $FromScript = [scriptblock]::create( $FromScript )
+        }
+        #Don't want to make all possible attributes parameters, just key ones, style for the edge and label
+        if ($PSBoundParameters.ContainsKey('Label')) #Label may be an empty string.
+        {
+            $Attributes['label'] = $Label
+        }
+        if ($Style) #Style must not be empty but wrong case may slip though
+        {
+            $Attributes['Style'] = $Style.ToLower()
+        }
+        #moved handling of $LiteralAttribute to make behavior later easier to follow
     }
 
     process
@@ -165,12 +191,15 @@ function Edge
                     {
                         foreach ( $tNode in $To )
                         {
-                            if ( [string]::IsNullOrEmpty( $LiteralAttribute ) )
+                            if ( $LiteralAttribute)
                             {
-                                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $sNode -To $tNode
+                                  $GraphVizAttribute = $LiteralAttribute
                             }
-
-                            if ($GraphVizAttribute -match 'ltail=' -or $GraphVizAttribute -match 'lhead=')
+                            else
+                            {
+                                  $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $sNode -To $tNode
+                            }
+                            if  ( $GraphVizAttribute -match 'ltail=' -or $GraphVizAttribute -match 'lhead=')
                             {
                                 # our subgraph to subgraph edges can crash the layout engine
                                 # adding invisible edge for layout hints helps resolve this

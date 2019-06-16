@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @('Edge','Entity','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Record','Row','Set-NodeFormatScript','Show-PSGraph','SubGraph')
+    FunctionsToExport = @('Edge','Entity','Export-PSGraph','Graph','Inline','Install-GraphViz','Node','Rank','Record','Row','Set-NodeFormatScript','Show-PSGraph','SubGraph','svg',' New-EdgeAttributeSet',' New-NodettributeSet')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -78,7 +78,7 @@
     VariablesToExport = '*'
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = @('digraph')
+    AliasesToExport   = @('digraph','EdgeAttributes','NodeAttributes','cmapxGraph', 'DiGraph', 'dotGraph', 'gifGraph', 'imapGraph', 'jp2Graph', 'jpgGraph', 'jsonGraph', 'pdfGraph', 'plainGraph', 'pngGraph', 'svgGraph')
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
