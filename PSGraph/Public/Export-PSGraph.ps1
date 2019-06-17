@@ -181,7 +181,10 @@ function Export-PSGraph
                     }
                     $PSBoundParameters["DestinationPath"] = Join-Path ([system.io.path]::GetTempPath()) "$file.$OutputFormat"
                 }
-
+                else
+                {
+                    $PSBoundParameters["DestinationPath"] =  $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($DestinationPath)
+                }
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
 
