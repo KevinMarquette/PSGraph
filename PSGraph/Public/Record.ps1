@@ -85,7 +85,10 @@ function Record
         $RowScript,
 
         [string]
-        $Label
+        $Label,
+
+        [int16]
+        $TitleSpan
     )
     begin
     {
@@ -122,7 +125,15 @@ function Record
     }
     end
     {
-        $html = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center"><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Label, ($tableData -join '')
+        if ($TitleSpan)
+        {
+            $ts = 'COLSPAN="{0}"' -f $TitleSpan
+        }
+        else
+        {
+            $ts = ""
+        }
+        $html = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center" {2}><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Label, ($tableData -join ''),$ts
         Node $Name @{label = $html; shape = 'none'; fontname = "Courier New"; style = "filled"; penwidth = 1; fillcolor = "white"}
     }
 }
