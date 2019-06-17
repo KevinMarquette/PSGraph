@@ -53,7 +53,8 @@ function Edge
         [Parameter(
             Mandatory = $true,
             Position = 0,
-            ParameterSetName = 'Node'
+            ParameterSetName = 'Node',
+            ValueFromPipelineByPropertyName = $true
         )]
         [Parameter(
             Mandatory = $true,
@@ -68,7 +69,8 @@ function Edge
         [Parameter(
             Mandatory = $false,
             Position = 1,
-            ParameterSetName = 'Node'
+            ParameterSetName = 'Node',
+            ValueFromPipelineByPropertyName = $true
         )]
         [alias('Destination', 'TargetName', 'RightHandSide', 'rhs')]
         [string[]]
@@ -119,16 +121,22 @@ function Edge
         $LiteralAttribute = $null,
 
         #Label for the edge, escaped or HTML Text
-        [Parameter()]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [AllowEmptyString()]
         [String]
         $Label,
 
         #Style for the edge, dashed, solid etc.
-        [Parameter()]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateSet("dashed", "dotted", "solid", "invis", "bold" , "tapered")]
         [String]
         $Style,
+
+        #Indicates which ends of the edge should be decorated with an arrowhead.
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [ValidateSet('forward','back','both','none')]
+        [String]
+        $Direction,
 
         # Not used, but can be specified for verbosity
         [switch]
@@ -146,14 +154,18 @@ function Edge
         {
             $FromScript = [scriptblock]::create( $FromScript )
         }
-        #Don't want to make all possible attributes parameters, just key ones, style for the edge and label
+        #Don't want to make all possible attributes parameters, just key ones, label , direction and style for the edge
         if ($PSBoundParameters.ContainsKey('Label')) #Label may be an empty string.
         {
             $Attributes['label'] = $Label
         }
         if ($Style) #Style must not be empty but wrong case may slip though
         {
-            $Attributes['Style'] = $Style.ToLower()
+            $Attributes['style'] = $Style.ToLower()
+        }
+        if ($Direction) #Same agaign
+        {
+            $Attributes['dir'] = $Direction.ToLower()
         }
         #moved handling of $LiteralAttribute to make behavior later easier to follow
     }
