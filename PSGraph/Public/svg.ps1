@@ -123,5 +123,5 @@
 
 
 foreach ($outputType in @('jpg', 'png', 'gif', 'imap', 'cmapx', 'jp2', 'json', 'pdf', 'plain', 'dot','svg')) {
-    New-Alias -Name "$outputType`Graph" -Value svg -Force
+    New-Alias -Name "$outputType`Graph" -Value svg -Force -Scope  Global
 }
