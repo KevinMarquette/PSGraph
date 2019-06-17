@@ -235,7 +235,8 @@ if (Get-Command -Name register-argumentCompleter -ErrorAction SilentlyContinue) 
     Register-ArgumentCompleter -CommandName New-EdgeAttributeSet              -ParameterName fontname       -ScriptBlock $Function:ListFonts
     Register-ArgumentCompleter -CommandName New-NodeAttributeSet              -ParameterName fontname       -ScriptBlock $Function:ListFonts
     Register-ArgumentCompleter -CommandName New-NodeAttributeSet              -ParameterName fontcolor      -ScriptBlock $Function:ColorCompletion
-    Register-ArgumentCompleter -CommandName New-NodeAttributeSet              -ParameterName fillcolor      -ScriptBlock $Function:ColorCompletion
     Register-ArgumentCompleter -CommandName New-NodeAttributeSet              -ParameterName color          -ScriptBlock $Function:ColorCompletion
-
+    Register-ArgumentCompleter -CommandName New-NodeAttributeSet              -ParameterName fillcolor      -ScriptBlock $Function:ColorCompletion
+    Register-ArgumentCompleter -CommandName record                            -ParameterName fillcolor      -ScriptBlock $Function:ColorCompletion
+    Register-ArgumentCompleter -CommandName record                            -ParameterName fontname       -ScriptBlock $Function:ListFonts
 }
