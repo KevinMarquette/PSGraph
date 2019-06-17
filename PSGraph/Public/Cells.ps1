@@ -24,13 +24,17 @@ function Cells
     )
     begin {
         $portlist = @{}
-        $script:Header = $null
+        $script:Header = @()
     }
     process
     {
         foreach ($Targetdata in $InputObject) {
             if (-not $script:Header) {
-                $script:Header = $InputObject.PSObject.Properties.Name | Where-Object {$_.name -like $properties}
+                foreach ($p in $Properties) {
+                    $InputObject.PSObject.Properties.where({$_.name -like $p}).Name | ForEach-Object {
+                        if ($_ -notin $script:Header) {$script:Header += $_ }
+                    }
+                }
                 foreach ($exclusion in $ExcludeProperty) {$script:Header = $script:Header -notlike $exclusion}
                 if (-not $NoHeader) {
                     $row =  "<tr>"
