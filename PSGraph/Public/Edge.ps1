@@ -154,19 +154,6 @@ function Edge
         {
             $FromScript = [scriptblock]::create( $FromScript )
         }
-        #Don't want to make all possible attributes parameters, just key ones, label , direction and style for the edge
-        if ($PSBoundParameters.ContainsKey('Label')) #Label may be an empty string.
-        {
-            $Attributes['label'] = $Label
-        }
-        if ($Style) #Style must not be empty but wrong case may slip though
-        {
-            $Attributes['style'] = $Style.ToLower()
-        }
-        if ($Direction) #Same agaign
-        {
-            $Attributes['dir'] = $Direction.ToLower()
-        }
         #moved handling of $LiteralAttribute to make behavior later easier to follow
     }
 
@@ -174,7 +161,19 @@ function Edge
     {
         try
         {
-
+            #Don't want to make all possible attributes parameters, just key ones, label , direction and style for the edge
+            if ($PSBoundParameters.ContainsKey('Label')) #Label may be an empty string.
+            {
+                $Attributes['label'] = $Label
+            }
+            if ($Style) #Style must not be empty but wrong case may slip though
+            {
+                $Attributes['style'] = $Style.ToLower()
+            }
+            if ($Direction) #Same agaign
+            {
+                $Attributes['dir'] = $Direction.ToLower()
+            }
             if ( $Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript') )
             {
                 #Deducing the pattern 'edge @{}' as default edge definition
