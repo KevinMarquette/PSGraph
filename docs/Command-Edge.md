@@ -68,7 +68,7 @@ According to the DOT specification, you can supply several attributes that modif
 
 [![Source](images/hereToThere.png)](images/hereToThere.png)
 
-You will have to check out the [GraphViz Dot Language reference](http://graphviz.org/content/attrs) for all the possible attributes. I don't yet validate any of them
+You will have to check out the [GraphViz Dot Language reference](https://www.graphviz.org/doc/info/attrs.html) for all the possible attributes. I don't yet validate any of them
 
 The edge command also supports a literal attributes argument in case you would prefer it.
 
