@@ -22,7 +22,7 @@ function Export-PSGraph
         graph g {
             edge (3..6)
             edge (5..2)
-        } | Export-PSGraph -Destination $env:temp\test.png
+        } | Export-PSGraph -DestinationPath $env:temp\test.png
 
         .Notes
         The source can either be files or piped graph data.
@@ -195,7 +195,7 @@ function Export-PSGraph
                 {
                     # Launches image with default viewer as decided by explorer
                     Write-Verbose "Launching $($PSBoundParameters["DestinationPath"])"
-                    Invoke-Expression $PSBoundParameters["DestinationPath"]
+                    Invoke-Item $PSBoundParameters["DestinationPath"]
                 }
 
                 Get-ChildItem $PSBoundParameters["DestinationPath"]
