@@ -11,9 +11,6 @@ function Record
     .PARAMETER Name
     The node name for this record
 
-    .PARAMETER Label
-    The label to use for the headder of the record.
-
     .PARAMETER Row
     An array of strings/objects to place in this record
 
@@ -22,6 +19,24 @@ function Record
 
     .PARAMETER ScriptBlock
     A sub expression that contains Row commands
+
+    .PARAMETER Label
+    The label to use for the header of the record, will default to the name if not set
+
+    .PARAMETER TitlePosition
+    Specifies where the label should appear, either top, bottom or none.
+
+    .PARAMETER TableStyle
+    Formatting applied to the table displaying the record, defaults to 'CELLBORDER="1" BORDER="0" CELLSPACING="0"',
+
+    .PARAMETER TitleSpan
+    Specifies the number of columns the title should span, if the rows in the record have multiple columns.
+
+    .PARAMETER FontName
+    Specifies the font to use for the record, defaults to "Courier New"
+
+    .PARAMETER FillColor
+    Background color for the record, defaults to "white"
 
     .EXAMPLE
     graph {
@@ -85,7 +100,23 @@ function Record
         $RowScript,
 
         [string]
-        $Label
+        $Label,
+
+        [string]
+        $TableStyle = 'CELLBORDER="1" BORDER="0" CELLSPACING="0"',
+
+        [string]
+        $fontName = "Courier New",
+
+        [string]
+        $FillColor = "white",
+
+        [int16]
+        $TitleSpan,
+
+        [ValidateSet('Top','Bottom','None')]
+        [string]
+        $TitlePosition = 'Top'
     )
     begin
     {
@@ -93,6 +124,11 @@ function Record
         if ( [string]::IsNullOrEmpty($Label) )
         {
             $Label = $Name
+        }
+        #re-create scriptblock passed as a parameter, otherwise variables in this function are out of its scope.
+        if ($RowScript)
+        {
+            $RowScript   = [scriptblock]::create( $RowScript )
         }
     }
     process
@@ -102,28 +138,25 @@ function Record
             $Row = $ScriptBlock.Invoke()
         }
 
-        if ( $null -ne $RowScript )
+        foreach ( $node in $Row )
         {
-            $Row = foreach ( $node in $Row )
+            #Collapsed multiple loops into one. Name will be empty UNLESS the script sets it.
+            $RowName = ""
+            if ( $null -ne $RowScript )
             {
                 @($node).ForEach($RowScript)
             }
-        }
-
-        $results = foreach ( $node in $Row )
-        {
-            Row -Label $node
-        }
-
-        foreach ( $node in $results )
-        {
-            [void]$tableData.Add($node)
+            [void]$tableData.Add((Row -Label $node -Name $Rowname))
         }
     }
     end
     {
-        $html = '<TABLE CELLBORDER="1" BORDER="0" CELLSPACING="0"><TR><TD bgcolor="black" align="center"><font color="white"><B>{0}</B></font></TD></TR>{1}</TABLE>' -f $Label, ($tableData -join '')
-        Node $Name @{label = $html; shape = 'none'; fontname = "Courier New"; style = "filled"; penwidth = 1; fillcolor = "white"}
+        $Colspan = if ($TitleSpan) {'COLSPAN="{0}"' -f $TitleSpan} else { "" }
+        $html = switch ($TitlePosition) {
+            'None'   {'<TABLE {0}>{1}</TABLE>' -f $TableStyle, ($tableData -join '')}
+            'Bottom' {'<TABLE {0}>{1}<TR><TD bgcolor="black" align="center" {2}><font color="white"><B>{3}</B></font></TD></TR></TABLE>' -f $TableStyle, ($tableData -join ''),$Colspan,$Label}
+             Default {'<TABLE {0}><TR><TD bgcolor="black" align="center" {2}><font color="white"><B>{3}</B></font></TD></TR>{1}</TABLE>' -f $TableStyle, ($tableData -join ''),$Colspan,$Label}
+        }
+        Node $Name @{label = $html; shape = 'none'; fontname = $fontName; style = "filled"; penwidth = 1; fillcolor =$FillColor }
     }
 }
-

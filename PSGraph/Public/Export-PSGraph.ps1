@@ -167,6 +167,8 @@ function Export-PSGraph
             if ( $useStandardInput )
             {
                 Write-Verbose 'Processing standard input'
+                #Create a destination path if there is none, but if it is an empty string don't resolve it
+                #This allows empty string to mean "send graphviz output to stdOut"
                 if ( -Not $PSBoundParameters.ContainsKey( 'DestinationPath' ) )
                 {
                     Write-Verbose '  Creating temporary path to save graph'
@@ -181,14 +183,21 @@ function Export-PSGraph
                     }
                     $PSBoundParameters["DestinationPath"] = Join-Path ([system.io.path]::GetTempPath()) "$file.$OutputFormat"
                 }
-
+                elseif (-not [string]::IsNullOrEmpty($PSBoundParameters["DestinationPath"]) )
+                {
+                    $PSBoundParameters["DestinationPath"] =  $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($DestinationPath)
+                }
                 $arguments = Get-GraphVizArgument $PSBoundParameters
                 Write-Verbose " Arguments: $($arguments -join ' ')"
 
-                $null = $standardInput.ToString() | & $graphViz @($arguments)
+                $result =  $standardInput.ToString() | & $graphViz @($arguments)
                 if ($LastExitCode)
                 {
                     Write-Error -ErrorAction Stop -Exception ([System.Management.Automation.ParseException]::New())
+                }
+                elseif ( [string]::IsNullOrEmpty($PSBoundParameters["DestinationPath"]))
+                {
+                    return $result
                 }
 
                 if ( $ShowGraph )

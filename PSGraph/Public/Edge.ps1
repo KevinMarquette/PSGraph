@@ -53,7 +53,8 @@ function Edge
         [Parameter(
             Mandatory = $true,
             Position = 0,
-            ParameterSetName = 'Node'
+            ParameterSetName = 'Node',
+            ValueFromPipelineByPropertyName = $true
         )]
         [Parameter(
             Mandatory = $true,
@@ -68,7 +69,8 @@ function Edge
         [Parameter(
             Mandatory = $false,
             Position = 1,
-            ParameterSetName = 'Node'
+            ParameterSetName = 'Node',
+            ValueFromPipelineByPropertyName = $true
         )]
         [alias('Destination', 'TargetName', 'RightHandSide', 'rhs')]
         [string[]]
@@ -103,8 +105,7 @@ function Edge
         $Node,
 
         # start node script or source of edge
-        [Parameter(
-            ParameterSetName = 'script')]
+        [Parameter(ParameterSetName = 'script')]
         [alias('FromScriptBlock', 'SourceScript')]
         [scriptblock]
         $FromScript = {$_},
@@ -119,6 +120,24 @@ function Edge
         [string]
         $LiteralAttribute = $null,
 
+        #Label for the edge, escaped or HTML Text
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [AllowEmptyString()]
+        [String]
+        $Label,
+
+        #Style for the edge, dashed, solid etc.
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [ValidateSet("dashed", "dotted", "solid", "invis", "bold" , "tapered")]
+        [String]
+        $Style,
+
+        #Indicates which ends of the edge should be decorated with an arrowhead.
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [ValidateSet('forward','back','both','none')]
+        [String]
+        $Direction,
+
         # Not used, but can be specified for verbosity
         [switch]
         $Default
@@ -126,17 +145,35 @@ function Edge
 
     begin
     {
-        if ( -Not [string]::IsNullOrEmpty($LiteralAttribute) )
+        #re-create any scriptblock passed as a parameter, otherwise variables in this function are out of its scope.
+        if ($ToScript)
         {
-            $GraphVizAttribute = $LiteralAttribute
+            $ToScript   = [scriptblock]::create( $ToScript )
         }
+        if ($FromScript)
+        {
+            $FromScript = [scriptblock]::create( $FromScript )
+        }
+        #moved handling of $LiteralAttribute to make behavior later easier to follow
     }
 
     process
     {
         try
         {
-
+            #Don't want to make all possible attributes parameters, just key ones, label , direction and style for the edge
+            if ($PSBoundParameters.ContainsKey('Label')) #Label may be an empty string.
+            {
+                $Attributes['label'] = $Label
+            }
+            if ($Style) #Style must not be empty but wrong case may slip though
+            {
+                $Attributes['style'] = $Style.ToLower()
+            }
+            if ($Direction) #Same agaign
+            {
+                $Attributes['dir'] = $Direction.ToLower()
+            }
             if ( $Node.count -eq 1 -and $node[0] -is [Hashtable] -and !$PSBoundParameters.ContainsKey('FromScript') -and !$PSBoundParameters.ContainsKey('ToScript') )
             {
                 #Deducing the pattern 'edge @{}' as default edge definition
@@ -165,12 +202,15 @@ function Edge
                     {
                         foreach ( $tNode in $To )
                         {
-                            if ( [string]::IsNullOrEmpty( $LiteralAttribute ) )
+                            if ( $LiteralAttribute)
                             {
-                                $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $sNode -To $tNode
+                                  $GraphVizAttribute = $LiteralAttribute
                             }
-
-                            if ($GraphVizAttribute -match 'ltail=' -or $GraphVizAttribute -match 'lhead=')
+                            else
+                            {
+                                  $GraphVizAttribute = ConvertTo-GraphVizAttribute -Attributes $Attributes -From $sNode -To $tNode
+                            }
+                            if  ( $GraphVizAttribute -match 'ltail=' -or $GraphVizAttribute -match 'lhead=')
                             {
                                 # our subgraph to subgraph edges can crash the layout engine
                                 # adding invisible edge for layout hints helps resolve this

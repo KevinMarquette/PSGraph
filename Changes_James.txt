@@ -1,0 +1,19 @@
+Added examples.docx and  graphvizAttributes.xlsx in docs
+
+Changed Record.ps1 Adding a TitleSpan parameter and making TableStyle, Fontname, FillColor, and TitlePosition into parameters-with-defaults instead of constants.
+Changed node.ps1   Adding parameters Shape and Label
+Changed edge.ps1   Adding parameters Label, Style and Direction 
+                   and allowing parameters To, From, Label, Style and Direction to be properties of objects passed from the pipeline. 
+                   This required moving the setting of attributes from the begin block into process block (multiple items couldn't be piped in before).
+
+Added new commands (explained in examples.docx)
+        cells 
+        New-NodeAttributeSet
+        New-EdgeAttributeSet
+        svg as an all in one to call graph and then export-PSGraph. Depending on the name used to call it it will change the format passed to Export-PSGraph  
+        Added Global aliases for xxxGraph --> svg . 
+
+Changed Get-Translated argument so if parameter value is null or empty no paramter is created.
+Changed Export-PsGraph so that Destinationpath resolved from a partial path (but not a null or empty one)
+(Net effect of these two changes is calling with -Destinationpath "" doesn't path an output path to graphviz and output goes to std out)
+Changed Export-PsGraph so graphviz output is put into a variable instead of null, and this variable is returned if DestinationPath is empty.
